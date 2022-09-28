@@ -1,4 +1,4 @@
-class Admin::Api::V1::CategoriesController < ApiController
+class Api::V1::CategoriesController < ApiController
   before_action :authenticate_admin!
 
   # ActiveRecordのレコードが見つからなければ404 not foundを応答する
