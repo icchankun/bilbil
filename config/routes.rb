@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     sessions: "admin/sessions"
   }
   namespace :admin do
+    resources :categories, only: [:index, :create, :edit, :update, :destroy]
     resources :talk_themes, only: [:index, :create, :edit, :update, :destroy]
   end
   namespace :api, {format: 'json'} do
