@@ -1,15 +1,29 @@
 <template>
-  <p>
-    {{ message }}
-  </p>
+  <table>
+    <tbody>
+      <tr>
+        <th>content</th>
+      </tr>
+      <tr v-for="talk_theme in talk_themes" :key="talk_theme.id">
+        <td>{{ talk_theme.content }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      message: "Hello Vue3!"
+      talk_themes: []
     }
+  },
+  mounted() {
+    axios
+      .get('/api/v1/talk_themes.json')
+      .then(response => (this.talk_themes = response.data))
   }
 }
 </script>
