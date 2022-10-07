@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import App from "../admin.vue";
+import App from "../admin/app.vue";
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = createApp(App);
