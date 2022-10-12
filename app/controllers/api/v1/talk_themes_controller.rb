@@ -8,6 +8,6 @@ class Api::V1::TalkThemesController < ApiController
 
   def index
     talk_themes = TalkTheme.all
-    render json: talk_themes
+    render json: talk_themes, each_serializer: TalkThemeSerializer
   end
 end

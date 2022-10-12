@@ -8,6 +8,6 @@ class Api::V1::CategoriesController < ApiController
 
   def index
     categories = Category.all
-    render json: categories
+    render json: categories, each_serializer: CategorySerializer
   end
 end
