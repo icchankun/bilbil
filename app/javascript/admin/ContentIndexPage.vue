@@ -1,31 +1,28 @@
 <template>
-  <table>
-    <tbody>
-      <tr>
-        <th>content</th>
-      </tr>
-      <tr v-for="talk_theme in talk_themes" :key="talk_theme.id">
-        <td>{{ talk_theme.content }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <h2>content</h2>
+  <div v-for="category in categories" :key="category.id">
+    <h3>{{ category.name }}</h3>
+    <div v-for="talk_theme in category.talk_themes" :key="talk_theme.id">
+      {{ talk_theme.content }}
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      talk_themes: []
-    }
+      categories: {},
+    };
   },
   mounted() {
     axios
-      .get('/api/v1/talk_themes.json')
-      .then(response => (this.talk_themes = response.data))
-  }
-}
+      .get("/api/v1/categories")
+      .then((response) => (this.categories = response.data));
+  },
+};
 </script>
 
 <style scoped>

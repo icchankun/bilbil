@@ -7,8 +7,8 @@ class Api::V1::CategoriesController < ApiController
   end
 
   def index
-    categories = Category.all
-    render json: categories, each_serializer: CategorySerializer
+    categories = Category.preload(:talk_themes).all
+    render json: categories, each_serializer: CategorySerializer, include: [ :talk_themes ]
   end
 
   def create
