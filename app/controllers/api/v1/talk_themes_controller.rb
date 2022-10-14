@@ -1,6 +1,6 @@
 class Api::V1::TalkThemesController < ApiController
   before_action :authenticate_admin!
-  before_action :set_talk_theme, only: [:show, :update]
+  before_action :set_talk_theme, only: [:show, :update, :destroy]
   
   # ActiveRecordのレコードが見つからなければ404 not foundを応答する
   rescue_from ActiveRecord::RecordNotFound do |exception|
@@ -31,6 +31,11 @@ class Api::V1::TalkThemesController < ApiController
     else
       render json: { errors: talk_theme.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @talk_theme.destroy
+    head :no_content
   end
 
   private

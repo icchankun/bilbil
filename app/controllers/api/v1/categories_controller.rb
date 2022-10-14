@@ -1,6 +1,6 @@
 class Api::V1::CategoriesController < ApiController
   before_action :authenticate_admin!
-  before_action :set_category, only: [:show, :update]
+  before_action :set_category, only: [:show, :update, :destroy]
 
   # ActiveRecordのレコードが見つからなければ404 not foundを応答する
   rescue_from ActiveRecord::RecordNotFound do |exception|
@@ -31,6 +31,11 @@ class Api::V1::CategoriesController < ApiController
     else
       render json: { errors: category.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @category.destroy
+    head :no_content
   end
 
   private
