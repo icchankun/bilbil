@@ -29,7 +29,7 @@ class Api::V1::TalkThemesController < ApiController
     if @talk_theme.update(talk_theme_params)
       head :no_content
     else
-      render json: { errors: talk_theme.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @talk_theme.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
