@@ -1,12 +1,6 @@
 <template>
   <form @submit.prevent="createTalkTheme">
-    <div v-if="talk_theme.errors.length != 0">
-      <ul v-for="error in talk_theme.errors" :key="error">
-        <li>
-          <font color="red">{{ error }}</font>
-        </li>
-      </ul>
-    </div>
+    <error-message-display :errors="talk_theme.errors"></error-message-display>
     <div>
       <input v-model="talk_theme.content" type="text" /> ?
     </div>
@@ -26,13 +20,7 @@
   </form>
 
   <form @submit.prevent="createCategory">
-    <div v-if="category.errors.length != 0">
-      <ul v-for="error in category.errors" :key="error">
-        <li>
-          <font color="red">{{ error }}</font>
-        </li>
-      </ul>
-    </div>
+    <error-message-display :errors="category.errors"></error-message-display>
     <div>
       <input v-model="category.name" type="text" />
     </div>
@@ -43,7 +31,12 @@
 <script>
 import axios from "axios";
 
+import ErrorMessageDisplay from './components/ErrorMessageDisplay.vue';
+
 export default {
+  components: {
+    ErrorMessageDisplay
+  },
   data() {
     return {
       talk_theme: {
