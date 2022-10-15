@@ -1,12 +1,5 @@
 <template>
   <h2>content</h2>
-  <div v-if="errors.length != 0">
-    <ul v-for="error in errors" :key="error">
-      <li>
-        <font color="red">{{ error }}</font>
-      </li>
-    </ul>
-  </div>
   <div v-for="category in categories" :key="category.id">
     <h3>
       {{ category.name }}
@@ -34,7 +27,6 @@ export default {
   data() {
     return {
       categories: {},
-      errors: "",
     };
   },
   mounted() {
@@ -44,30 +36,14 @@ export default {
   },
   methods: {
     deleteCategory(delete_id) {
-      axios
-        .delete(`/api/v1/categories/${delete_id}`)
-        .then(() => {
-          this.updateContents();
-        })
-        .catch((error) => {
-          console.error(error);
-          if (error.response.data && error.response.data.errors) {
-            this.errors = error.response.data.errors;
-          }
-        });
+      axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
+        this.updateContents();
+      });
     },
     deleteTalkTheme(delete_id) {
-      axios
-        .delete(`/api/v1/talk_themes/${delete_id}`)
-        .then(() => {
-          this.updateContents();
-        })
-        .catch((error) => {
-          console.error(error);
-          if (error.response.data && error.response.data.errors) {
-            this.errors = error.response.data.errors;
-          }
-        });
+      axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
+        this.updateContents();
+      });
     },
     updateContents: function () {
       axios
