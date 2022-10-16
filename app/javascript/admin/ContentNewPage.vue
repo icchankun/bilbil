@@ -1,41 +1,18 @@
 <template>
-  <form @submit.prevent="createTalkTheme">
-    <error-message-display :errors="talk_theme.errors"></error-message-display>
-    <div>
-      <input v-model="talk_theme.content" type="text" /> ?
-    </div>
-    <div>
-      <select v-model="talk_theme.category_id">
-        <option disabled value="">選択してください</option>
-        <option
-          v-for="category in categories"
-          :value="category.id"
-          :key="category.id"
-        >
-          {{ category.name }}
-        </option>
-      </select>
-    </div>
-    <button type="submit">トークテーマを作成</button>
-  </form>
-
-  <form @submit.prevent="createCategory">
-    <error-message-display :errors="category.errors"></error-message-display>
-    <div>
-      <input v-model="category.name" type="text" />
-    </div>
-    <button type="submit">カテゴリーを作成</button>
-  </form>
+  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="talk_theme.errors" @submit="createTalkTheme"></talk-theme-form-pane>
+  <category-form-pane :category="category" :errors="category.errors" @submit="createCategory"></category-form-pane>
 </template>
 
 <script>
 import axios from "axios";
 
-import ErrorMessageDisplay from './components/ErrorMessageDisplay.vue';
+import TalkThemeFormPane from "./components/TalkThemeFormPane.vue";
+import CategoryFormPane from "./components/CategoryFormPane.vue";
 
 export default {
   components: {
-    ErrorMessageDisplay
+    TalkThemeFormPane,
+    CategoryFormPane,
   },
   data() {
     return {
@@ -59,13 +36,10 @@ export default {
   methods: {
     createTalkTheme: function () {
       axios
-        .post(
-          "/api/v1/talk_themes",
-          {
-            content: this.talk_theme.content,
-            category_id: this.talk_theme.category_id
-          }
-        )
+        .post("/api/v1/talk_themes", {
+          content: this.talk_theme.content,
+          category_id: this.talk_theme.category_id,
+        })
         .then(() => {
           this.$router.push({ path: "/" });
         })
@@ -78,7 +52,7 @@ export default {
     },
     createCategory: function () {
       axios
-        .post("/api/v1/categories", {name: this.category.name})
+        .post("/api/v1/categories", { name: this.category.name })
         .then(() => {
           this.$router.push({ path: "/" });
         })

@@ -1,21 +1,15 @@
 <template>
-  <form @submit.prevent="updateCategory">
-    <error-message-display :errors="errors"></error-message-display>
-    <div>
-      <input v-model="category.name" type="text" />
-    </div>
-    <button type="submit">カテゴリーを更新</button>
-  </form>
+  <category-form-pane :category="category" :errors="errors" @submit="updateCategory"></category-form-pane>
 </template>
 
 <script>
 import axios from "axios";
 
-import ErrorMessageDisplay from "./components/ErrorMessageDisplay.vue";
+import CategoryFormPane from "./components/CategoryFormPane.vue";
 
 export default {
   components: {
-    ErrorMessageDisplay,
+    CategoryFormPane,
   },
   data() {
     return {
