@@ -6,8 +6,8 @@
 <script>
 import axios from "axios";
 
-import TalkThemeFormPane from "./components/TalkThemeFormPane.vue";
-import CategoryFormPane from "./components/CategoryFormPane.vue";
+import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
+import CategoryFormPane from "../components/CategoryFormPane.vue";
 
 export default {
   components: {

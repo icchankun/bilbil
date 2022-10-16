@@ -5,7 +5,7 @@
 <script>
 import axios from "axios";
 
-import CategoryFormPane from "./components/CategoryFormPane.vue";
+import CategoryFormPane from "../components/CategoryFormPane.vue";
 
 export default {
   components: {
