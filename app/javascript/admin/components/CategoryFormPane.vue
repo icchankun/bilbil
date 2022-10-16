@@ -4,7 +4,7 @@
     <div>
       <input v-model="category.name" type="text" />
     </div>
-    <button type="submit">カテゴリーを作成</button>
+    <button type="submit"><slot></slot></button>
   </form>
 </template>
 

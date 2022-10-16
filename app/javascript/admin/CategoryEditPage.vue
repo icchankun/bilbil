@@ -1,5 +1,5 @@
 <template>
-  <category-form-pane :category="category" :errors="errors" @submit="updateCategory"></category-form-pane>
+  <category-form-pane :category="category" :errors="errors" @submit="updateCategory">カテゴリーを更新</category-form-pane>
 </template>
 
 <script>

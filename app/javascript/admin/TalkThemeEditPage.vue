@@ -1,5 +1,5 @@
 <template>
-  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="errors" @submit="updateTalkTheme"></talk-theme-form-pane>
+  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="errors" @submit="updateTalkTheme">トークテーマを更新</talk-theme-form-pane>
 </template>
 
 <script>

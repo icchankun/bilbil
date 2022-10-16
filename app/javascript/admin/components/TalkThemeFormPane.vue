@@ -14,7 +14,7 @@
         </option>
       </select>
     </div>
-    <button type="submit">トークテーマを作成</button>
+    <button type="submit"><slot></slot></button>
   </form>
 </template>
 

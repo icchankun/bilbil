@@ -1,6 +1,6 @@
 <template>
-  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="talk_theme.errors" @submit="createTalkTheme"></talk-theme-form-pane>
-  <category-form-pane :category="category" :errors="category.errors" @submit="createCategory"></category-form-pane>
+  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="talk_theme.errors" @submit="createTalkTheme">トークテーマを作成</talk-theme-form-pane>
+  <category-form-pane :category="category" :errors="category.errors" @submit="createCategory">カテゴリーを作成</category-form-pane>
 </template>
 
 <script>
