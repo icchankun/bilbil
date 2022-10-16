@@ -27,23 +27,47 @@ export default {
   data() {
     return {
       categories: {},
+      talk_themes: {},
     };
   },
   mounted() {
     axios
       .get("/api/v1/categories")
       .then((response) => (this.categories = response.data));
+    axios
+      .get("/api/v1/talk_themes")
+      .then((response) => (this.talk_themes = response.data));
   },
   methods: {
     deleteCategory(delete_id) {
-      axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
-        this.updateContents();
-      });
+      if (
+        confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
+      )
+        axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
+          this.updateContents();
+        });
     },
     deleteTalkTheme(delete_id) {
-      axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
-        this.updateContents();
-      });
+      if (
+        confirm(
+          `「${this.talkThemeContent(delete_id)}」を削除してよろしいですか?`
+        )
+      )
+        axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
+          this.updateContents();
+        });
+    },
+    categoryName(delete_id) {
+      const filterDate = this.categories.filter(
+        (category) => category.id === delete_id
+      );
+      return filterDate[0].name;
+    },
+    talkThemeContent(delete_id) {
+      const filterDate = this.talk_themes.filter(
+        (talk_theme) => talk_theme.id === delete_id
+      );
+      return filterDate[0].content;
     },
     updateContents: function () {
       axios
