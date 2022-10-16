@@ -53,7 +53,7 @@ export default {
           `「${this.talkThemeContent(delete_id)}」を削除してよろしいですか?`
         )
       )
-        axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
+        axios.delete(`/api/v1/talk_themes/${delete_id}`).then(() => {
           this.updateContents();
         });
     },
