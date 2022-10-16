@@ -1,33 +1,16 @@
 <template>
-  <form @submit.prevent="updateTalkTheme">
-    <div v-if="errors.length != 0">
-      <ul v-for="error in errors" :key="error">
-        <li>
-          <font color="red">{{ error }}</font>
-        </li>
-      </ul>
-    </div>
-    <div><input v-model="talk_theme.content" type="text" /> ?</div>
-    <div>
-      <select v-model="talk_theme.category_id">
-        <option disabled value="">選択してください</option>
-        <option
-          v-for="category in categories"
-          :value="category.id"
-          :key="category.id"
-        >
-          {{ category.name }}
-        </option>
-      </select>
-    </div>
-    <button type="submit">トークテーマを更新</button>
-  </form>
+  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="errors" @submit="updateTalkTheme">トークテーマを更新</talk-theme-form-pane>
 </template>
 
 <script>
 import axios from "axios";
 
+import TalkThemeFormPane from "./components/TalkThemeFormPane.vue";
+
 export default {
+  components: {
+    TalkThemeFormPane,
+  },
   data() {
     return {
       talk_theme: {},
