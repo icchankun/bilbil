@@ -1,14 +1,17 @@
 <template>
-  <footer>
-    <div>
+  <footer class="footer bg-dark">
+    <div class="container p-2">
       <div>
-        <slot></slot>
+        <slot name="notice"></slot>
       </div>
       <div>
-        <slot></slot>
+        <slot name="twitter_promotion"></slot>
       </div>
       <div>
-        @bilbil
+        <slot name="twitter_account"></slot>
+      </div>
+      <div class="text-center">
+        <span class="text-white">@bilbil</span>
       </div>
     </div>
   </footer>
