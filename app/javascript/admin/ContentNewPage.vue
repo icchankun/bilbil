@@ -1,18 +1,35 @@
 <template>
-  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="talk_theme.errors" @submit="createTalkTheme">トークテーマを作成</talk-theme-form-pane>
-  <category-form-pane :category="category" :errors="category.errors" @submit="createCategory">カテゴリーを作成</category-form-pane>
+  <Header>C R E A T E</Header>
+  <talk-theme-form-pane
+    :talk_theme="talk_theme"
+    :categories="categories"
+    :errors="talk_theme.errors"
+    @submit="createTalkTheme"
+    >トークテーマを作成</talk-theme-form-pane
+  >
+  <category-form-pane
+    :category="category"
+    :errors="category.errors"
+    @submit="createCategory"
+    >カテゴリーを作成</category-form-pane
+  >
+  <Footer></Footer>
 </template>
 
 <script>
 import axios from "axios";
 
+import Header from "../components/Header.vue";
 import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   components: {
+    Header,
     TalkThemeFormPane,
     CategoryFormPane,
+    Footer,
   },
   data() {
     return {

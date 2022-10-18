@@ -1,15 +1,26 @@
 <template>
-  <category-form-pane :category="category" :errors="errors" @submit="updateCategory">カテゴリーを更新</category-form-pane>
+  <Header>C A T E G O R Y</Header>
+  <category-form-pane
+    :category="category"
+    :errors="errors"
+    @submit="updateCategory"
+    >カテゴリーを更新</category-form-pane
+  >
+  <Footer></Footer>
 </template>
 
 <script>
 import axios from "axios";
 
+import Header from "../components/Header.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   components: {
+    Header,
     CategoryFormPane,
+    Footer,
   },
   data() {
     return {

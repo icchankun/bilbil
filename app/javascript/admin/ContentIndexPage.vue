@@ -1,29 +1,39 @@
 <template>
-  <h2>content</h2>
-  <div v-for="category in categories" :key="category.id">
-    <h3>
-      {{ category.name }}
-      <router-link
-        :to="{ name: 'CategoryEditPage', params: { id: category.id } }"
-        >編集</router-link
-      >
-      <button @click="deleteCategory(category.id)">削除</button>
-    </h3>
-    <div v-for="talk_theme in category.talk_themes" :key="talk_theme.id">
-      {{ talk_theme.content }}
-      <router-link
-        :to="{ name: 'TalkThemeEditPage', params: { id: talk_theme.id } }"
-        >編集</router-link
-      >
-      <button @click="deleteTalkTheme(talk_theme.id)">削除</button>
+  <Header>C O N T E N T</Header>
+  <div class="container">
+    <div v-for="category in categories" :key="category.id">
+      <h3>
+        {{ category.name }}
+        <router-link
+          :to="{ name: 'CategoryEditPage', params: { id: category.id } }"
+          >編集</router-link
+        >
+        <button @click="deleteCategory(category.id)">削除</button>
+      </h3>
+      <div v-for="talk_theme in category.talk_themes" :key="talk_theme.id">
+        {{ talk_theme.content }}
+        <router-link
+          :to="{ name: 'TalkThemeEditPage', params: { id: talk_theme.id } }"
+          >編集</router-link
+        >
+        <button @click="deleteTalkTheme(talk_theme.id)">削除</button>
+      </div>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
 import axios from "axios";
 
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+
 export default {
+  components: {
+    Header,
+    Footer,
+  },
   data() {
     return {
       categories: {},

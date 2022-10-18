@@ -1,6 +1,14 @@
-<h2>Log in</h2>
+  <header class="header bg-dark">
+    <div class="container p-2">
+      <div class="text-center">
+        <h1 class="text-white fw-bold">
+          S I G N I N
+        </h1>
+      </div>
+    </div>
+  </header>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -12,15 +20,25 @@
   </div>
 
   <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
+  <div class="field">
+    <%= f.check_box :remember_me %>
+    <%= f.label :remember_me %>
+  </div>
   <% end %>
 
   <div class="actions">
     <%= f.submit "Log in" %>
   </div>
-<% end %>
+  <% end %>
 
-<%= render "admin/shared/links" %>
+  <footer class="footer bg-dark">
+    <div class="container p-2">
+      <div class="text-center">
+        <span class="text-white">
+          @bilbil
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <%= render "admin/shared/links" %>

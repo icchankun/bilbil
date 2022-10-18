@@ -1,15 +1,27 @@
 <template>
-  <talk-theme-form-pane :talk_theme="talk_theme" :categories="categories" :errors="errors" @submit="updateTalkTheme">トークテーマを更新</talk-theme-form-pane>
+  <Header>T H E M E</Header>
+  <talk-theme-form-pane
+    :talk_theme="talk_theme"
+    :categories="categories"
+    :errors="errors"
+    @submit="updateTalkTheme"
+    >トークテーマを更新</talk-theme-form-pane
+  >
+  <Footer></Footer>
 </template>
 
 <script>
 import axios from "axios";
 
+import Header from "../components/Header.vue";
 import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   components: {
+    Header,
     TalkThemeFormPane,
+    Footer,
   },
   data() {
     return {
