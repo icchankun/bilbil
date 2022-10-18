@@ -1,6 +1,10 @@
 <template>
   <Header>C O N T E N T</Header>
   <div class="container">
+    <a class="d-block py-1" data-method="delete" href="/admin/sign_out">ログアウトする。</a>
+    <router-link class="d-block py-1" to="/content/new"
+      >トークテーマ・カテゴリーの作成へ。</router-link
+    >
     <div v-for="category in categories" :key="category.id">
       <h3>
         {{ category.name }}
