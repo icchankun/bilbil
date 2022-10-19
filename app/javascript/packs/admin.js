@@ -5,5 +5,5 @@ import Router from "./router.js";
 document.addEventListener("DOMContentLoaded", () => {
   const app = createApp(App);
   app.use(Router);
-  app.mount("#vue-app");
+  app.mount("#admin");
 });
