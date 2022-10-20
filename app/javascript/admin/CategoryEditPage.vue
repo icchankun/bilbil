@@ -1,11 +1,17 @@
 <template>
   <Header>C A T E G O R Y</Header>
-  <category-form-pane
-    :category="category"
-    :errors="errors"
-    @submit="updateCategory"
-    >カテゴリーを更新</category-form-pane
-  >
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-lg-6 col-sm-12 mx-auto">
+        <category-form-pane
+          :category="category"
+          :errors="errors"
+          @submit="updateCategory"
+          >カテゴリーを更新</category-form-pane
+        >
+      </div>
+    </div>
+  </div>
   <Footer></Footer>
 </template>
 

@@ -1,12 +1,18 @@
 <template>
   <Header>T H E M E</Header>
-  <talk-theme-form-pane
-    :talk_theme="talk_theme"
-    :categories="categories"
-    :errors="errors"
-    @submit="updateTalkTheme"
-    >トークテーマを更新</talk-theme-form-pane
-  >
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-lg-6 col-sm-12 mx-auto">
+        <talk-theme-form-pane
+          :talk_theme="talk_theme"
+          :categories="categories"
+          :errors="errors"
+          @submit="updateTalkTheme"
+          >トークテーマを更新</talk-theme-form-pane
+        >
+      </div>
+    </div>
+  </div>
   <Footer></Footer>
 </template>
 
