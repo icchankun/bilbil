@@ -1,18 +1,27 @@
 <template>
   <Header>C R E A T E</Header>
-  <talk-theme-form-pane
-    :talk_theme="talk_theme"
-    :categories="categories"
-    :errors="talk_theme.errors"
-    @submit="createTalkTheme"
-    >トークテーマを作成</talk-theme-form-pane
-  >
-  <category-form-pane
-    :category="category"
-    :errors="category.errors"
-    @submit="createCategory"
-    >カテゴリーを作成</category-form-pane
-  >
+
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-lg-6 col-sm-12 mx-auto">
+        <headline>THEHE</headline>
+        <talk-theme-form-pane
+          :talk_theme="talk_theme"
+          :categories="categories"
+          :errors="talk_theme.errors"
+          @submit="createTalkTheme"
+          >トークテーマを作成</talk-theme-form-pane
+        >
+        <headline>CATEGORY</headline>
+        <category-form-pane
+          :category="category"
+          :errors="category.errors"
+          @submit="createCategory"
+          >カテゴリーを作成</category-form-pane
+        >
+      </div>
+    </div>
+  </div>
   <Footer></Footer>
 </template>
 
@@ -20,6 +29,7 @@
 import axios from "axios";
 
 import Header from "../components/Header.vue";
+import Headline from "../components/Headline.vue";
 import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
 import Footer from "../components/Footer.vue";
@@ -27,6 +37,7 @@ import Footer from "../components/Footer.vue";
 export default {
   components: {
     Header,
+    Headline,
     TalkThemeFormPane,
     CategoryFormPane,
     Footer,
