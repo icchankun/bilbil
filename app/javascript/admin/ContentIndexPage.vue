@@ -2,78 +2,79 @@
   <Header>C O N T E N T</Header>
   <main class="container">
     <div class="row my-4">
-      <div class="col-lg-6 col-sm-12 mx-auto">
-        <div class="row my-2">
-          <a class="d-block py-1" data-method="delete" href="/admin/sign_out"
-            >ログアウトする。</a
-          >
-          <router-link class="d-block py-1" to="/content/new"
-            >トークテーマ・カテゴリーの作成へ。</router-link
-          >
+      <div class="col-lg-6 mx-auto">
+        <div class="mb-4">
+          <div class="mb-2">
+            <a class="py-1" data-method="delete" href="/admin/sign_out"
+              >ログアウトする。</a
+            >
+          </div>
+          <div>
+            <router-link class="py-1" to="/content/new"
+              >トークテーマ・カテゴリーの作成へ。</router-link
+            >
+          </div>
         </div>
-        <div class="row my-2">
-          <div
-            class="dropdown"
-            v-for="category in categories"
-            :key="category.id"
-          >
-            <button
-              type="button"
-              class="btn btn-dark text-start w-100 dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+        <div class="row dropdown" v-for="category in categories" :key="category.id">
+          <dl class="col-sm-11 col-10 d-flex flex-wrap bg-dark text-white p-2 m-0">
+            <dt class="w-25 me-3">{{ category.name }}</dt>
+            <dd class="me-auto">
+              <router-link
+                class="btn btn-success me-2"
+                :to="{
+                  name: 'CategoryEditPage',
+                  params: { id: category.id },
+                }"
+                >編集</router-link
+              >
+              <a class="btn btn-danger" @click="deleteCategory(category.id)"
+                >削除</a
+              >
+            </dd>
+            <dd class="me-1">
+              トークテーマ数: {{ category.talk_themes.length }}
+            </dd>
+          </dl>
+          <button
+            type="button"
+            class="btn btn-dark dropdown-toggle col-sm-1 col-2"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="false"
+          ></button>
+          <ol class="dropdown-menu">
+            <li
+              class="dropdown-item"
+              v-for="talk_theme in category.talk_themes"
+              :key="talk_theme.id"
+              v-if="category.talk_themes.length != 0"
             >
               <dl class="d-inline-flex flex-wrap m-0">
-                <dt class="w-25 me-3 text-white">{{ category.name }}</dt>
-                <dd class="me-auto">
+                <dt class="w-75 mb-2 text-wrap">
+                  {{ talk_theme.content }} ?
+                </dt>
+                <dd>
                   <router-link
                     class="btn btn-success me-2"
                     :to="{
-                      name: 'CategoryEditPage',
-                      params: { id: category.id },
+                      name: 'TalkThemeEditPage',
+                      params: { id: talk_theme.id },
                     }"
                     >編集</router-link
                   >
-                  <a class="btn btn-danger" @click="deleteCategory(category.id)"
+                  <a
+                    class="btn btn-danger"
+                    @click="deleteTalkTheme(talk_theme.id)"
                     >削除</a
                   >
                 </dd>
-                <dd class="me-1">
-                  トークテーマ数: {{ category.talk_themes.length }}
-                </dd>
               </dl>
-            </button>
-            <ol
-              class="dropdown-menu"
-            >
-              <li class="dropdown-item" v-for="talk_theme in category.talk_themes"
-              :key="talk_theme.id" v-if="category.talk_themes.length != 0">
-                <dl class="d-inline-flex flex-wrap m-0">
-                  <dt class="w-75 me-auto mb-2 text-wrap">{{ talk_theme.content }} ?</dt>
-                  <dd>
-                    <router-link
-                      class="btn btn-success me-2"
-                      :to="{
-                        name: 'TalkThemeEditPage',
-                        params: { id: talk_theme.id },
-                      }"
-                      >編集</router-link
-                    >
-                    <a
-                      class="btn btn-danger"
-                      @click="deleteTalkTheme(talk_theme.id)"
-                      >削除</a
-                    >
-                  </dd>
-                </dl>
-              </li>
-              <li class="d-block px-1 py-2" v-else>
-                <dl class="m-0">
-                  <dt>トークテーマはありません。</dt>
-                </dl>
-              </li>
-            </ol>
-          </div>
+            </li>
+            <li class="d-block px-1 py-2" v-else>
+              <dl class="m-0">
+                <dt>トークテーマはありません。</dt>
+              </dl>
+            </li>
+          </ol>
         </div>
       </div>
     </div>
@@ -147,20 +148,24 @@ export default {
 </script>
 
 <style scoped>
+.bg-dark {
+  border-bottom: 1px solid #fff;
+}
 .dropdown-toggle {
   border-radius: 0;
   border-bottom: 1px solid #fff;
 }
+
 .dropdown-menu {
   position: static !important;
   transform: translate(0, 0) !important;
-  border-radius: 0; /* border-radius: 0; */
+  border-radius: 0;
 }
-
 .dropdown-item {
   display: list-item;
   list-style: decimal inside;
 }
+
 .d-inline-flex {
   width: 95%;
 }
