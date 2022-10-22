@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import ContentIndexPage from "../admin/ContentIndexPage.vue";
-import ContentNewPage from "../admin/ContentNewPage.vue";
-import CategoryEditPage from "../admin/CategoryEditPage.vue";
-import TalkThemeEditPage from "../admin/TalkThemeEditPage.vue";
+import ContentIndexPage from "../../admin/ContentIndexPage.vue";
+import ContentNewPage from "../../admin/ContentNewPage.vue";
+import CategoryEditPage from "../../admin/CategoryEditPage.vue";
+import TalkThemeEditPage from "../../admin/TalkThemeEditPage.vue";
 
 const routes = [
   { path: "/", 
