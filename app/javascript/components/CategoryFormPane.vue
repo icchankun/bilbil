@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit()">
+  <form class="mb-5" @submit.prevent="onSubmit()">
     <error-message-display :errors="errors"></error-message-display>
     <div class="row justify-content-center mb-4">
       <div class="col-7">
