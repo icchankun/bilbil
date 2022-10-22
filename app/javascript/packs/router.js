@@ -7,7 +7,7 @@ import TalkThemeEditPage from "../admin/TalkThemeEditPage.vue";
 const routes = [
   { path: "/", 
     component: ContentIndexPage },
-  { path: "/homes/new", 
+  { path: "/content/new", 
     component: ContentNewPage },
   { path: '/categories/:id(\\d+)/edit',
     name: 'CategoryEditPage',

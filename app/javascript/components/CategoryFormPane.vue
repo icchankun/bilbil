@@ -1,10 +1,14 @@
 <template>
-  <form @submit.prevent="onSubmit()">
+  <form class="mb-5" @submit.prevent="onSubmit()">
     <error-message-display :errors="errors"></error-message-display>
-    <div>
-      <input v-model="category.name" type="text" />
+    <div class="row justify-content-center mb-4">
+      <div class="col-7">
+        <input class="form-control" v-model="category.name" type="text" />
+      </div>
     </div>
-    <button type="submit"><slot></slot></button>
+    <div class="text-center">
+      <button class="btn btn-success" type="submit"><slot></slot></button>
+    </div>
   </form>
 </template>
 
