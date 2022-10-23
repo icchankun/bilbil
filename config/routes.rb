@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   namespace :api, {format: 'json'} do
     namespace :v1 do
       resources :categories, only: [:index, :create, :show, :update, :destroy]
-      resources :talk_themes, only: [:index, :create, :show, :update, :destroy]
+      resources :talk_themes, only: [:index, :create, :show, :update, :destroy] do
+        resource :like, only: [:create, :destroy]
+      end
     end
   end
 end
