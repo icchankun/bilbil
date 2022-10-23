@@ -1,5 +1,5 @@
 class Api::V1::CategoriesController < ApiController
-  before_action :authenticate_admin!
+  before_action :authenticate_admin!, except: [:index]
   before_action :set_category, only: [:show, :update, :destroy]
 
   # ActiveRecordのレコードが見つからなければ404 not foundを応答する

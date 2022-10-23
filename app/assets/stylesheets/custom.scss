@@ -7,18 +7,18 @@ body {
     sans-serif;
 }
 
-.vue-app,
+#vue-app,
 .signin_body {
   min-height: 100vh;
   position: relative;
+}
+
+.admin {
+  padding-bottom: 50px;
 }
 
 .footer {
   width: 100%;
   position: absolute;
   bottom: 0;
-}
-
-#admin {
-  padding-bottom: 50px;
 }

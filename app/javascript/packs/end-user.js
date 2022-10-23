@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "../app.vue";
-import Router from "./router/admin-router.js";
+import Router from "./router/end-user-router";
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = createApp(App);
