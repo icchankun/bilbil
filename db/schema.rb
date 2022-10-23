@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_05_025906) do
+ActiveRecord::Schema.define(version: 2022_10_23_112559) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 2022_10_05_025906) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.integer "talk_theme_id", null: false
+    t.string "ip"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["talk_theme_id"], name: "index_likes_on_talk_theme_id"
+  end
+
   create_table "talk_themes", force: :cascade do |t|
     t.string "content", null: false
     t.integer "category_id", null: false
@@ -38,5 +46,6 @@ ActiveRecord::Schema.define(version: 2022_10_05_025906) do
     t.index ["category_id"], name: "index_talk_themes_on_category_id"
   end
 
+  add_foreign_key "likes", "talk_themes"
   add_foreign_key "talk_themes", "categories"
 end
