@@ -8,8 +8,8 @@ class Api::V1::CategoriesController < ApiController
   end
 
   def index
-    categories = Category.preload(:talk_themes).all
-    render json: categories, each_serializer: CategorySerializer, include: [ :talk_themes ]
+    categories = Category.includes(talk_themes: :likes).all
+    render json: categories, each_serializer: CategorySerializer, include: [talk_themes: :likes]
   end
 
   def show
@@ -19,7 +19,7 @@ class Api::V1::CategoriesController < ApiController
   def create
     category =  Category.new(category_params)
     if category.save
-      render json:  category, status: :created
+      head :created
     else
       render json: { errors:  category.errors.full_messages }, status: :unprocessable_entity
     end
