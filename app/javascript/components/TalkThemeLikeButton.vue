@@ -1,7 +1,13 @@
 <template>
   <dd>
-    <div v-if="isLiked" @click="deleteLike()">いいねを取り消す {{ count }}</div>
-    <div v-else @click="createLike()">いいねする {{ count }}</div>
+    <div class="" v-if="isLiked" @click="deleteLike()">
+      <i class="fa-solid fa-heart create-heart me-2"></i>
+      <span>{{ count }}</span>
+    </div>
+    <div class="heart-size" v-else @click="createLike()">
+      <i class="fa-regular fa-heart destroy-heart me-2"></i>
+      <span>{{ count }}</span>
+    </div>
   </dd>
 </template>
 
@@ -68,4 +74,15 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fa-heart {
+    font-size: 1.7rem
+  }
+.create-heart {
+  color: #DE3F4E
+}
+
+.destroy-heart {
+  color: #707070
+}
+</style>

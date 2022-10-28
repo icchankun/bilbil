@@ -25,12 +25,14 @@
               :key="talk_theme.id"
               v-if="category.talk_themes.length != 0"
             >
-              <dl class="d-inline-flex flex-wrap m-0">
-                <dt class="mb-2 text-wrap">{{ talk_theme.content }} ?</dt>
-                <talk-theme-like-button
-                  :talk_theme_id="talk_theme.id"
-                  :likes="talk_theme.likes"
-                ></talk-theme-like-button>
+              <dl class="row d-inline-flex flex-wrap m-0">
+                <dt class="col-12 col-sm-11 text-wrap">{{ talk_theme.content }} ?</dt>
+                <dd class="col-1">
+                  <talk-theme-like-button
+                    :talk_theme_id="talk_theme.id"
+                    :likes="talk_theme.likes"
+                  ></talk-theme-like-button>
+                </dd>
               </dl>
             </li>
             <li class="d-block px-1 py-2" v-else>
