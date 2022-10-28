@@ -25,8 +25,14 @@
               :key="talk_theme.id"
               v-if="category.talk_themes.length != 0"
             >
-              <dl class="d-inline-flex flex-wrap m-0">
-                <dt class="mb-2 text-wrap">{{ talk_theme.content }} ?</dt>
+              <dl class="row d-inline-flex flex-wrap m-0">
+                <dt class="col-12 col-sm-11 text-wrap">{{ talk_theme.content }} ?</dt>
+                <dd class="col-1">
+                  <talk-theme-like-button
+                    :talk_theme_id="talk_theme.id"
+                    :likes="talk_theme.likes"
+                  ></talk-theme-like-button>
+                </dd>
               </dl>
             </li>
             <li class="d-block px-1 py-2" v-else>
@@ -46,11 +52,13 @@
 import axios from "axios";
 
 import Header from "../components/Header.vue";
+import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
 import Footer from "../components/Footer.vue";
 
 export default {
   components: {
     Header,
+    TalkThemeLikeButton,
     Footer,
   },
   data() {
@@ -59,21 +67,38 @@ export default {
       talk_themes: {},
     };
   },
-  mounted() {
-    axios
-      .get("/api/v1/categories")
-      .then((response) => (this.categories = response.data));
+  created() {
+    this.fetchCategories();
     axios
       .get("/api/v1/talk_themes")
       .then((response) => (this.talk_themes = response.data));
   },
   methods: {
+    fetchCategories: function () {
+      axios
+        .get("/api/v1/categories")
+        .then((response) => {
+          this.categories = response.data;
+        })
+        .then(() => (this.categories = this.sortedTalkThemesByLikes()));
+    },
+    sortedTalkThemesByLikes: function () {
+      const talk_themes_sorted = [];
+      console.log(this.categories);
+      this.categories.forEach((category) => {
+        talk_themes_sorted.push(category);
+        return category.talk_themes.sort((a, b) => {
+          return b.likes.length - a.likes.length;
+        });
+      });
+      return talk_themes_sorted;
+    },
     deleteCategory(delete_id) {
       if (
         confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
       )
         axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
-          this.updateContents();
+          this.fetchCategories();
         });
     },
     deleteTalkTheme(delete_id) {
@@ -83,7 +108,7 @@ export default {
         )
       )
         axios.delete(`/api/v1/talk_themes/${delete_id}`).then(() => {
-          this.updateContents();
+          this.fetchCategories();
         });
     },
     categoryName(delete_id) {
@@ -97,11 +122,6 @@ export default {
         (talk_theme) => talk_theme.id === delete_id
       );
       return filterDate[0].content;
-    },
-    updateContents: function () {
-      axios
-        .get("/api/v1/categories")
-        .then((response) => (this.categories = response.data));
     },
   },
 };

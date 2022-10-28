@@ -8,7 +8,7 @@ class Api::V1::TalkThemesController < ApiController
   end
 
   def index
-    talk_themes = TalkTheme.all
+    talk_themes = TalkTheme.includes(:likes).all
     render json: talk_themes, each_serializer: TalkThemeSerializer
   end
 
@@ -19,7 +19,7 @@ class Api::V1::TalkThemesController < ApiController
   def create
     talk_theme =  TalkTheme.new(talk_theme_params)
     if talk_theme.save
-      render json:  talk_theme, status: :created
+      head :created
     else
       render json: { errors:  talk_theme.errors.full_messages }, status: :unprocessable_entity
     end
