@@ -73,9 +73,23 @@ export default {
   },
   methods: {
     fetchCategories: function () {
-      axios.get("/api/v1/categories").then((response) => {
-        this.categories = response.data;
+      axios
+        .get("/api/v1/categories")
+        .then((response) => {
+          this.categories = response.data;
+        })
+        .then(() => (this.categories = this.sortedTalkThemesByLikes()));
+    },
+    sortedTalkThemesByLikes: function () {
+      const talk_themes_sorted = [];
+      console.log(this.categories);
+      this.categories.forEach((category) => {
+        talk_themes_sorted.push(category);
+        return category.talk_themes.sort((a, b) => {
+          return b.likes.length - a.likes.length;
+        });
       });
+      return talk_themes_sorted;
     },
     deleteCategory(delete_id) {
       if (

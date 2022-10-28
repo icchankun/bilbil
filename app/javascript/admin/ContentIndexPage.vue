@@ -15,8 +15,14 @@
             >
           </div>
         </div>
-        <div class="row dropdown" v-for="category in categories" :key="category.id">
-          <dl class="col-sm-11 col-10 d-flex flex-wrap bg-dark text-white p-2 m-0">
+        <div
+          class="row dropdown"
+          v-for="category in sortedTalkThemesByLikes"
+          :key="category.id"
+        >
+          <dl
+            class="col-sm-11 col-10 d-flex flex-wrap bg-dark text-white p-2 m-0"
+          >
             <dt class="w-25 me-3">{{ category.name }}</dt>
             <dd class="me-auto">
               <router-link
@@ -48,11 +54,11 @@
               :key="talk_theme.id"
               v-if="category.talk_themes.length != 0"
             >
-              <dl class="d-inline-flex flex-wrap m-0">
-                <dt class="w-75 mb-2 text-wrap">
+              <div class="row d-inline-flex flex-wrap m-0">
+                <div class="col-12 col-sm-6 mb-2 text-wrap">
                   {{ talk_theme.content }} ?
-                </dt>
-                <dd>
+                </div>
+                <div class="col-12 col-sm-6">
                   <router-link
                     class="btn btn-success me-2"
                     :to="{
@@ -62,12 +68,13 @@
                     >編集</router-link
                   >
                   <a
-                    class="btn btn-danger"
+                    class="btn btn-danger me-2"
                     @click="deleteTalkTheme(talk_theme.id)"
                     >削除</a
                   >
-                </dd>
-              </dl>
+                  <span> いいね数: {{ talk_theme.likes.length }} </span>
+                </div>
+              </div>
             </li>
             <li class="d-block px-1 py-2" v-else>
               <dl class="m-0">
@@ -95,17 +102,29 @@ export default {
   },
   data() {
     return {
-      categories: {},
-      talk_themes: {},
+      categories: [],
+      talk_themes: [],
     };
   },
-  mounted() {
+  created() {
     axios
       .get("/api/v1/categories")
       .then((response) => (this.categories = response.data));
     axios
       .get("/api/v1/talk_themes")
       .then((response) => (this.talk_themes = response.data));
+  },
+  computed: {
+    sortedTalkThemesByLikes() {
+      const talk_themes_sorted = [];
+      this.categories.forEach((category) => {
+        talk_themes_sorted.push(category);
+        return category.talk_themes.sort((a, b) => {
+          return b.likes.length - a.likes.length;
+        });
+      });
+      return talk_themes_sorted
+    },
   },
   methods: {
     deleteCategory(delete_id) {
