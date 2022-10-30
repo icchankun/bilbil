@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           end
         end
       end
+      get 'like/ip' => 'likes#ip'
     end
   end
 end

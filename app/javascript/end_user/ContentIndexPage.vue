@@ -18,19 +18,24 @@
               {{ category.name }}
             </div>
           </button>
-          <ol class="dropdown-menu">
+          <ol class="dropdown-menu p-0">
             <li
-              class="dropdown-item"
-              v-for="talk_theme in category.talk_themes"
+              v-for="(talk_theme, index) in category.talk_themes"
               :key="talk_theme.id"
               v-if="category.talk_themes.length != 0"
+              class="dropdown-item"
+              :class="[index + 1 == this.ip_count ? 'boundary_line' : '']"
             >
               <dl class="row d-inline-flex flex-wrap m-0">
-                <dt class="col-12 col-sm-11 text-wrap">{{ talk_theme.content }} ?</dt>
+                <dt class="col-12 col-sm-11 text-wrap">
+                  {{ talk_theme.content }} ?
+                </dt>
                 <dd class="col-1">
                   <talk-theme-like-button
                     :talk_theme_id="talk_theme.id"
                     :likes="talk_theme.likes"
+                    @fetchCategories="fetchCategories"
+                    @addBorderToTheLastLike="addBorderToTheLastLike"
                   ></talk-theme-like-button>
                 </dd>
               </dl>
@@ -65,9 +70,12 @@ export default {
     return {
       categories: {},
       talk_themes: {},
+      liked_talk_themes: [],
+      ip_count: {},
     };
   },
   created() {
+    this.addBorderToTheLastLike();
     this.fetchCategories();
     axios
       .get("/api/v1/talk_themes")
@@ -83,15 +91,32 @@ export default {
         .then(() => (this.categories = this.sortedTalkThemesByLikes()));
     },
     sortedTalkThemesByLikes: function () {
+      const talk_theme_ids = [];
+      this.liked_talk_themes.forEach((like) => {
+        talk_theme_ids.push(like.talk_theme_id);
+      });
+      console.log(talk_theme_ids);
+
       const talk_themes_sorted = [];
-      console.log(this.categories);
       this.categories.forEach((category) => {
-        talk_themes_sorted.push(category);
-        return category.talk_themes.sort((a, b) => {
-          return b.likes.length - a.likes.length;
+        category.talk_themes.sort((a, b) => {
+          if (talk_theme_ids.includes(a.id)) {
+            return -1;
+          } else if (talk_theme_ids.includes(b.id)) {
+            return 1;
+          } else {
+            return 0;
+          }
         });
+        talk_themes_sorted.push(category);
       });
       return talk_themes_sorted;
+    },
+    addBorderToTheLastLike() {
+      axios.get("/api/v1/like/ip").then((response) => {
+        this.liked_talk_themes = response.data;
+        this.ip_count = response.data.length;
+      });
     },
     deleteCategory(delete_id) {
       if (
@@ -127,7 +152,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bg-dark {
   border-bottom: 1px solid #fff;
 }
@@ -144,6 +169,9 @@ export default {
 .dropdown-item {
   display: list-item;
   list-style: decimal inside;
+  &.boundary_line {
+    border-bottom: 2px solid #000;
+  }
 }
 
 .d-inline-flex {

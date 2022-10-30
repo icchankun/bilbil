@@ -15,6 +15,11 @@ class Api::V1::LikesController < ApiController
     render json: @like
   end
 
+  def ip
+    likes = Like.where(ip: request.remote_ip)
+    render json: likes, each_serializer: LikeSerializer
+  end
+
   def create
     like = Like.create(ip: request.remote_ip, talk_theme_id: params[:talk_theme_id])
     like.save
