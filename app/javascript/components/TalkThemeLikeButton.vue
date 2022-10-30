@@ -19,6 +19,7 @@ export default {
     talk_theme_id: "",
     likes: {},
   },
+  emits: ["fetchCategories", "addBorderToTheLastLike"],
   data() {
     return {
       isLiked: "",
@@ -47,6 +48,8 @@ export default {
         .then(() => {
           this.fetchLikeByTalkThemeId();
           this.findLikeByIpAddress();
+          this.$emit("fetchCategories");
+          this.$emit("addBorderToTheLastLike");
         });
     },
     deleteLike: function () {
@@ -55,6 +58,8 @@ export default {
         .then(() => {
           this.fetchLikeByTalkThemeId();
           this.findLikeByIpAddress();
+          this.$emit("fetchCategories");
+          this.$emit("addBorderToTheLastLike");
         });
     },
     fetchLikeByTalkThemeId: function () {
@@ -76,13 +81,13 @@ export default {
 
 <style scoped>
 .fa-heart {
-    font-size: 1.7rem
-  }
+  font-size: 1.7rem;
+}
 .create-heart {
-  color: #DE3F4E
+  color: #de3f4e;
 }
 
 .destroy-heart {
-  color: #707070
+  color: #707070;
 }
 </style>
