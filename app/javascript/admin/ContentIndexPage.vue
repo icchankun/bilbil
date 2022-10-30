@@ -118,10 +118,10 @@ export default {
     sortedTalkThemesByLikes() {
       const talk_themes_sorted = [];
       this.categories.forEach((category) => {
-        talk_themes_sorted.push(category);
-        return category.talk_themes.sort((a, b) => {
-          return b.likes.length - a.likes.length;
+        category.talk_themes.sort((a, b) => {
+          b.likes.length - a.likes.length;
         });
+        talk_themes_sorted.push(category);
       });
       return talk_themes_sorted
     },
