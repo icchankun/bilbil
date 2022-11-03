@@ -10,6 +10,6 @@
 
 <style scoped>
   h3 {
-    width: 200px;
+    width: 250px;
   }
 </style>
