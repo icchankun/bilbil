@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import TalkThemeRoulettePage from "../../end_user/TalkThemeRoulettePage.vue";
 import ContentIndexPage from "../../end_user/ContentIndexPage.vue";
 
@@ -10,7 +10,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
