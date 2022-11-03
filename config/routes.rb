@@ -5,10 +5,14 @@ Rails.application.routes.draw do
   
   namespace :admin do
     root 'homes#top'
+    get 'content/new', to: 'homes#top'
+    get '/categories/:id/edit', to: 'homes#top'
+    get '/talk_themes/:id/edit', to: 'homes#top'
   end
   
   scope module: :end_user do
     root 'homes#top'
+    get 'content', to: 'homes#top'
   end
 
   namespace :api, {format: 'json'} do
@@ -23,5 +27,9 @@ Rails.application.routes.draw do
       end
       get 'like/ip' => 'likes#ip'
     end
+  end
+
+  if Rails.env.production?
+    match "*path" , to: redirect('/'), via: 'get'
   end
 end
