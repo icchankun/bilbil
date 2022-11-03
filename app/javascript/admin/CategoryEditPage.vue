@@ -9,7 +9,7 @@
           @submit="updateCategory"
           >カテゴリーを更新</category-form-pane
         >
-        <content-index-button></content-index-button>
+        <root-path-button>コンテンツ一覧に戻る</root-path-button>
       </div>
     </div>
   </div>
@@ -21,14 +21,14 @@ import axios from "axios";
 
 import Header from "../components/Header.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
-import ContentIndexButton from "../components/ContentIndexButton.vue";
+import RootPathButton from "../components/RootPathButton.vue";
 import Footer from "../components/Footer.vue";
 
 export default {
   components: {
     Header,
     CategoryFormPane,
-    ContentIndexButton,
+    RootPathButton,
     Footer,
   },
   data() {
