@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <router-link class="btn btn-dark" to="/"
-      >コンテンツ一覧に戻る</router-link
+      ><slot></slot></router-link
     >
   </div>
 </template>
