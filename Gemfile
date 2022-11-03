@@ -66,3 +66,5 @@ gem 'devise'
 gem 'seed-fu'
 gem "active_model_serializers"
 gem "net-smtp"
+gem 'net-imap'
+gem 'net-pop'
