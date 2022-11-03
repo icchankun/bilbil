@@ -3,49 +3,52 @@
   <main class="container">
     <div class="row my-5">
       <div class="col-lg-6 mx-auto">
-        <div
-          class="row dropdown"
-          v-for="category in categories"
-          :key="category.id"
-        >
-          <button
-            type="button"
-            class="btn btn-dark dropdown-toggle py-2"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="false"
+        <root-path-button>トップページに戻る</root-path-button>
+        <div class="mt-5">
+          <div
+            class="row dropdown"
+            v-for="category in categories"
+            :key="category.id"
           >
-            <div class="d-inline-block col-11 text-start">
-              {{ category.name }}
-            </div>
-          </button>
-          <ol class="dropdown-menu p-0">
-            <li
-              v-for="(talk_theme, index) in category.talk_themes"
-              :key="talk_theme.id"
-              v-if="category.talk_themes.length != 0"
-              class="dropdown-item"
-              :class="[index + 1 == this.ip_count ? 'boundary_line' : '']"
+            <button
+              type="button"
+              class="btn btn-dark dropdown-toggle py-2"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="false"
             >
-              <dl class="row d-inline-flex flex-wrap m-0">
-                <dt class="col-12 col-sm-11 text-wrap">
-                  {{ talk_theme.content }} ?
-                </dt>
-                <dd class="col-1">
-                  <talk-theme-like-button
-                    :talk_theme_id="talk_theme.id"
-                    :likes="talk_theme.likes"
-                    @fetchCategories="fetchCategories"
-                    @addBorderToTheLastLike="addBorderToTheLastLike"
-                  ></talk-theme-like-button>
-                </dd>
-              </dl>
-            </li>
-            <li class="d-block px-1 py-2" v-else>
-              <dl class="m-0">
-                <dt>トークテーマはありません。</dt>
-              </dl>
-            </li>
-          </ol>
+              <div class="d-inline-block col-11 text-start">
+                {{ category.name }}
+              </div>
+            </button>
+            <ol class="dropdown-menu p-0">
+              <li
+                v-for="(talk_theme, index) in category.talk_themes"
+                :key="talk_theme.id"
+                v-if="category.talk_themes.length != 0"
+                class="dropdown-item"
+                :class="[index + 1 == this.ip_count ? 'boundary_line' : '']"
+              >
+                <dl class="row d-inline-flex flex-wrap m-0">
+                  <dt class="col-12 col-sm-11 text-wrap">
+                    {{ talk_theme.content }} ?
+                  </dt>
+                  <dd class="col-1">
+                    <talk-theme-like-button
+                      :talk_theme_id="talk_theme.id"
+                      :likes="talk_theme.likes"
+                      @fetchCategories="fetchCategories"
+                      @addBorderToTheLastLike="addBorderToTheLastLike"
+                    ></talk-theme-like-button>
+                  </dd>
+                </dl>
+              </li>
+              <li class="d-block px-1 py-2" v-else>
+                <dl class="m-0">
+                  <dt>トークテーマはありません。</dt>
+                </dl>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
@@ -58,12 +61,14 @@ import axios from "axios";
 
 import Header from "../components/Header.vue";
 import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
+import RootPathButton from "../components/RootPathButton.vue";
 import Footer from "../components/Footer.vue";
 
 export default {
   components: {
     Header,
     TalkThemeLikeButton,
+    RootPathButton,
     Footer,
   },
   data() {
