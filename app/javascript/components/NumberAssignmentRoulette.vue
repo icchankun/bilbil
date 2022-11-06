@@ -1,0 +1,107 @@
+<template>
+  <div class="fs-5 mb-2">トーク人数を選んでください</div>
+  <div class="d-flex flex-wrap justify-content-evenly mb-3">
+    <div class="me-3" v-for="n in 9" :key="n">
+      <input
+        type="radio"
+        class="btn-check"
+        :name="n + 1"
+        :id="n + 1"
+        :value="n + 1"
+        v-model="number_of_people"
+        autocomplete="off"
+      />
+      <label class="btn btn-outline-secondary number_btn" :for="n + 1">{{
+        n + 1
+      }}</label>
+    </div>
+  </div>
+  <div class="fs-5 mb-2">番号指定</div>
+  <div class="row">
+    <div class="col-11  p-3 number_assignment_roulette">
+      {{ numbering }}
+    </div>
+    <div
+      class="col-1 text-white px-0"
+      @click="
+        roulette();
+        active();
+      "
+    >
+      <div class="start_btn h-100" v-if="this.is_active">
+        <i class="fas fa-stop-circle"></i>
+      </div>
+      <div class="stop_btn h-100" v-else>
+        <i class="fas fa-sync-alt"></i>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  created() {
+    this.assignNumber();
+  },
+  data() {
+    return {
+      number_of_people: 2,
+      numbering: {},
+      is_active: false,
+    };
+  },
+  methods: {
+    assignNumber: function () {
+      const numberings = [
+        "誕生日が早い順",
+        "誕生日が遅い順",
+        "ルーレットを回した人から右回り",
+        "ルーレットを回した人から左回り",
+        "苗字の最初の文字が五十音で早い順",
+        "苗字の最初の文字が五十音で遅い順",
+        "名前の最初の文字が五十音で早い順",
+        "名前の最初の文字が五十音で遅い順",
+      ];
+      this.numbering =
+        numberings[Math.floor(Math.random() * numberings.length)];
+    },
+    active() {
+      this.is_active = !this.is_active;
+    },
+    roulette: function () {
+      let roulette = setInterval(() => {
+        if (this.is_active) {
+          this.assignNumber();
+        } else {
+          clearInterval(roulette);
+        }
+      }, 100);
+    },
+  },
+};
+</script>
+
+<style scoped>
+.number_btn {
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.number_assignment_roulette {
+  border: 1px solid #000;
+  font-weight: bold;
+  text-align: center;
+}
+.start_btn {
+  background-color: #0070f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stop_btn {
+  background-color: #ff5858;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
