@@ -1,20 +1,20 @@
 <template>
   <footer class="footer bg-dark text-white">
-    <div class="container p-3 text-center">
-      <div>
+    <div class="container d-flex flex-column align-items-center p-3">
+      <div class="d-inline-block mb-3">
         <slot></slot>
       </div>
-      <div class="mb-3">
+      <div class="d-inline-block mb-3">
         bilbilに関する最新情報はTwitterでお知らせしております。<br />
         また、お問い合わせはTwitterのDMにて受け付けております。<br />
         bilbilに興味がありましたら、ぜひ活用していただきたいです。
       </div>
-      <div class="mb-3">
+      <div class="d-inline-block mb-3">
         <a href="https://twitter.com/icchan_kun" class="btn btn-light">
           <i class="fab fa-twitter me-2"></i>@icchan_kunを見る
         </a>
       </div>
-      <div>
+      <div class="d-inline-block">
         <span>@bilbil</span>
       </div>
     </div>
