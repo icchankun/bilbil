@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="fs-5">{{ this.category_name }}トーク</div>
-  <div class="talk_theme_roulette p-5 mb-3 fs-5">
+  <div class="talk_theme_roulette mb-3 fs-5">
     <span v-if="this.talk_theme != undefined">
       {{ talk_theme.content }} ?
     </span>
@@ -130,6 +130,7 @@ export default {
   border: 1px solid #000;
   border-radius: 5px;
   font-weight: bold;
+  height: 200px;
 }
 .start_btn {
   background-color: #0070f3;
