@@ -86,19 +86,19 @@
       </div>
     </div>
   </main>
-  <Footer></Footer>
+  <admin-footer></admin-footer>
 </template>
 
 <script>
 import axios from "axios";
 
 import Header from "../components/Header.vue";
-import Footer from "../components/Footer.vue";
+import AdminFooter from "../components/AdminFooter.vue";
 
 export default {
   components: {
     Header,
-    Footer,
+    AdminFooter,
   },
   data() {
     return {

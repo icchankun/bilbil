@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <Footer></Footer>
+  <admin-footer></admin-footer>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ import Headline from "../components/Headline.vue";
 import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
 import RootPathButton from "../components/RootPathButton.vue";
-import Footer from "../components/Footer.vue";
+import AdminFooter from "../components/AdminFooter.vue";
 
 export default {
   components: {
@@ -43,7 +43,7 @@ export default {
     TalkThemeFormPane,
     CategoryFormPane,
     RootPathButton,
-    Footer,
+    AdminFooter,
   },
   data() {
     return {

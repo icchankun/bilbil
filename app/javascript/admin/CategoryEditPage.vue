@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <Footer></Footer>
+  <admin-footer></admin-footer>
 </template>
 
 <script>
@@ -22,14 +22,14 @@ import axios from "axios";
 import Header from "../components/Header.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
 import RootPathButton from "../components/RootPathButton.vue";
-import Footer from "../components/Footer.vue";
+import AdminFooter from "../components/AdminFooter.vue";
 
 export default {
   components: {
     Header,
     CategoryFormPane,
     RootPathButton,
-    Footer,
+    AdminFooter,
   },
   data() {
     return {

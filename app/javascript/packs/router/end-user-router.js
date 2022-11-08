@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import TalkThemeRoulettePage from "../../end_user/TalkThemeRoulettePage.vue";
+import RoulettePage from "../../end_user/RoulettePage.vue";
 import ContentIndexPage from "../../end_user/ContentIndexPage.vue";
 
 const routes = [
   { path: "/", 
-    component: TalkThemeRoulettePage },
+    component: RoulettePage },
   { path: "/content", 
     component: ContentIndexPage },
 ]
