@@ -1,12 +1,12 @@
 <template>
-  <div class="mb-3">
-    <div class="fs-5">番号指定</div>
+  <div>
+    <div class="fs-5">トーク順番</div>
     <div class="row">
-      <div class="col-11 p-2 number_assignment_roulette">
-        {{ numbering }}
+      <div class="col-9 p-2 talk_order_roulette">
+        {{ talk_order }}
       </div>
       <div
-        class="col-1 text-white px-0"
+        class="col-2 text-white px-0"
         @click="
           roulette();
           active();
@@ -26,28 +26,34 @@
 <script>
 export default {
   created() {
-    this.assignNumber();
+    this.talkOrder();
+  },
+  props: {
+    number_of_people: "",
   },
   data() {
     return {
-      numbering: {},
+      talk_order: {},
       is_active: false,
     };
   },
+  watch: {
+    number_of_people: function () {
+      this.talkOrder();
+    },
+  },
   methods: {
-    assignNumber: function () {
-      const numberings = [
-        "誕生日が早い順",
-        "誕生日が遅い順",
-        "ルーレットを回した人から右回り",
-        "ルーレットを回した人から左回り",
-        "苗字の最初の文字が五十音で早い順",
-        "苗字の最初の文字が五十音で遅い順",
-        "名前の最初の文字が五十音で早い順",
-        "名前の最初の文字が五十音で遅い順",
-      ];
-      this.numbering =
-        numberings[Math.floor(Math.random() * numberings.length)];
+    talkOrder: function () {
+      const talk_orders = [];
+      if (this.number_of_people == 2) {
+        talk_orders.push("1の人から", "2の人から");
+      } else {
+        for (let n = 1; n <= this.number_of_people; n++) {
+          talk_orders.push(`${n}の人から右回り`, `${n}の人から左回り`,`${n}から昇順`,`${n}から降順`);
+        }
+      }
+      this.talk_order =
+        talk_orders[Math.floor(Math.random() * talk_orders.length)];
     },
     active() {
       this.is_active = !this.is_active;
@@ -55,7 +61,7 @@ export default {
     roulette: function () {
       let roulette = setInterval(() => {
         if (this.is_active) {
-          this.assignNumber();
+          this.talkOrder();
         } else {
           clearInterval(roulette);
         }
@@ -66,7 +72,7 @@ export default {
 </script>
 
 <style scoped>
-.number_assignment_roulette {
+.talk_order_roulette {
   border: 1px solid #000;
   font-weight: bold;
   text-align: center;
