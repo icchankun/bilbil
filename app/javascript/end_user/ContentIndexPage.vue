@@ -53,7 +53,7 @@
       </div>
     </div>
   </main>
-  <Footer></Footer>
+  <end-user-footer></end-user-footer>
 </template>
 
 <script>
@@ -62,14 +62,14 @@ import axios from "axios";
 import Header from "../components/Header.vue";
 import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
 import RootPathButton from "../components/RootPathButton.vue";
-import Footer from "../components/Footer.vue";
+import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
   components: {
     Header,
     TalkThemeLikeButton,
     RootPathButton,
-    Footer,
+    EndUserFooter,
   },
   data() {
     return {

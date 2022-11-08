@@ -1,0 +1,87 @@
+<template>
+  <div>
+    <div class="fs-5">司会者</div>
+    <div class="row">
+      <div class="col-7 p-2 host_roulette">
+        {{ host }}
+      </div>
+      <div
+        class="col-3 text-white px-0"
+        @click="
+          roulette();
+          active();
+        "
+      >
+        <div class="start_btn h-100" v-if="this.is_active">
+          <i class="fas fa-stop-circle"></i>
+        </div>
+        <div class="stop_btn h-100" v-else>
+          <i class="fas fa-sync-alt"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  created() {
+    this.assignHost();
+  },
+  props: {
+    number_of_people: "",
+  },
+  data() {
+    return {
+      host: {},
+      is_active: false,
+    };
+  },
+  watch: {
+    number_of_people: function () {
+      this.assignHost();
+    },
+  },
+  methods: {
+    assignHost: function () {
+      const hosts = [];
+      for (let n = 1; n <= this.number_of_people; n++) {
+        hosts.push(`${n}の人`);
+      }
+      this.host = hosts[Math.floor(Math.random() * hosts.length)];
+    },
+    active() {
+      this.is_active = !this.is_active;
+    },
+    roulette: function () {
+      let roulette = setInterval(() => {
+        if (this.is_active) {
+          this.assignHost();
+        } else {
+          clearInterval(roulette);
+        }
+      }, 100);
+    },
+  },
+};
+</script>
+
+<style scoped>
+.host_roulette {
+  border: 1px solid #000;
+  font-weight: bold;
+  text-align: center;
+}
+.start_btn {
+  background-color: #0070f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stop_btn {
+  background-color: #ff5858;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
