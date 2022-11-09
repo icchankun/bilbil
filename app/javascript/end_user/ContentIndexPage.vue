@@ -9,7 +9,7 @@
               >ご利用ガイドはこちらから。</router-link
             >
           </div>
-          <root-path-button>ルーレットページに戻る</root-path-button>
+          <roulette-page-back-button></roulette-page-back-button>
         </div>
         <div class="mt-5">
           <div
@@ -68,14 +68,14 @@ import axios from "axios";
 
 import Header from "../components/Header.vue";
 import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
-import RootPathButton from "../components/RootPathButton.vue";
+import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
 import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
   components: {
     Header,
     TalkThemeLikeButton,
-    RootPathButton,
+    RoulettePageBackButton,
     EndUserFooter,
   },
   data() {

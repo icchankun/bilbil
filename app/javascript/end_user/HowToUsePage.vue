@@ -110,7 +110,7 @@
             >トークテーマの確認はこちらから。</router-link
           >
         </div>
-        <root-path-button>ルーレットページに戻る</root-path-button>
+        <roulette-page-back-button></roulette-page-back-button>
       </div>
     </div>
   </main>
@@ -125,14 +125,14 @@ import axios from "axios";
 
 import Header from "../components/Header.vue";
 import HeadLine from "../components/Headline.vue";
-import RootPathButton from "../components/RootPathButton.vue";
+import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
 import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
   components: {
     Header,
     HeadLine,
-    RootPathButton,
+    RoulettePageBackButton,
     EndUserFooter,
   },
   created() {
