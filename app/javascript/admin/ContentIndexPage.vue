@@ -10,7 +10,7 @@
             >
           </div>
           <div>
-            <router-link class="py-1" to="/content/new"
+            <router-link class="py-1" to="/admin/content/new"
               >トークテーマ・カテゴリーの作成へ。</router-link
             >
           </div>
