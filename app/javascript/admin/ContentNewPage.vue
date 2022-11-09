@@ -19,7 +19,7 @@
           @submit="createCategory"
           >カテゴリーを作成</category-form-pane
         >
-        <root-path-button>コンテンツ一覧に戻る</root-path-button>
+        <content-index-page-back-button></content-index-page-back-button>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@ import Header from "../components/Header.vue";
 import Headline from "../components/Headline.vue";
 import TalkThemeFormPane from "../components/TalkThemeFormPane.vue";
 import CategoryFormPane from "../components/CategoryFormPane.vue";
-import RootPathButton from "../components/RootPathButton.vue";
+import ContentIndexPageBackButton from "../components/ContentIndexPageBackButton.vue";
 import AdminFooter from "../components/AdminFooter.vue";
 
 export default {
@@ -42,7 +42,7 @@ export default {
     Headline,
     TalkThemeFormPane,
     CategoryFormPane,
-    RootPathButton,
+    ContentIndexPageBackButton,
     AdminFooter,
   },
   data() {
