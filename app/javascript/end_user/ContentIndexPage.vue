@@ -3,7 +3,14 @@
   <main class="container">
     <div class="row my-5">
       <div class="col-lg-6 mx-auto">
-        <root-path-button>トップページに戻る</root-path-button>
+        <div>
+          <div class="mb-3 text-center">
+            <router-link class="py-1" to="/guide"
+              >ご利用ガイドはこちらから。</router-link
+            >
+          </div>
+          <root-path-button>ルーレットページに戻る</root-path-button>
+        </div>
         <div class="mt-5">
           <div
             class="row dropdown"

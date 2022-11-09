@@ -26,3 +26,9 @@ body {
   position: absolute;
   bottom: 0;
 }
+
+@media (max-width: 500px) {
+  .end_user {
+    padding-bottom: 450px;
+  }
+}
