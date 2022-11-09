@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   scope module: :end_user do
     root 'homes#top'
     get 'content', to: 'homes#top'
+    get 'guide', to: 'homes#top'
   end
 
   namespace :api, {format: 'json'} do
