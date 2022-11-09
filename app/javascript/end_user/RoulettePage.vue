@@ -4,9 +4,16 @@
     <div class="row">
       <div class="col-12 col-sm-7 mx-auto">
         <div class="mb-3">
-          <router-link class="py-1" to="/content"
-            >トークテーマの確認はこちらから。</router-link
-          >
+          <div class="mb-2">
+            <router-link class="py-1" to="/guide"
+              >ご利用ガイドはこちらから。</router-link
+            >
+          </div>
+          <div>
+            <router-link class="py-1" to="/content"
+              >トークテーマの確認はこちらから。</router-link
+            >
+          </div>
         </div>
         <div class="px-1 mb-5">
           <head-line>TALK THEME</head-line>
