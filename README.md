@@ -1,11 +1,11 @@
 <h2 align="center">bilbil - ビルビル</h2>
 
-## **アプリ** 🏢
-スムーズに会話を進めたいが、会話を上手く進められない人のためのアプリ「bilbil」
-
 <div align="center">
 <img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/2626303/25a1305e-0a03-13e2-f522-e124074b198c.jpeg" height=300px;/>
 </div>
+
+## **アプリ** 🏢
+スムーズに会話を進めたいが、会話を上手く進められない人のためのアプリ「bilbil」
 
 ## **アプリ概要** 🗺️
  **｢bilbil｣** ("ビルビル")はスムーズに会話を進めたいけど、それがなかなか上手くいかない人のために **｢ルーレット｣** を使って、**トークテーマや話す順番などを提案してくれる**会話サポートアプリです。
@@ -16,9 +16,11 @@
 
 このアプリが提供した会話サポートによって、スムーズに会話が進み、会話の参加者間で良い雰囲気ができることを願っているので、**このアプリの会話サポートによる会話の流れのbil(作成)** と**会話の参加者間の良い雰囲気のbil(作る)** を組み合わせて**bilbil**としました。
 
-**アプリURL :** https://bil-bil.herokuapp.com/
+**アプリURL :**<br />
+https://bil-bil.herokuapp.com/
 
-<img src="https://img.shields.io/badge/-%E8%A8%98%E4%BA%8B-55C500.svg?logo=qiita&style=social"> **:** [【個人開発】スムーズに会話を進めたいが、会話を上手く進められない人のためのアプリ「bilbil」を紹介します。](https://qiita.com/icchankun/items/68dad4c0bdc1e52b684a)
+**Qiita記事:** <br />
+[【個人開発】スムーズに会話を進めたいが、会話を上手く進められない人のためのアプリ「bilbil」を紹介します。](https://qiita.com/icchankun/items/68dad4c0bdc1e52b684a)
 
 ## **ターゲット** 👪
 - トークテーマが考えつかず、困っている人
