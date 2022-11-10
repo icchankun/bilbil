@@ -47,7 +47,7 @@ export default {
       axios
         .patch(`/api/v1/categories/${this.category.id}`, this.category)
         .then(() => {
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: "/admin" });
         })
         .catch((error) => {
           console.error(error);
