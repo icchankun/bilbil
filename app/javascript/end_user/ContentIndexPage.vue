@@ -2,15 +2,25 @@
   <Header>C O N T E N T</Header>
   <main class="container">
     <div class="row my-5">
-      <div class="col-lg-6 mx-auto">
-        <div>
-          <div class="mb-3 text-center">
-            <router-link class="py-1" to="/guide"
-              >ご利用ガイドはこちらから。</router-link
-            >
+      <div class="col-lg-7 mx-auto">
+        <div class="mb-3">
+          <div class="mb-2">
+            このアプリで出題されるトークテーマを各カテゴリーごと
+            にまとめています。
           </div>
-          <roulette-page-back-button></roulette-page-back-button>
+          <div class="mb-2">
+            また、トークテーマにいいねをすることができます。
+          </div>
+          <div class="mb-2">
+            いいねをしたトークテーマは各カテゴリーのトークテーマ一覧の上部に表示されます。
+          </div>
         </div>
+        <div class="mb-3 text-center">
+          <router-link class="py-1" to="/guide"
+            >ご利用ガイドはこちらから。</router-link
+          >
+        </div>
+        <roulette-page-back-button></roulette-page-back-button>
         <div class="mt-5">
           <div
             class="row dropdown"
@@ -60,7 +70,10 @@
       </div>
     </div>
   </main>
-  <end-user-footer></end-user-footer>
+  <end-user-footer>
+    いいねボタンの横にある数字は、そのトークテーマのいいね数です。
+    どのトークテーマが人気なのか探してみましょう。
+  </end-user-footer>
 </template>
 
 <script>
