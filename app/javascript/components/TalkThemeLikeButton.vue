@@ -1,11 +1,11 @@
 <template>
   <dd>
     <div class="" v-if="isLiked" @click="deleteLike()">
-      <i class="fa-solid fa-heart create-heart me-2"></i>
+      <i class="fas fa-heart create-heart me-2"></i>
       <span>{{ count }}</span>
     </div>
     <div class="heart-size" v-else @click="createLike()">
-      <i class="fa-regular fa-heart destroy-heart me-2"></i>
+      <i class="far fa-heart destroy-heart me-2"></i>
       <span>{{ count }}</span>
     </div>
   </dd>
