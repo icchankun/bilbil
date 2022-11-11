@@ -2,15 +2,25 @@
   <Header>C O N T E N T</Header>
   <main class="container">
     <div class="row my-5">
-      <div class="col-lg-6 mx-auto">
-        <div>
-          <div class="mb-3 text-center">
-            <router-link class="py-1" to="/guide"
-              >ご利用ガイドはこちらから。</router-link
-            >
+      <div class="col-lg-7 mx-auto">
+        <div class="mb-3">
+          <div class="mb-2">
+            このアプリで出題されるトークテーマを各カテゴリーごと
+            にまとめています。
           </div>
-          <roulette-page-back-button></roulette-page-back-button>
+          <div class="mb-2">
+            また、トークテーマにいいねをすることができます。
+          </div>
+          <div class="mb-2">
+            いいねをしたトークテーマは各カテゴリーのトークテーマ一覧の上部に表示されます。
+          </div>
         </div>
+        <div class="mb-3 text-center">
+          <router-link class="py-1" to="/guide"
+            >ご利用ガイドはこちらから。</router-link
+          >
+        </div>
+        <roulette-page-back-button></roulette-page-back-button>
         <div class="mt-5">
           <div
             class="row dropdown"
@@ -33,7 +43,6 @@
                 :key="talk_theme.id"
                 v-if="category.talk_themes.length != 0"
                 class="dropdown-item"
-                :class="[index + 1 == this.ip_count ? 'boundary_line' : '']"
               >
                 <dl class="row d-inline-flex flex-wrap m-0">
                   <dt class="col-12 col-sm-11 text-wrap">
@@ -44,7 +53,7 @@
                       :talk_theme_id="talk_theme.id"
                       :likes="talk_theme.likes"
                       @fetchCategories="fetchCategories"
-                      @addBorderToTheLastLike="addBorderToTheLastLike"
+                      @fetchLikesByIpAddress="fetchLikesByIpAddress"
                     ></talk-theme-like-button>
                   </dd>
                 </dl>
@@ -60,7 +69,10 @@
       </div>
     </div>
   </main>
-  <end-user-footer></end-user-footer>
+  <end-user-footer>
+    いいねボタンの横にある数字は、そのトークテーマのいいね数です。
+    どのトークテーマが人気なのか探してみましょう。
+  </end-user-footer>
 </template>
 
 <script>
@@ -81,17 +93,12 @@ export default {
   data() {
     return {
       categories: {},
-      talk_themes: {},
       liked_talk_themes: [],
-      ip_count: {},
     };
   },
   created() {
-    this.addBorderToTheLastLike();
+    this.fetchLikesByIpAddress();
     this.fetchCategories();
-    axios
-      .get("/api/v1/talk_themes")
-      .then((response) => (this.talk_themes = response.data));
   },
   methods: {
     fetchCategories: function () {
@@ -107,7 +114,6 @@ export default {
       this.liked_talk_themes.forEach((like) => {
         talk_theme_ids.push(like.talk_theme_id);
       });
-      console.log(talk_theme_ids);
 
       const talk_themes_sorted = [];
       this.categories.forEach((category) => {
@@ -124,47 +130,16 @@ export default {
       });
       return talk_themes_sorted;
     },
-    addBorderToTheLastLike() {
+    fetchLikesByIpAddress() {
       axios.get("/api/v1/like/ip").then((response) => {
         this.liked_talk_themes = response.data;
-        this.ip_count = response.data.length;
       });
-    },
-    deleteCategory(delete_id) {
-      if (
-        confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
-      )
-        axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
-          this.fetchCategories();
-        });
-    },
-    deleteTalkTheme(delete_id) {
-      if (
-        confirm(
-          `「${this.talkThemeContent(delete_id)}」を削除してよろしいですか?`
-        )
-      )
-        axios.delete(`/api/v1/talk_themes/${delete_id}`).then(() => {
-          this.fetchCategories();
-        });
-    },
-    categoryName(delete_id) {
-      const filterDate = this.categories.filter(
-        (category) => category.id === delete_id
-      );
-      return filterDate[0].name;
-    },
-    talkThemeContent(delete_id) {
-      const filterDate = this.talk_themes.filter(
-        (talk_theme) => talk_theme.id === delete_id
-      );
-      return filterDate[0].content;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .bg-dark {
   border-bottom: 1px solid #fff;
 }
@@ -181,9 +156,6 @@ export default {
 .dropdown-item {
   display: list-item;
   list-style: decimal inside;
-  &.boundary_line {
-    border-bottom: 2px solid #000;
-  }
 }
 
 .d-inline-flex {

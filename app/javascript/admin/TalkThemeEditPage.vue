@@ -52,7 +52,7 @@ export default {
       axios
         .patch(`/api/v1/talk_themes/${this.talk_theme.id}`, this.talk_theme)
         .then(() => {
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: "/admin" });
         })
         .catch((error) => {
           console.error(error);
