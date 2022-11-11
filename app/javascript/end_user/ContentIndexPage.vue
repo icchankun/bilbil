@@ -43,7 +43,6 @@
                 :key="talk_theme.id"
                 v-if="category.talk_themes.length != 0"
                 class="dropdown-item"
-                :class="[index + 1 == this.ip_count ? 'boundary_line' : '']"
               >
                 <dl class="row d-inline-flex flex-wrap m-0">
                   <dt class="col-12 col-sm-11 text-wrap">
@@ -54,7 +53,7 @@
                       :talk_theme_id="talk_theme.id"
                       :likes="talk_theme.likes"
                       @fetchCategories="fetchCategories"
-                      @addBorderToTheLastLike="addBorderToTheLastLike"
+                      @fetchLikesByIpAddress="fetchLikesByIpAddress"
                     ></talk-theme-like-button>
                   </dd>
                 </dl>
@@ -95,11 +94,10 @@ export default {
     return {
       categories: {},
       liked_talk_themes: [],
-      ip_count: {},
     };
   },
   created() {
-    this.addBorderToTheLastLike();
+    this.fetchLikesByIpAddress();
     this.fetchCategories();
   },
   methods: {
@@ -132,18 +130,16 @@ export default {
       });
       return talk_themes_sorted;
     },
-    addBorderToTheLastLike() {
+    fetchLikesByIpAddress() {
       axios.get("/api/v1/like/ip").then((response) => {
         this.liked_talk_themes = response.data;
-        this.ip_count = response.data.length;
       });
     },
-
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .bg-dark {
   border-bottom: 1px solid #fff;
 }
@@ -160,9 +156,6 @@ export default {
 .dropdown-item {
   display: list-item;
   list-style: decimal inside;
-  &.boundary_line {
-    border-bottom: 2px solid #000;
-  }
 }
 
 .d-inline-flex {

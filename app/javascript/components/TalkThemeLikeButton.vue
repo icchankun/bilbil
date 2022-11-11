@@ -19,7 +19,7 @@ export default {
     talk_theme_id: "",
     likes: {},
   },
-  emits: ["fetchCategories", "addBorderToTheLastLike"],
+  emits: ["fetchCategories", "fetchLikesByIpAddress"],
   data() {
     return {
       isLiked: "",
@@ -49,7 +49,7 @@ export default {
           this.fetchLikeByTalkThemeId();
           this.findLikeByIpAddress();
           this.$emit("fetchCategories");
-          this.$emit("addBorderToTheLastLike");
+          this.$emit("fetchLikesByIpAddress");
         });
     },
     deleteLike: function () {
@@ -59,7 +59,7 @@ export default {
           this.fetchLikeByTalkThemeId();
           this.findLikeByIpAddress();
           this.$emit("fetchCategories");
-          this.$emit("addBorderToTheLastLike");
+          this.$emit("fetchLikesByIpAddress");
         });
     },
     fetchLikeByTalkThemeId: function () {
