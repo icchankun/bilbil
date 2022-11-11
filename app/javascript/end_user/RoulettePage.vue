@@ -56,7 +56,7 @@
     </div>
   </main>
   <end-user-footer>
-    bilbil（ビルビル）はトークで困らないためのトークサポートアプリです。<br />
+    bilbil（ビルビル）はトークで困らないためのトークサポートアプリです。
     オンライン・オフラインを選ばず、利用することができます。
   </end-user-footer>
 </template>

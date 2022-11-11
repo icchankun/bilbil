@@ -56,7 +56,7 @@
           <div>3. 止まったテーマでトークをします。</div>
         </div>
         <head-line>TALK SUPPORT</head-line>
-        <div class="description d-flex flex-column mx-auto mb-5">
+        <div class="description mx-auto mb-5">
           <div class="mb-3">
             <div class="mb-2">
               1. トーク人数のボタンを押します。
@@ -115,7 +115,7 @@
     </div>
   </main>
   <end-user-footer>
-    トークテーマルーレットだけでも利用できますが、トークサポートルーレットも<br />
+    トークテーマルーレットだけでも利用できますが、トークサポートルーレットも
     合わせて利用していただくことをおすすめします。
   </end-user-footer>
 </template>

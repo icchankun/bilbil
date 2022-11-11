@@ -43,7 +43,7 @@ https://bil-bil.herokuapp.com/
 
 ## **使用技術** 🛠️
 **フロントエンド** <br/>
-HTML/CSS/Scss/Bootstrap5<br/>
+HTML/CSS/Bootstrap5<br/>
 Vue.js 3.2.36
 
 **バックエンド**<br/>

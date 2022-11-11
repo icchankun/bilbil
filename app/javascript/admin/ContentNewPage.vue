@@ -72,7 +72,7 @@ export default {
           category_id: this.talk_theme.category_id,
         })
         .then(() => {
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: "/admin" });
         })
         .catch((error) => {
           console.error(error);
