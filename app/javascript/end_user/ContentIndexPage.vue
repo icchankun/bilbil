@@ -94,7 +94,6 @@ export default {
   data() {
     return {
       categories: {},
-      talk_themes: {},
       liked_talk_themes: [],
       ip_count: {},
     };
@@ -102,9 +101,6 @@ export default {
   created() {
     this.addBorderToTheLastLike();
     this.fetchCategories();
-    axios
-      .get("/api/v1/talk_themes")
-      .then((response) => (this.talk_themes = response.data));
   },
   methods: {
     fetchCategories: function () {
@@ -120,7 +116,6 @@ export default {
       this.liked_talk_themes.forEach((like) => {
         talk_theme_ids.push(like.talk_theme_id);
       });
-      console.log(talk_theme_ids);
 
       const talk_themes_sorted = [];
       this.categories.forEach((category) => {
@@ -143,36 +138,7 @@ export default {
         this.ip_count = response.data.length;
       });
     },
-    deleteCategory(delete_id) {
-      if (
-        confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
-      )
-        axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
-          this.fetchCategories();
-        });
-    },
-    deleteTalkTheme(delete_id) {
-      if (
-        confirm(
-          `「${this.talkThemeContent(delete_id)}」を削除してよろしいですか?`
-        )
-      )
-        axios.delete(`/api/v1/talk_themes/${delete_id}`).then(() => {
-          this.fetchCategories();
-        });
-    },
-    categoryName(delete_id) {
-      const filterDate = this.categories.filter(
-        (category) => category.id === delete_id
-      );
-      return filterDate[0].name;
-    },
-    talkThemeContent(delete_id) {
-      const filterDate = this.talk_themes.filter(
-        (talk_theme) => talk_theme.id === delete_id
-      );
-      return filterDate[0].content;
-    },
+
   },
 };
 </script>
