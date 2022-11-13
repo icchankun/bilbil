@@ -83,5 +83,5 @@ https://drive.google.com/file/d/1wW9yUARX0z9t1AvDW-zLFKlaVmru8FVO/view?usp=shari
 
 https://docs.google.com/spreadsheets/d/1RGY2vqnzNI9LqaRTq1bllk02-v4Z19NX_1FDYa3-SQE/edit?usp=sharing
 
-#### **ルーティング・追加gem/node_modules**
-https://docs.google.com/spreadsheets/d/1W7UKUXA5vIITVVvZxCNu5N9a7xppkI3WtVK8O0fD9g0/edit?usp=sharing
+#### **ルーティング・追加gem/package**
+https://docs.google.com/spreadsheets/d/1xYObr0yykesEAjX7Qivv4qOzs5luc8nmS5lRJ8iliV0/edit?usp=sharing
