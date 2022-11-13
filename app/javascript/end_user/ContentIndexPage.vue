@@ -101,14 +101,15 @@ export default {
     this.fetchCategories();
   },
   methods: {
+    // カテゴリー一覧を取得し、その順番を並び替える。
     fetchCategories: function () {
-      axios
-        .get("/api/v1/categories")
-        .then((response) => {
-          this.categories = response.data;
-        })
-        .then(() => (this.categories = this.sortedTalkThemesByLikes()));
+      axios.get("/api/v1/categories").then((response) => {
+        this.categories = response.data;
+        this.categories = this.sortedTalkThemesByLikes();
+      });
     },
+
+    // カテゴリー一覧の順番を並び替える。
     sortedTalkThemesByLikes: function () {
       const talk_theme_ids = [];
       this.liked_talk_themes.forEach((like) => {
@@ -130,6 +131,8 @@ export default {
       });
       return talk_themes_sorted;
     },
+
+    // 接続しているipアドレスがipカラムに保存されているいいねを取得する。
     fetchLikesByIpAddress() {
       axios.get("/api/v1/like/ip").then((response) => {
         this.liked_talk_themes = response.data;
