@@ -19,7 +19,7 @@ class Api::V1::CategoriesController < ApiController
   def create
     category =  Category.new(category_params)
     if category.save
-      head :created
+      render json: category
     else
       render json: { errors:  category.errors.full_messages }, status: :unprocessable_entity
     end

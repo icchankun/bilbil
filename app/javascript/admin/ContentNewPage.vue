@@ -5,6 +5,10 @@
     <div class="row my-5">
       <div class="col-lg-6 col-sm-12 mx-auto">
         <headline>THEHE</headline>
+        <div>
+          {{ create_talk_theme.content }}
+          {{ create_talk_theme.category }}
+        </div>
         <talk-theme-form-pane
           :talk_theme="talk_theme"
           :categories="categories"
@@ -13,6 +17,9 @@
           >トークテーマを作成</talk-theme-form-pane
         >
         <headline>CATEGORY</headline>
+        <div>
+          {{ create_category.name }}
+        </div>
         <category-form-pane
           :category="category"
           :errors="category.errors"
@@ -52,27 +59,33 @@ export default {
         category_id: "",
         errors: "",
       },
+      create_talk_theme: {},
       category: {
         name: "",
         errors: "",
       },
+      create_category: {},
       categories: {},
     };
   },
   mounted() {
+    // 全カテゴリーを取得する
     axios
       .get("/api/v1/categories")
       .then((response) => (this.categories = response.data));
   },
   methods: {
-    createTalkTheme: function () {
+    // トークテーマを新規登録する
+    createTalkTheme() {
       axios
         .post("/api/v1/talk_themes", {
           content: this.talk_theme.content,
           category_id: this.talk_theme.category_id,
         })
-        .then(() => {
-          this.$router.push({ path: "/admin" });
+        .then((response) => {
+          this.create_talk_theme = response.data;
+          this.categoryName();
+          this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
           console.error(error);
@@ -81,11 +94,14 @@ export default {
           }
         });
     },
-    createCategory: function () {
+
+    // カテゴリーを新規登録する。
+    createCategory() {
       axios
         .post("/api/v1/categories", { name: this.category.name })
-        .then(() => {
-          this.$router.push({ path: "/" });
+        .then((response) => {
+          this.create_category = response.data;
+          this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
           console.error(error);
@@ -93,6 +109,14 @@ export default {
             this.category.errors = error.response.data.errors;
           }
         });
+    },
+
+    // 新規登録したトークテーマのカテゴリー名を取得する。
+    categoryName() {
+      const filterDate = this.categories.filter(
+        (category) => category.id === this.create_talk_theme.category_id
+      );
+      this.create_talk_theme.category = filterDate[0].name;
     },
   },
 };
