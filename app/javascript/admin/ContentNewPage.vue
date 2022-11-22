@@ -1,13 +1,12 @@
 <template>
   <Header>C R E A T E</Header>
-
   <div class="container">
     <div class="row my-5">
-      <div class="col-lg-6 col-sm-12 mx-auto">
+      <div class="col-12 col-lg-6 mx-auto">
         <headline>THEHE</headline>
         <div>
-          {{ create_talk_theme.content }}
-          {{ create_talk_theme.category }}
+          {{ created_talk_theme.content }}
+          {{ created_talk_theme.category }}
         </div>
         <talk-theme-form-pane
           :talk_theme="talk_theme"
@@ -18,7 +17,7 @@
         >
         <headline>CATEGORY</headline>
         <div>
-          {{ create_category.name }}
+          {{ created_category.name }}
         </div>
         <category-form-pane
           :category="category"
@@ -59,20 +58,20 @@ export default {
         category_id: "",
         errors: "",
       },
-      create_talk_theme: {},
+      created_talk_theme: {},
       category: {
         name: "",
         errors: "",
       },
-      create_category: {},
+      created_category: {},
       categories: {},
     };
   },
   mounted() {
     // 全カテゴリーを取得する
-    axios
-      .get("/api/v1/categories")
-      .then((response) => (this.categories = response.data));
+    axios.get("/api/v1/categories").then((response) => {
+      this.categories = response.data;
+    });
   },
   methods: {
     // トークテーマを新規登録する
@@ -83,13 +82,24 @@ export default {
           category_id: this.talk_theme.category_id,
         })
         .then((response) => {
-          this.create_talk_theme = response.data;
+          this.created_talk_theme = response.data;
+
+          // フォームを初期状態に戻す。
+          this.talk_theme.content = "";
+          this.talk_theme.category_id = "";
+
+          // エラーメッセージを削除する。
+          this.talk_theme.errors = "";
+
           this.categoryName();
           this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
           console.error(error);
           if (error.response.data && error.response.data.errors) {
+            // 作成したトークテーマの表示を止める。
+            this.created_talk_theme = "";
+
             this.talk_theme.errors = error.response.data.errors;
           }
         });
@@ -100,12 +110,22 @@ export default {
       axios
         .post("/api/v1/categories", { name: this.category.name })
         .then((response) => {
-          this.create_category = response.data;
+          this.created_category = response.data;
+
+          // フォームを初期状態に戻す。
+          this.category.name = "";
+
+          // エラーメッセージを削除する。
+          this.category.errors = "";
+
           this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
           console.error(error);
           if (error.response.data && error.response.data.errors) {
+            // 作成したカテゴリーの表示を止める。
+            this.created_category = "";
+
             this.category.errors = error.response.data.errors;
           }
         });
@@ -114,9 +134,9 @@ export default {
     // 新規登録したトークテーマのカテゴリー名を取得する。
     categoryName() {
       const filterDate = this.categories.filter(
-        (category) => category.id === this.create_talk_theme.category_id
+        (category) => category.id === this.created_talk_theme.category_id
       );
-      this.create_talk_theme.category = filterDate[0].name;
+      this.created_talk_theme.category = filterDate[0].name;
     },
   },
 };
