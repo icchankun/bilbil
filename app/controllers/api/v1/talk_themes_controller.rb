@@ -19,7 +19,7 @@ class Api::V1::TalkThemesController < ApiController
   def create
     talk_theme =  TalkTheme.new(talk_theme_params)
     if talk_theme.save
-      head :created
+      render json: talk_theme
     else
       render json: { errors:  talk_theme.errors.full_messages }, status: :unprocessable_entity
     end
