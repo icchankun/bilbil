@@ -4,17 +4,23 @@
     <div class="row my-5">
       <div class="col-12 col-lg-6 mx-auto">
         <headline>THEHE</headline>
-        <div v-if="Boolean(created_talk_theme.content)">
-          {{ created_talk_theme.content }}
-          {{ created_talk_theme.category }}
-          <router-link
-            class=""
-            :to="{
-              name: 'TalkThemeEditPage',
-              params: { id: created_talk_theme.id },
-            }"
-            >編集</router-link
-          >
+        <div class="alert alert-success" v-if="Boolean(created_talk_theme.content)">
+          <dl class="d-flex flex-wrap justify-content-between m-0">
+            <dt class="d-inline-block">
+              <div>トークテーマ: {{ created_talk_theme.content }}</div>
+              <div>カテゴリー名: {{ created_talk_theme.category }}</div>
+            </dt>
+            <dd class="d-inline-block m-0">
+              <router-link
+                class="btn btn-success"
+                :to="{
+                  name: 'TalkThemeEditPage',
+                  params: { id: created_talk_theme.id },
+                }"
+                >編集</router-link
+              >
+            </dd>
+          </dl>
         </div>
         <talk-theme-form-pane
           :talk_theme="talk_theme"
@@ -24,16 +30,22 @@
           >トークテーマを作成</talk-theme-form-pane
         >
         <headline>CATEGORY</headline>
-        <div v-if="Boolean(created_category.name)">
-          {{ created_category.name }}
-          <router-link
-            class=""
-            :to="{
-              name: 'CategoryEditPage',
-              params: { id: created_category.id },
-            }"
-            >編集</router-link
-          >
+        <div class="alert alert-success" v-if="Boolean(created_category.name)">
+          <dl class="d-flex flex-wrap justify-content-between m-0">
+            <dt class="d-inline-block">
+              <div>カテゴリー: {{ created_category.name }}</div>
+            </dt>
+            <dd class="d-inline-block m-0">
+              <router-link
+                class="btn btn-success"
+                :to="{
+                  name: 'CategoryEditPage',
+                  params: { id: created_category.id },
+                }"
+                >編集</router-link
+              >
+            </dd>
+          </dl>
         </div>
         <category-form-pane
           :category="category"
