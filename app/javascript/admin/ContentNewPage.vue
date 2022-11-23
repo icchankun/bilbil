@@ -4,9 +4,17 @@
     <div class="row my-5">
       <div class="col-12 col-lg-6 mx-auto">
         <headline>THEHE</headline>
-        <div>
+        <div v-if="Boolean(created_talk_theme.content)">
           {{ created_talk_theme.content }}
           {{ created_talk_theme.category }}
+          <router-link
+            class=""
+            :to="{
+              name: 'TalkThemeEditPage',
+              params: { id: created_talk_theme.id },
+            }"
+            >編集</router-link
+          >
         </div>
         <talk-theme-form-pane
           :talk_theme="talk_theme"
@@ -16,8 +24,16 @@
           >トークテーマを作成</talk-theme-form-pane
         >
         <headline>CATEGORY</headline>
-        <div>
+        <div v-if="Boolean(created_category.name)">
           {{ created_category.name }}
+          <router-link
+            class=""
+            :to="{
+              name: 'CategoryEditPage',
+              params: { id: created_category.id },
+            }"
+            >編集</router-link
+          >
         </div>
         <category-form-pane
           :category="category"
