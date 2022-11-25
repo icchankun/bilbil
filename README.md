@@ -57,6 +57,9 @@ Ruby on Rails 6.1.7
 **インフラ**<br/>
 Heroku (PaaS)
 
+**テスト**<br/>
+RSpec
+
 **バージョン管理**<br/>
 Git 2.25.1<br/>
 GitHub
