@@ -27,7 +27,7 @@ class Api::V1::CategoriesController < ApiController
 
   def update
     if @category.update(category_params)
-      head :no_content
+      render json: @category
     else
       render json: { errors: @category.errors.full_messages }, status: :unprocessable_entity
     end
