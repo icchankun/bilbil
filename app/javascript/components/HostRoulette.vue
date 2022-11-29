@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fs-5">司会者</div>
+    <div class="fs-5">司会者・話し手指定</div>
     <div class="row">
       <div class="col-7 p-2 host_roulette">
         {{ host }}
