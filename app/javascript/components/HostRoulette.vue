@@ -72,16 +72,4 @@ export default {
   font-weight: bold;
   text-align: center;
 }
-.start_btn {
-  background-color: #0070f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.stop_btn {
-  background-color: #ff5858;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

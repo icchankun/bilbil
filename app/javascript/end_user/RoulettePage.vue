@@ -88,9 +88,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .number_btn {
   border-radius: 10px;
   font-weight: bold;
+}
+.start_btn {
+  background-color: #0070f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stop_btn {
+  background-color: #ff5858;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
