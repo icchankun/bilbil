@@ -1,4 +1,10 @@
 <template>
+  <div v-if="showContent" id="overlay">
+    <div id="content">
+      <p>これがモーダルウィンドウです。</p>
+      <p><button @click="closeModal">close</button></p>
+    </div>
+  </div>
   <Header>B I L B I L</Header>
   <main class="container my-5">
     <div class="row">
@@ -21,7 +27,7 @@
         </div>
         <div class="px-1">
           <head-line>TALK SUPPORT</head-line>
-          <div class="fs-5 mb-2">トーク人数を選んでください</div>
+          <div class="fs-5 mb-2">トーク人数を選んでください。</div>
           <div class="d-flex flex-wrap justify-content-start">
             <div class="me-3" v-for="n in 9" :key="n">
               <input
@@ -40,15 +46,19 @@
               >
             </div>
           </div>
-          <number-assignment-roulette></number-assignment-roulette>
+          <number-assignment-roulette @openModal="openModal"></number-assignment-roulette>
           <div class="row">
             <div class="col-7">
               <talk-order-roulette
                 :number_of_people="number_of_people"
+                @openModal="openModal"
               ></talk-order-roulette>
             </div>
             <div class="col-5">
-              <host-roulette :number_of_people="number_of_people"></host-roulette>
+              <host-roulette
+                :number_of_people="number_of_people"
+                @openModal="openModal"
+              ></host-roulette>
             </div>
           </div>
         </div>
@@ -83,12 +93,39 @@ export default {
   data() {
     return {
       number_of_people: 2,
+      showContent: false,
     };
+  },
+  methods: {
+    openModal() {
+      this.showContent = true;
+    },
+    closeModal() {
+      this.showContent = false;
+    },
   },
 };
 </script>
 
 <style>
+#overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#content {
+  z-index: 2;
+  width: 50%;
+  padding: 1em;
+  background: #fff;
+}
 .number_btn {
   border-radius: 10px;
   font-weight: bold;
