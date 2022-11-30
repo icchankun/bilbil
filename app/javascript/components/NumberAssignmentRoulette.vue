@@ -1,6 +1,9 @@
 <template>
   <div class="mb-3">
-    <div class="fs-5">番号指定</div>
+    <div>
+      <span class="fs-5">番号指定</span>
+      <span @click="clickEvent">?</span>
+    </div>
     <div class="row">
       <div class="col-11 p-2 number_assignment_roulette">
         {{ numbering }}
@@ -34,6 +37,7 @@ export default {
       is_active: false,
     };
   },
+  emits: ["openModal"],
   methods: {
     assignNumber: function () {
       const numberings = [
@@ -60,6 +64,9 @@ export default {
           clearInterval(roulette);
         }
       }, 100);
+    },
+    clickEvent() {
+      this.$emit("openModal");
     },
   },
 };

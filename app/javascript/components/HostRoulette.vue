@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="fs-5">司会者・話し手指定</div>
+    <div>
+      <span class="fs-5">司会者・話し手指定</span>
+      <span @click="clickEvent">?</span>
+    </div>
     <div class="row">
       <div class="col-7 p-2 host_roulette">
         {{ host }}
@@ -31,6 +34,7 @@ export default {
   props: {
     number_of_people: "",
   },
+  emits: ["openModal"],
   data() {
     return {
       host: {},
@@ -61,6 +65,9 @@ export default {
           clearInterval(roulette);
         }
       }, 100);
+    },
+    clickEvent() {
+      this.$emit("openModal");
     },
   },
 };

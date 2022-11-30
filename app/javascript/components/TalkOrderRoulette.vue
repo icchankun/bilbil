@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="fs-5">トーク順番</div>
+    <div>
+      <span class="fs-5">トーク順番</span>
+      <span @click="clickEvent">?</span>
+    </div>
     <div class="row">
       <div class="col-9 p-2 talk_order_roulette">
         {{ talk_order }}
@@ -31,6 +34,7 @@ export default {
   props: {
     number_of_people: "",
   },
+  emits: ["openModal"],
   data() {
     return {
       talk_order: {},
@@ -49,7 +53,12 @@ export default {
         talk_orders.push("1の人から", "2の人から");
       } else {
         for (let n = 1; n <= this.number_of_people; n++) {
-          talk_orders.push(`${n}の人から右回り`, `${n}の人から左回り`,`${n}から昇順`,`${n}から降順`);
+          talk_orders.push(
+            `${n}の人から右回り`,
+            `${n}の人から左回り`,
+            `${n}から昇順`,
+            `${n}から降順`
+          );
         }
       }
       this.talk_order =
@@ -66,6 +75,9 @@ export default {
           clearInterval(roulette);
         }
       }, 100);
+    },
+    clickEvent() {
+      this.$emit('openModal')
     },
   },
 };
