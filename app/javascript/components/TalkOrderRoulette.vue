@@ -39,6 +39,7 @@ export default {
     return {
       talk_order: {},
       is_active: false,
+      roulette_type: "talk_order",
     };
   },
   watch: {
@@ -77,7 +78,7 @@ export default {
       }, 100);
     },
     clickEvent() {
-      this.$emit('openModal')
+      this.$emit("openModal", this.roulette_type);
     },
   },
 };

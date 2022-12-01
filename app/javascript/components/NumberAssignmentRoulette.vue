@@ -35,6 +35,7 @@ export default {
     return {
       numbering: {},
       is_active: false,
+      roulette_type: "number_assignment",
     };
   },
   emits: ["openModal"],
@@ -66,7 +67,7 @@ export default {
       }, 100);
     },
     clickEvent() {
-      this.$emit("openModal");
+      this.$emit("openModal", this.roulette_type);
     },
   },
 };

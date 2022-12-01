@@ -39,6 +39,7 @@ export default {
     return {
       host: {},
       is_active: false,
+      roulette_type: "host",
     };
   },
   watch: {
@@ -67,7 +68,7 @@ export default {
       }, 100);
     },
     clickEvent() {
-      this.$emit("openModal");
+      this.$emit("openModal", this.roulette_type);
     },
   },
 };

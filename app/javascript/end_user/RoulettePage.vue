@@ -1,12 +1,7 @@
 <template>
-  <div v-if="showContent" id="overlay">
-    <div id="content">
-      <p>これがモーダルウィンドウです。</p>
-      <p><button @click="closeModal">close</button></p>
-    </div>
-  </div>
   <Header>B I L B I L</Header>
   <main class="container my-5">
+    <modal-window :show_content="show_content" :roulette_type="roulette_type"  @closeModal="closeModal"></modal-window>
     <div class="row">
       <div class="col-12 col-sm-7 mx-auto">
         <div class="mb-3">
@@ -72,6 +67,7 @@
 </template>
 
 <script>
+import ModalWindow from "../components/ModalWindow.vue";
 import Header from "../components/Header.vue";
 import HeadLine from "../components/Headline.vue";
 import TalkThemeRoulette from "../components/TalkThemeRoulette.vue";
@@ -82,6 +78,7 @@ import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
   components: {
+    ModalWindow,
     Header,
     HeadLine,
     TalkThemeRoulette,
@@ -93,39 +90,23 @@ export default {
   data() {
     return {
       number_of_people: 2,
-      showContent: false,
+      show_content: false,
+      roulette_type: "",
     };
   },
   methods: {
-    openModal() {
-      this.showContent = true;
+    openModal(roulette_type) {
+      this.show_content = true;
+      this.roulette_type = roulette_type;
     },
     closeModal() {
-      this.showContent = false;
+      this.show_content = false;
     },
   },
 };
 </script>
 
 <style>
-#overlay {
-  z-index: 1;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#content {
-  z-index: 2;
-  width: 50%;
-  padding: 1em;
-  background: #fff;
-}
 .number_btn {
   border-radius: 10px;
   font-weight: bold;
