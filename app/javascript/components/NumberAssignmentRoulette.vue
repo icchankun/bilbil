@@ -1,6 +1,9 @@
 <template>
   <div class="mb-3">
-    <div class="fs-5">番号指定</div>
+    <div class="mb-2">
+      <span class="fs-5 me-2">番号指定</span>
+      <span class="modal_btn" @click="clickEvent">?</span>
+    </div>
     <div class="row">
       <div class="col-11 p-2 number_assignment_roulette">
         {{ numbering }}
@@ -32,8 +35,10 @@ export default {
     return {
       numbering: {},
       is_active: false,
+      roulette_type: "number_assignment",
     };
   },
+  emits: ["openModal"],
   methods: {
     assignNumber: function () {
       const numberings = [
@@ -61,6 +66,9 @@ export default {
         }
       }, 100);
     },
+    clickEvent() {
+      this.$emit("openModal", this.roulette_type);
+    },
   },
 };
 </script>
@@ -70,17 +78,5 @@ export default {
   border: 1px solid #000;
   font-weight: bold;
   text-align: center;
-}
-.start_btn {
-  background-color: #0070f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.stop_btn {
-  background-color: #ff5858;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
