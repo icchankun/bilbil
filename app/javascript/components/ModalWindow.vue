@@ -1,10 +1,27 @@
 <template>
   <div v-if="show_content" id="overlay">
-    <div id="content">
-      <p v-if="roulette_type == 'number_assignment'">番号指定ルーレット</p>
-      <p v-else-if="roulette_type == 'talk_order'">トーク順番ルーレット</p>
-      <p v-else>司会者・話し手ルーレット</p>
-      <p><button @click="clickEvent">close</button></p>
+    <div class="modal_window">
+      <div v-if="roulette_type == 'number_assignment'">
+        <h3 class="mb-3">番号指定ルーレット</h3>
+        <div class="mb-3">
+          このルーレットの指示で各参加者に番号を振ります。<br />
+          例)「誕生日が早い順」とルーレットに表示された場合は、誕生日が早い順に1,
+          2と各参加者に番号を振っていきます。
+        </div>
+      </div>
+      <div v-else-if="roulette_type == 'talk_order'">
+        <h3 class="mb-2">トーク順番ルーレット</h3>
+        <div class="mb-3">
+          このルーレットの指示と番号指定ルーレットによって決めた番号をもとにトークする順番を決めてください。
+        </div>
+      </div>
+      <div v-else>
+        <h3 class="mb-2">司会者・話し手ルーレット</h3>
+        <div class="mb-3">
+          このルーレットの指示と番号指定ルーレットによって決めた番号をもとに司会者や話し手を決めることもできます。
+        </div>
+      </div>
+      <span class="btn btn-primary" @click="clickEvent">閉じる</span>
     </div>
   </div>
 </template>
@@ -37,9 +54,8 @@ export default {
   align-items: center;
   justify-content: center;
 }
-#content {
+.modal_window {
   z-index: 2;
-  width: 50%;
   padding: 1em;
   background: #fff;
 }

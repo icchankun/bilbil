@@ -1,8 +1,8 @@
 <template>
   <div class="mb-3">
-    <div>
-      <span class="fs-5">番号指定</span>
-      <span @click="clickEvent">?</span>
+    <div class="mb-2">
+      <span class="fs-5 me-2">番号指定</span>
+      <span class="modal_btn" @click="clickEvent">?</span>
     </div>
     <div class="row">
       <div class="col-11 p-2 number_assignment_roulette">

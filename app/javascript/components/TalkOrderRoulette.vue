@@ -1,26 +1,24 @@
 <template>
-  <div>
-    <div>
-      <span class="fs-5">トーク順番</span>
-      <span @click="clickEvent">?</span>
+  <div class="mb-2">
+    <span class="fs-5 me-2">トーク順番</span>
+    <span class="modal_btn" @click="clickEvent">?</span>
+  </div>
+  <div class="row">
+    <div class="col-9 p-2 talk_order_roulette">
+      {{ talk_order }}
     </div>
-    <div class="row">
-      <div class="col-9 p-2 talk_order_roulette">
-        {{ talk_order }}
+    <div
+      class="col-2 text-white px-0"
+      @click="
+        roulette();
+        active();
+      "
+    >
+      <div class="start_btn h-100" v-if="this.is_active">
+        <i class="fas fa-stop-circle"></i>
       </div>
-      <div
-        class="col-2 text-white px-0"
-        @click="
-          roulette();
-          active();
-        "
-      >
-        <div class="start_btn h-100" v-if="this.is_active">
-          <i class="fas fa-stop-circle"></i>
-        </div>
-        <div class="stop_btn h-100" v-else>
-          <i class="fas fa-sync-alt"></i>
-        </div>
+      <div class="stop_btn h-100" v-else>
+        <i class="fas fa-sync-alt"></i>
       </div>
     </div>
   </div>
