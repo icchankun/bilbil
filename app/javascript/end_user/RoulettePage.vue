@@ -20,7 +20,7 @@
           <head-line>TALK THEME</head-line>
           <talk-theme-roulette></talk-theme-roulette>
         </div>
-        <div class="mb-3">
+        <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
           <div class="fs-5 mb-2">トーク人数を選んでください。</div>
           <div class="d-flex flex-wrap justify-content-start">
@@ -56,6 +56,9 @@
               ></host-roulette>
             </div>
           </div>
+        </div>
+        <div class="fs-5">
+          はてなボタンを押すと、各ルーレットの説明が開きます。
         </div>
       </div>
     </div>
