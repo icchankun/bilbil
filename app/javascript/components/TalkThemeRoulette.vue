@@ -1,5 +1,5 @@
 <template>
-  <div class="fs-5 mb-3">カテゴリーを選んでください</div>
+  <div class="fs-5 mb-3">カテゴリーを選んでください。</div>
   <div class="d-flex flex-wrap mb-3">
     <div
       class="me-3"

@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <div class="fs-5">司会者</div>
-    <div class="row">
-      <div class="col-7 p-2 host_roulette">
-        {{ host }}
+  <div class="mb-2">
+    <span class="fs-5 me-2">司会者・話し手指定</span>
+    <span class="modal_btn" @click="clickEvent">?</span>
+  </div>
+  <div class="row">
+    <div class="col-7 p-2 host_roulette">
+      {{ host }}
+    </div>
+    <div
+      class="col-3 text-white px-0"
+      @click="
+        roulette();
+        active();
+      "
+    >
+      <div class="start_btn h-100" v-if="this.is_active">
+        <i class="fas fa-stop-circle"></i>
       </div>
-      <div
-        class="col-3 text-white px-0"
-        @click="
-          roulette();
-          active();
-        "
-      >
-        <div class="start_btn h-100" v-if="this.is_active">
-          <i class="fas fa-stop-circle"></i>
-        </div>
-        <div class="stop_btn h-100" v-else>
-          <i class="fas fa-sync-alt"></i>
-        </div>
+      <div class="stop_btn h-100" v-else>
+        <i class="fas fa-sync-alt"></i>
       </div>
     </div>
   </div>
@@ -31,10 +32,12 @@ export default {
   props: {
     number_of_people: "",
   },
+  emits: ["openModal"],
   data() {
     return {
       host: {},
       is_active: false,
+      roulette_type: "host",
     };
   },
   watch: {
@@ -62,6 +65,9 @@ export default {
         }
       }, 100);
     },
+    clickEvent() {
+      this.$emit("openModal", this.roulette_type);
+    },
   },
 };
 </script>
@@ -71,17 +77,5 @@ export default {
   border: 1px solid #000;
   font-weight: bold;
   text-align: center;
-}
-.start_btn {
-  background-color: #0070f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.stop_btn {
-  background-color: #ff5858;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>

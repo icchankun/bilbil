@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <div class="fs-5">トーク順番</div>
-    <div class="row">
-      <div class="col-9 p-2 talk_order_roulette">
-        {{ talk_order }}
+  <div class="mb-2">
+    <span class="fs-5 me-2">トーク順番</span>
+    <span class="modal_btn" @click="clickEvent">?</span>
+  </div>
+  <div class="row">
+    <div class="col-9 p-2 talk_order_roulette">
+      {{ talk_order }}
+    </div>
+    <div
+      class="col-2 text-white px-0"
+      @click="
+        roulette();
+        active();
+      "
+    >
+      <div class="start_btn h-100" v-if="this.is_active">
+        <i class="fas fa-stop-circle"></i>
       </div>
-      <div
-        class="col-2 text-white px-0"
-        @click="
-          roulette();
-          active();
-        "
-      >
-        <div class="start_btn h-100" v-if="this.is_active">
-          <i class="fas fa-stop-circle"></i>
-        </div>
-        <div class="stop_btn h-100" v-else>
-          <i class="fas fa-sync-alt"></i>
-        </div>
+      <div class="stop_btn h-100" v-else>
+        <i class="fas fa-sync-alt"></i>
       </div>
     </div>
   </div>
@@ -31,10 +32,12 @@ export default {
   props: {
     number_of_people: "",
   },
+  emits: ["openModal"],
   data() {
     return {
       talk_order: {},
       is_active: false,
+      roulette_type: "talk_order",
     };
   },
   watch: {
@@ -49,7 +52,12 @@ export default {
         talk_orders.push("1の人から", "2の人から");
       } else {
         for (let n = 1; n <= this.number_of_people; n++) {
-          talk_orders.push(`${n}の人から右回り`, `${n}の人から左回り`,`${n}から昇順`,`${n}から降順`);
+          talk_orders.push(
+            `${n}の人から右回り`,
+            `${n}の人から左回り`,
+            `${n}から昇順`,
+            `${n}から降順`
+          );
         }
       }
       this.talk_order =
@@ -67,6 +75,9 @@ export default {
         }
       }, 100);
     },
+    clickEvent() {
+      this.$emit("openModal", this.roulette_type);
+    },
   },
 };
 </script>
@@ -76,17 +87,5 @@ export default {
   border: 1px solid #000;
   font-weight: bold;
   text-align: center;
-}
-.start_btn {
-  background-color: #0070f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.stop_btn {
-  background-color: #ff5858;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
