@@ -93,49 +93,44 @@ export default {
   data() {
     return {
       categories: {},
-      liked_talk_themes: [],
+      liked_talk_theme_ids: [],
     };
   },
   created() {
     this.fetchLikesByIpAddress();
     this.fetchCategories();
   },
+  computed: {
+    // カテゴリー一覧の順番を並び替える。
+    sortedTalkThemesByLikes() {
+      const ids = this.liked_talk_theme_ids;
+
+      return this.categories.forEach((category) => {
+        category.talk_themes.sort((a, b) => {
+          if (ids.includes(a.id)) {
+            return -1;
+          } else if (ids.includes(b.id)) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+      });
+    },
+  },
   methods: {
     // カテゴリー一覧を取得し、その順番を並び替える。
-    fetchCategories: function () {
+    fetchCategories() {
       axios.get("/api/v1/categories").then((response) => {
         this.categories = response.data;
         this.categories = this.sortedTalkThemesByLikes();
       });
     },
 
-    // カテゴリー一覧の順番を並び替える。
-    sortedTalkThemesByLikes: function () {
-      const talk_theme_ids = [];
-      this.liked_talk_themes.forEach((like) => {
-        talk_theme_ids.push(like.talk_theme_id);
-      });
-
-      const talk_themes_sorted = [];
-      this.categories.forEach((category) => {
-        category.talk_themes.sort((a, b) => {
-          if (talk_theme_ids.includes(a.id)) {
-            return -1;
-          } else if (talk_theme_ids.includes(b.id)) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-        talk_themes_sorted.push(category);
-      });
-      return talk_themes_sorted;
-    },
-
     // 接続しているipアドレスがipカラムに保存されているいいねを取得する。
     fetchLikesByIpAddress() {
       axios.get("/api/v1/like/ip").then((response) => {
-        this.liked_talk_themes = response.data;
+        this.liked_talk_theme_ids = response.data;
       });
     },
   },
