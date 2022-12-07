@@ -1,10 +1,13 @@
 <template>
   <dd>
-    <div class="" v-if="isLiked" @click="deleteLike()">
+    <!-- いいねをした時に表示されるいいねボタン -->
+    <div v-if="isLiked" @click="deleteLike">
       <i class="fas fa-heart create-heart me-2"></i>
       <span>{{ count }}</span>
     </div>
-    <div class="heart-size" v-else @click="createLike()">
+
+    <!-- いいねをしていない時に表示されるいいねボタン -->
+    <div v-else @click="createLike">
       <i class="far fa-heart destroy-heart me-2"></i>
       <span>{{ count }}</span>
     </div>
@@ -16,64 +19,72 @@ import axios from "axios";
 
 export default {
   props: {
-    talk_theme_id: "",
-    likes: {},
+    talk_theme_id: "", // このトークテーマのid。
+    likes: {}, // このトークテーマに関連したいいねデータ。
+    
+    // 接続しているipアドレスをipカラムに保存しているいいねデータのtalk_theme_idカラムの値の配列。
+    liked_talk_theme_ids: {
+      type: Array,
+    },
   },
-  emits: ["fetchCategories", "fetchLikesByIpAddress"],
+  emits: [
+    // いいねされたトークテーマのidの配列にこのトークテーマのidを追加する。
+    "addLikedTalkTheme", 
+
+    // いいねされたトークテーマのidの配列からこのトークテーマのidを削除する。
+    "removeLikedTalkTheme"
+  ],
   data() {
     return {
-      isLiked: "",
-      date_likes: {},
-      likes_count: "",
+      likes_count: "", // このトークテーマのいいね数。
     };
   },
   created() {
+    // このトークテーマに紐づいたいいねデータ数をlikes_countに代入する。
     this.likes_count = this.likes.length;
-    this.findLikeByIpAddress();
   },
   computed: {
+    // このトークテーマのいいね数を表示。
     count() {
       return this.likes_count;
     },
-    isLike() {
-      return Boolean(this.isLiked);
+
+    // このトークテーマのいいねの有無を判断。
+    isLiked() {
+      return this.liked_talk_theme_ids.includes(this.talk_theme_id);
     },
   },
   methods: {
-    createLike: function () {
+    // このトークテーマにいいねをする。
+    createLike() {
+      const id = this.talk_theme_id;
       axios
-        .post(`/api/v1/talk_themes/${this.talk_theme_id}/like`, {
-          talk_theme_id: this.talk_theme_id,
+        // いいねデータを保存する。
+        .post(`/api/v1/talk_themes/${id}/like`, {
+          talk_theme_id: id,
         })
         .then(() => {
-          this.fetchLikeByTalkThemeId();
-          this.findLikeByIpAddress();
-          this.$emit("fetchCategories");
-          this.$emit("fetchLikesByIpAddress");
+          // いいね数を1加える。
+          this.likes_count += 1;
+
+          // いいねされたトークテーマのidの配列にこのトークテーマのidを追加する。
+          this.$emit("addLikedTalkTheme", id);
         });
     },
-    deleteLike: function () {
+
+    // トークテーマのいいねを取り消す。
+    deleteLike() {
+      const id = this.talk_theme_id;
       axios
-        .delete(`/api/v1/talk_themes/${this.talk_theme_id}/like`)
+        // いいねデータを削除する。
+        .delete(`/api/v1/talk_themes/${id}/like`)
         .then(() => {
-          this.fetchLikeByTalkThemeId();
-          this.findLikeByIpAddress();
-          this.$emit("fetchCategories");
-          this.$emit("fetchLikesByIpAddress");
+          // いいね数を1減らす。
+          this.likes_count -= 1;
+
+          // いいねされたトークテーマのidの配列からこのトークテーマのidを削除する。
+          this.$emit("removeLikedTalkTheme", id);
         });
-    },
-    fetchLikeByTalkThemeId: function () {
-      axios
-        .get(`/api/v1/talk_themes/${this.talk_theme_id}/like`)
-        .then((response) => {
-          this.date_likes = response.data;
-          this.likes_count = this.date_likes.length;
-        });
-    },
-    findLikeByIpAddress: function () {
-      axios
-        .get(`/api/v1/talk_themes/${this.talk_theme_id}/like/judge`)
-        .then((response) => (this.isLiked = response.data));
     },
   },
 };
