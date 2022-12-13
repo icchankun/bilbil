@@ -1,8 +1,8 @@
 <template>
   <Header>C A T E G O R Y</Header>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-lg-6 col-sm-12 mx-auto">
+  <div class="container my-5">
+    <div class="row mx-2">
+      <div class="col-lg-6 mx-auto">
         <category-form-pane
           :category="category"
           :errors="errors"
@@ -33,20 +33,23 @@ export default {
   },
   data() {
     return {
-      category: {},
-      errors: "",
+      category: {}, // 編集するカテゴリーのデータ。
+      errors: "", // 編集の際に出たエラー内容。
     };
   },
   mounted() {
+    // 編集するカテゴリーのデータを取得する。
     axios
       .get(`/api/v1/categories/${this.$route.params.id}`)
       .then((response) => (this.category = response.data));
   },
   methods: {
-    updateCategory: function () {
+    // 編集したカテゴリーのデータを更新する。
+    updateCategory() {
       axios
         .patch(`/api/v1/categories/${this.category.id}`, this.category)
         .then(() => {
+          // データ更新後は、/adminにリダイレクトする。
           this.$router.push({ path: "/admin" });
         })
         .catch((error) => {

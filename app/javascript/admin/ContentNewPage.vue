@@ -1,8 +1,9 @@
 <template>
   <Header>C R E A T E</Header>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-12 col-lg-6 mx-auto">
+  <div class="container my-5">
+    <div class="row mx-2">
+      <div class="col-lg-6 mx-auto">
+        <!-- トークテーマ新規作成フォーム -->
         <headline>THEHE</headline>
         <div class="alert alert-success" v-if="Boolean(created_talk_theme.content)">
           <dl class="d-flex flex-wrap justify-content-between m-0">
@@ -29,6 +30,8 @@
           @submit="createTalkTheme"
           >トークテーマを作成</talk-theme-form-pane
         >
+        <!-- /トークテーマ新規作成フォーム -->
+        <!-- カテゴリー新規作成フォーム -->
         <headline>CATEGORY</headline>
         <div class="alert alert-success" v-if="Boolean(created_category.name)">
           <dl class="d-flex flex-wrap justify-content-between m-0">
@@ -53,6 +56,7 @@
           @submit="createCategory"
           >カテゴリーを作成</category-form-pane
         >
+        <!-- /カテゴリー新規作成フォーム -->
         <content-index-page-back-button></content-index-page-back-button>
       </div>
     </div>
@@ -81,28 +85,34 @@ export default {
   },
   data() {
     return {
+      // 入力したトークテーマのデータと新規登録の際に出たエラー内容。
       talk_theme: {
         content: "",
         category_id: "",
         errors: "",
       },
-      created_talk_theme: {},
+      
+      created_talk_theme: {}, // 新規登録したトークテーマのデータ。
+      
+      // 入力したカテゴリーのデータと新規登録の際に出たエラー内容。
       category: {
         name: "",
         errors: "",
       },
-      created_category: {},
-      categories: {},
+
+      created_category: {}, // 新規作成したカテゴリーのデータ。
+
+      categories: {}, // 全カテゴリーのデータ。
     };
   },
   mounted() {
-    // 全カテゴリーを取得する
+    // 全カテゴリーを取得する。
     axios.get("/api/v1/categories").then((response) => {
       this.categories = response.data;
     });
   },
   methods: {
-    // トークテーマを新規登録する
+    // トークテーマを新規登録する。
     createTalkTheme() {
       axios
         .post("/api/v1/talk_themes", {
@@ -120,6 +130,8 @@ export default {
           this.talk_theme.errors = "";
 
           this.categoryName();
+
+          // 新規登録後は/admin/content/newにリダイレクトする。
           this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
@@ -146,6 +158,7 @@ export default {
           // エラーメッセージを削除する。
           this.category.errors = "";
 
+          // 新規登録後は/admin/content/newにリダイレクトする。
           this.$router.push({ path: "/admin/content/new" });
         })
         .catch((error) => {
