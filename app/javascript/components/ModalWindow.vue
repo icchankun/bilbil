@@ -1,6 +1,7 @@
 <template>
   <div v-if="show_content" id="overlay">
     <div class="modal_window">
+      <!-- 番号指定ルーレット説明文 -->
       <div v-if="roulette_type == 'number_assignment'">
         <h3 class="mb-3">番号指定ルーレット</h3>
         <div class="mb-3">
@@ -9,14 +10,18 @@
           2と各参加者に番号を振っていきます。
         </div>
       </div>
+      <!-- /番号指定ルーレット説明文 -->
+      <!-- トーク順番ルーレット説明文 -->
       <div v-else-if="roulette_type == 'talk_order'">
         <h3 class="mb-2">トーク順番ルーレット</h3>
         <div class="mb-3">
           このルーレットの指示と番号指定ルーレットによって決めた番号をもとにトークする順番を決めてください。
         </div>
       </div>
+      <!-- /トーク順番ルーレット説明文 -->
+      <!-- 司会者・話し手指定ルーレット説明文 -->
       <div v-else>
-        <h3 class="mb-2">司会者・話し手ルーレット</h3>
+        <h3 class="mb-2">司会者・話し手指定ルーレット</h3>
         <div class="mb-3">
           このルーレットの指示と番号指定ルーレットによって決めた番号をもとに司会者や話し手を決めることもできます。
         </div>
@@ -29,11 +34,12 @@
 <script>
 export default {
   props: {
-    show_content: "",
-    roulette_type: "",
+    show_content: "", // モーダルウィンドウの表示の有無。
+    roulette_type: "", // ルーレットの種類。
   },
   emits: ["closeModal"],
   methods: {
+    // モーダルウィンドウを閉じる。
     clickEvent() {
       this.$emit("closeModal");
     },

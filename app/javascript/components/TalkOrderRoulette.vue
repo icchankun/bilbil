@@ -4,9 +4,12 @@
     <span class="modal_btn" @click="clickEvent">?</span>
   </div>
   <div class="row">
+    <!-- ルーレット表示部分 -->
     <div class="col-9 p-2 talk_order_roulette">
       {{ talk_order }}
     </div>
+    <!-- /ルーレット表示部分 -->
+    <!-- ルーレットボタン -->
     <div
       class="col-2 text-white px-0"
       @click="
@@ -21,6 +24,7 @@
         <i class="fas fa-sync-alt"></i>
       </div>
     </div>
+    <!-- /ルーレットボタン -->
   </div>
 </template>
 
@@ -30,23 +34,25 @@ export default {
     this.talkOrder();
   },
   props: {
-    number_of_people: "",
+    number_of_people: "", // トーク人数。
   },
   emits: ["openModal"],
   data() {
     return {
-      talk_order: {},
-      is_active: false,
-      roulette_type: "talk_order",
+      talk_order: {}, // ルーレットを止めた時に表示する内容。
+      is_active: false, // ルーレットのボタンの切り替え。
+      roulette_type: "talk_order", // ルーレットの種類。
     };
   },
   watch: {
+    // トーク人数が変更するごとにルーレットの内容を変更する。
     number_of_people: function () {
       this.talkOrder();
     },
   },
   methods: {
-    talkOrder: function () {
+    // ルーレットの内容の配列を作成し、その配列からランダムで1つデータを表示させる。
+    talkOrder() {
       const talk_orders = [];
       if (this.number_of_people == 2) {
         talk_orders.push("1の人から", "2の人から");
@@ -63,18 +69,25 @@ export default {
       this.talk_order =
         talk_orders[Math.floor(Math.random() * talk_orders.length)];
     },
+
+    // ルーレットのボタンを切り替える。
     active() {
       this.is_active = !this.is_active;
     },
-    roulette: function () {
+
+    // ルーレットの内容の配列からランダムで1つデータを表示させることを0.1秒ごとに繰り返す。
+    roulette() {
       let roulette = setInterval(() => {
         if (this.is_active) {
           this.talkOrder();
         } else {
+          // 0.1秒ごとに1つデータを表示させることを止める。
           clearInterval(roulette);
         }
       }, 100);
     },
+
+    // このルーレットの説明が書かれたモーダルウィンドウが開く。
     clickEvent() {
       this.$emit("openModal", this.roulette_type);
     },
