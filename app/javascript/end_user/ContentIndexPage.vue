@@ -127,7 +127,7 @@ export default {
     sortedTalkThemesByLikes() {
       const ids = this.liked_talk_theme_ids;
 
-      return this.categories.forEach((category) => {
+      this.categories.forEach((category) => {
         category.talk_themes.sort((a, b) => {
           if (ids.includes(a.id)) {
             return -1;
