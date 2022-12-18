@@ -1,13 +1,16 @@
 class Api::V1::CategoriesController < ApiController
+  # indexアクション以外はログインによるアクセス制限を行う。
   before_action :authenticate_admin!, except: [:index]
+
   before_action :set_category, only: [:show, :update, :destroy]
 
-  # ActiveRecordのレコードが見つからなければ404 not foundを応答する
+  # ActiveRecordのレコードが見つからなければ404 not foundを応答する。
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render json: { error: '404 not found' }, status: 404
   end
 
   def index
+    # includesでtalk_themesとlikesのデータを予め取得しておく。
     categories = Category.includes(talk_themes: :likes).all
     render json: categories, each_serializer: CategorySerializer, include: [talk_themes: :likes]
   end
@@ -39,6 +42,7 @@ class Api::V1::CategoriesController < ApiController
   end
 
   private
+    # @categoryは再使用できるので、メソッドにしておく。
     def set_category
       @category = Category.find(params[:id])
     end

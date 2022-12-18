@@ -1,8 +1,8 @@
 <template>
   <Header>T H E M E</Header>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-lg-6 col-sm-12 mx-auto">
+  <div class="container my-5">
+    <div class="row mx-2">
+      <div class="col-lg-6 mx-auto">
         <talk-theme-form-pane
           :talk_theme="talk_theme"
           :categories="categories"
@@ -34,24 +34,29 @@ export default {
   },
   data() {
     return {
-      talk_theme: {},
-      categories: {},
-      errors: "",
+      talk_theme: {}, // 編集するトークテーマのデータ。
+      categories: {}, // 全カテゴリーのデータ。
+      errors: "", // 編集した際に出たエラー内容。
     };
   },
   mounted() {
+    // 編集するトークテーマのデータを取得する。
     axios
       .get(`/api/v1/talk_themes/${this.$route.params.id}`)
       .then((response) => (this.talk_theme = response.data));
+
+    // 全カテゴリーのデータを取得する。
     axios
       .get("/api/v1/categories")
       .then((response) => (this.categories = response.data));
   },
   methods: {
+    // 特定のトークテーマのデータを更新する。
     updateTalkTheme: function () {
       axios
         .patch(`/api/v1/talk_themes/${this.talk_theme.id}`, this.talk_theme)
         .then(() => {
+          // データ更新後は、/adminにリダイレクトする。
           this.$router.push({ path: "/admin" });
         })
         .catch((error) => {

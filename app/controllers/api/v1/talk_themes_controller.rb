@@ -1,5 +1,7 @@
 class Api::V1::TalkThemesController < ApiController
+  # indexアクション以外はログインによるアクセス制限を行う。
   before_action :authenticate_admin!, except: [:index]
+
   before_action :set_talk_theme, only: [:show, :update, :destroy]
   
   # ActiveRecordのレコードが見つからなければ404 not foundを応答する
@@ -8,6 +10,7 @@ class Api::V1::TalkThemesController < ApiController
   end
 
   def index
+    # includesでlikesのデータを予め取得しておく。
     talk_themes = TalkTheme.includes(:likes).all
     render json: talk_themes, each_serializer: TalkThemeSerializer
   end
@@ -39,6 +42,7 @@ class Api::V1::TalkThemesController < ApiController
   end
 
   private
+    # @talk_themeは再使用できるので、メソッドにしておく。
     def set_talk_theme
       @talk_theme = TalkTheme.find(params[:id])
     end

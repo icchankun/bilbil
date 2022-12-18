@@ -1,9 +1,10 @@
 <template>
   <Header>C O N T E N T</Header>
-  <main class="container">
-    <div class="row my-4">
+  <main class="container my-5">
+    <div class="row mx-2">
       <div class="col-lg-6 mx-auto">
-        <div class="mb-4">
+        <!-- ページ遷移リンク -->
+        <div class="mb-3">
           <div class="mb-2">
             <a class="py-1" data-method="delete" href="/admin/sign_out"
               >ログアウトする。</a
@@ -15,9 +16,11 @@
             >
           </div>
         </div>
+        <!-- /ページ遷移リンク -->
+        <!-- 各カテゴリーのトークテーマ一覧 -->
         <div
           class="row dropdown"
-          v-for="category in sortedTalkThemesByLikes"
+          v-for="category in categories"
           :key="category.id"
         >
           <dl
@@ -83,6 +86,7 @@
             </li>
           </ol>
         </div>
+        <!-- 各カテゴリーのトークテーマ一覧 -->
       </div>
     </div>
   </main>
@@ -102,31 +106,34 @@ export default {
   },
   data() {
     return {
-      categories: [],
-      talk_themes: [],
+      categories: [], // 全カテゴリーのデータの配列。
+      talk_themes: [], // 全トークテーマのデータの配列。
     };
   },
   created() {
-    axios
-      .get("/api/v1/categories")
-      .then((response) => (this.categories = response.data));
+    // 全カテゴリーのデータを取得し、いいね数が多い順にトークテーマを並び替える。
+    axios.get("/api/v1/categories").then((response) => {
+      this.categories = response.data;
+      this.sortedTalkThemesByLikes;
+    });
+
+    // 全トークテーマのデータの配列。
     axios
       .get("/api/v1/talk_themes")
       .then((response) => (this.talk_themes = response.data));
   },
   computed: {
+    // トークテーマをいいね数が多い順に並び替える。
     sortedTalkThemesByLikes() {
-      const talk_themes_sorted = [];
       this.categories.forEach((category) => {
         category.talk_themes.sort((a, b) => {
-          b.likes.length - a.likes.length;
+          return b.likes.length - a.likes.length;
         });
-        talk_themes_sorted.push(category);
       });
-      return talk_themes_sorted
     },
   },
   methods: {
+    // 特定のカテゴリーを削除する。
     deleteCategory(delete_id) {
       if (
         confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
@@ -135,6 +142,8 @@ export default {
           this.updateContents();
         });
     },
+
+    // 特定のトークテーマを削除する。
     deleteTalkTheme(delete_id) {
       if (
         confirm(
@@ -145,19 +154,25 @@ export default {
           this.updateContents();
         });
     },
+
+    // 削除したいカテゴリーのカテゴリー名を取得する。
     categoryName(delete_id) {
       const filterDate = this.categories.filter(
         (category) => category.id === delete_id
       );
       return filterDate[0].name;
     },
+
+    // 削除したいトークテーマの内容を取得する。
     talkThemeContent(delete_id) {
       const filterDate = this.talk_themes.filter(
         (talk_theme) => talk_theme.id === delete_id
       );
       return filterDate[0].content;
     },
-    updateContents: function () {
+
+    // 全カテゴリーのデータを取得する。
+    updateContents() {
       axios
         .get("/api/v1/categories")
         .then((response) => (this.categories = response.data));
