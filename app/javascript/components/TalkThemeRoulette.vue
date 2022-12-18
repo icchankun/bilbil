@@ -27,7 +27,7 @@
   <!-- ルーレット表示部分 -->
   <div class="fs-5">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3 fs-5">
-    <span v-if="this.talk_theme != undefined">
+    <span class="m-4" v-if="this.talk_theme != undefined">
       {{ talk_theme.content }} ?
     </span>
     <span v-else>トークはありません。</span>
