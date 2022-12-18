@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <!-- ルーレット表示部分 -->
-      <div class="col-11 p-2 number_assignment_roulette">
+      <div class="col-11 p-2 roulette">
         {{ numbering }}
       </div>
       <!-- /ルーレット表示部分 -->
@@ -86,9 +86,4 @@ export default {
 </script>
 
 <style scoped>
-.number_assignment_roulette {
-  border: 1px solid #000;
-  font-weight: bold;
-  text-align: center;
-}
 </style>

@@ -1,7 +1,11 @@
 <template>
   <Header>B I L B I L</Header>
   <main class="container my-5">
-    <modal-window :show_content="show_content" :roulette_type="roulette_type" @closeModal="closeModal"></modal-window>
+    <modal-window
+      :show_content="show_content"
+      :roulette_type="roulette_type"
+      @closeModal="closeModal"
+    ></modal-window>
     <div class="row mx-2">
       <div class="col-md-7 mx-auto">
         <!-- ページ遷移リンク -->
@@ -48,7 +52,9 @@
           </div>
           <!-- /トーク人数選択ボタン -->
           <!-- 番号指定ルーレット -->
-          <number-assignment-roulette @openModal="openModal"></number-assignment-roulette>
+          <number-assignment-roulette
+            @openModal="openModal"
+          ></number-assignment-roulette>
           <!-- /番号指定ルーレット -->
           <div class="row">
             <!-- トーク順番ルーレット -->
@@ -129,23 +135,43 @@ export default {
 <style>
 .modal_btn {
   padding: 5px 10px;
-  border: solid 1px #6C757D;
+  border: solid 1px #6c757d;
   cursor: pointer;
 }
+
 .number_btn {
   border-radius: 10px;
   font-weight: bold;
 }
+
+.roulette {
+  border: 1px solid #000;
+  padding: 0.5rem;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .start_btn {
   background-color: #0070f3;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .stop_btn {
   background-color: #ff5858;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/***************************
+  メディアクエリ 768px以下
+***************************/
+@media (min-width: 768px) {
+  .roulette {
+    font-size: 1rem;
+  }
 }
 </style>

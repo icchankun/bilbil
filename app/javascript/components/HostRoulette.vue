@@ -5,7 +5,7 @@
   </div>
   <div class="row">
     <!-- ルーレット表示部分 -->
-    <div class="col-11 col-lg-10 p-2 host_roulette">
+    <div class="col-11 col-lg-10 roulette">
       {{ host }}
     </div>
     <!-- /ルーレット表示部分 -->
@@ -86,9 +86,4 @@ export default {
 </script>
 
 <style scoped>
-.host_roulette {
-  border: 1px solid #000;
-  font-weight: bold;
-  text-align: center;
-}
 </style>
