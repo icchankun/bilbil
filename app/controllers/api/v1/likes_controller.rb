@@ -33,7 +33,7 @@ class Api::V1::LikesController < ApiController
   end
 
   private
-
+  # @likeは再使用できるので、メソッドにしておく。
   def set_like
     @like = Like.find_by(ip: request.remote_ip, talk_theme_id: params[:talk_theme_id])
   end

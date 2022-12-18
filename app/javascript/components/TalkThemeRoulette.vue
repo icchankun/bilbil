@@ -1,5 +1,6 @@
 <template>
   <div class="fs-5 mb-3">カテゴリーを選んでください。</div>
+  <!-- カテゴリー選択ボタン -->
   <div class="d-flex flex-wrap mb-3">
     <div
       class="me-3"
@@ -22,13 +23,17 @@
       >
     </div>
   </div>
+  <!-- /カテゴリー選択ボタン -->
+  <!-- ルーレット表示部分 -->
   <div class="fs-5">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3 fs-5">
-    <span v-if="this.talk_theme != undefined">
+    <span class="m-4" v-if="this.talk_theme != undefined">
       {{ talk_theme.content }} ?
     </span>
     <span v-else>トークはありません。</span>
   </div>
+  <!-- /ルーレット表示部分 -->
+  <!-- ルーレットボタン -->
   <div class="text-center">
     <div
       class="d-inline-block text-white"
@@ -47,6 +52,7 @@
       </div>
     </div>
   </div>
+  <!-- /ルーレットボタン -->
 </template>
 
 <script>
@@ -54,6 +60,7 @@ import axios from "axios";
 
 export default {
   created() {
+    // 全カテゴリーのデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
     axios
       .get("/api/v1/categories")
       .then((response) => {
@@ -67,21 +74,23 @@ export default {
   },
   data() {
     return {
-      categories: [],
-      category_id: "",
-      category_name:"",
-      talk_theme: {},
-      is_active: false,
+      categories: [], // 全カテゴリーのデータの配列。
+      category_id: "", // 選択されたカテゴリーのid。
+      category_name:"", // 選択されたカテゴリーの名前。
+      talk_theme: {}, // ルーレットに表示されるトークテーマ。
+      is_active: false, // ルーレットボタンの切り替え。
     };
   },
   watch: {
+    // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: function () {
       this.talkThemes();
       this.getCategoryName();
     },
   },
   methods: {
-    talkThemes: function () {
+    // ルーレットの内容の配列を作成し、その配列からランダムで1つデータを表示させる。
+    talkThemes() {
       let talk_themes = [];
       this.categories.forEach((category) => {
         if (category.id == this.category_id) {
@@ -91,25 +100,32 @@ export default {
         }
       });
     },
+
+    // 選択したカテゴリーのカテゴリー名を取得する。
     async getCategoryName() {
       const category = await this.category();
       this.category_name = category.name;
     },
-    category: function () {
+    category() {
       return new Promise((resolve) => {
         resolve(
           this.categories.find((category) => category.id == this.category_id)
         );
       });
     },
+
+    // ルーレットのボタンを切り替える。
     active() {
       this.is_active = !this.is_active;
     },
-    roulette: function () {
+
+    // ルーレットの内容の配列からランダムで1つデータを表示させることを0.1秒ごとに繰り返す。
+    roulette() {
       let roulette = setInterval(() => {
         if (this.is_active) {
           this.talkThemes();
         } else {
+          // 0.1秒ごとに1つデータを表示させることを止める。
           clearInterval(roulette);
         }
       }, 100);

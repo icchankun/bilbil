@@ -1,17 +1,19 @@
 <template>
   <Header>G U I D E</Header>
   <main class="container my-5">
-    <div class="row">
-      <div class="col-12 col-lg-7 mx-auto">
+    <div class="row mx-2">
+      <div class="col-lg-7 mx-auto">
+        <!-- トークテーマルーレットの使用方法説明 -->
         <head-line>TALK THEME</head-line>
-        <ol class="description mx-auto mb-5">
-          <li class="mb-3">
+        <ol class="fw-bold mb-5">
+          <li class="mb-1">
             お好きなトークテーマのカテゴリーを選択します。
             <div class="fw-normal">※選択したボタンは色が変わります。</div>
           </li>
+          <!-- カテゴリー選択ボタン -->
           <div class="d-flex flex-wrap mb-3">
             <div
-              class="me-3"
+              class="me-2"
               v-for="(category, index) in categories"
               :key="category.id"
             >
@@ -31,13 +33,16 @@
               >
             </div>
           </div>
+          <!-- /カテゴリー選択ボタン -->
           <li>
-            ルーレットの下に配置したボタンでルーレットをスタート・ストップさせ、<br />
+            ルーレットの下に配置したボタンでルーレットをスタート・ストップさせ、
             トークテーマを決定し、会話を始めます。
           </li>
         </ol>
+        <!-- /トークテーマルーレットの使用方法説明 -->
+        <!-- トークサポートルーレットの使用方法説明 -->
         <head-line>TALK SUPPORT</head-line>
-        <ol class="description mx-auto mb-5">
+        <ol class="fw-bold mb-5">
           <li class="mb-3">
             トーク人数を選択します。
             <div class="fw-normal">※選択したボタンは色が変わります。</div>
@@ -54,12 +59,13 @@
                 autocomplete="off"
               />
               <label
-                class="btn btn-outline-secondary number_btn mb-3"
+                class="btn btn-outline-secondary number_btn"
                 :for="n + 1"
                 >{{ n + 1 }}</label
               >
             </div>
           </div>
+          <!-- /トーク人数選択ボタン -->
           <li class="mb-3">
             番号指定/トーク順番/司会者・話し手指定ルーレットは右に配置したボタンでルーレットをスタート・ストップさせます。
           </li>
@@ -69,13 +75,18 @@
             また、司会者・話し手指定ルーレットにより、司会者や話し手を番号指定ルーレットで決めた番号をもとに指定することができます。
           </li>
         </ol>
+        <!-- /トークサポートルーレットの使用方法説明 -->
       </div>
-      <div class="text-center mb-3">
-        <router-link class="py-1" to="/content"
-          >トークテーマの確認はこちらから。</router-link
-        >
+      <!-- ページ遷移リンク -->
+      <div>
+        <div class="text-center mb-3">
+          <router-link class="py-1" to="/content"
+            >トークテーマの確認はこちらから。</router-link
+          >
+        </div>
+        <roulette-page-back-button></roulette-page-back-button>
       </div>
-      <roulette-page-back-button></roulette-page-back-button>
+      <!-- /ページ遷移リンク -->
     </div>
   </main>
   <end-user-footer>
@@ -100,6 +111,7 @@ export default {
     EndUserFooter,
   },
   created() {
+    // 全カテゴリーのJSONデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
     axios.get("/api/v1/categories").then((response) => {
       this.categories = response.data;
       this.category_id = this.categories[0].id;
@@ -107,19 +119,15 @@ export default {
   },
   data() {
     return {
-      categories: [],
-      category_id: "",
-      number_of_people: 2,
+      categories: [], // 全カテゴリーのデータの配列。
+      category_id: "", // 選択されているカテゴリーのid。
+      number_of_people: 2, // 選択されているトーク人数（デフォルトは2人）。
     };
   },
 };
 </script>
 
 <style scoped>
-.description {
-  width: 80%;
-  font-weight: bold;
-}
 .category_btn {
   width: 80px;
   border-radius: 40px;

@@ -1,3 +1,6 @@
+/***************************
+  全体
+***************************/
 body {
   font-family: "Helvetica Neue",
     Arial,
@@ -7,6 +10,9 @@ body {
     sans-serif;
 }
 
+/***************************
+  メイン
+***************************/
 #vue-app,
 .signin_body {
   min-height: 100vh;
@@ -21,13 +27,19 @@ body {
   padding-bottom: 300px;
 }
 
+/***************************
+  フッター
+***************************/
 .footer {
   width: 100%;
   position: absolute;
   bottom: 0;
 }
 
-@media (max-width: 800px) {
+/***************************
+  メディアクエリ 768px以下
+***************************/
+@media (max-width: 768px) {
   .end_user {
     padding-bottom: 500px;
   }

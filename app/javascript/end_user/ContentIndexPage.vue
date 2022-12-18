@@ -1,7 +1,7 @@
 <template>
   <Header>C O N T E N T</Header>
-  <main class="container">
-    <div class="row mx-2 my-5">
+  <main class="container my-5">
+    <div class="row mx-2">
       <div class="col-lg-7 mx-auto">
         <!-- ページ説明文 -->
         <div class="mb-3">
@@ -45,6 +45,7 @@
               </div>
             </button>
             <ol class="dropdown-menu p-0">
+              <!-- トークテーマが存在する場合 -->
               <li
                 v-if="category.talk_themes.length != 0"
                 v-for="talk_theme in category.talk_themes"
@@ -66,11 +67,14 @@
                   </div>
                 </div>
               </li>
+              <!-- /トークテーマが存在する場合 -->
+              <!-- トークテーマが存在しない場合 -->
               <li v-else>
                 <div class="fw-bold p-2">
                   トークテーマはありません。
                 </div>
               </li>
+              <!-- /トークテーマが存在しない場合 -->
             </ol>
           </div>
         </div>
@@ -123,7 +127,7 @@ export default {
     sortedTalkThemesByLikes() {
       const ids = this.liked_talk_theme_ids;
 
-      return this.categories.forEach((category) => {
+      this.categories.forEach((category) => {
         category.talk_themes.sort((a, b) => {
           if (ids.includes(a.id)) {
             return -1;
@@ -146,7 +150,6 @@ export default {
     },
 
     // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
-    
     fetchLikedTalkThemeIds() {
       axios.get("/api/v1/like/ip").then((response) => {
         this.liked_talk_theme_ids = response.data;
@@ -175,7 +178,6 @@ export default {
   border-radius: 0;
   border-bottom: 1px solid #fff;
 }
-
 .dropdown-menu {
   position: static !important;
   transform: translate(0, 0) !important;
@@ -185,7 +187,6 @@ export default {
   display: list-item;
   list-style: decimal inside;
 }
-
 .d-inline-flex {
   width: 95%;
 }
