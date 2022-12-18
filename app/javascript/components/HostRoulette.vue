@@ -5,13 +5,13 @@
   </div>
   <div class="row">
     <!-- ルーレット表示部分 -->
-    <div class="col-7 p-2 host_roulette">
+    <div class="col-11 col-lg-10 p-2 host_roulette">
       {{ host }}
     </div>
     <!-- /ルーレット表示部分 -->
     <!-- ルーレットボタン -->
     <div
-      class="col-3 text-white px-0"
+      class="col-1 col-lg-2 text-white px-0"
       @click="
         roulette();
         active();

@@ -52,7 +52,7 @@
           <!-- /番号指定ルーレット -->
           <div class="row">
             <!-- トーク順番ルーレット -->
-            <div class="col-6">
+            <div class="col-12 col-lg-5 mb-3 me-lg-auto mb-lg-0">
               <talk-order-roulette
                 :number_of_people="number_of_people"
                 @openModal="openModal"
@@ -60,7 +60,7 @@
             </div>
             <!-- /トーク順番ルーレット -->
             <!-- 司会者・話し手指定ルーレット -->
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
               <host-roulette
                 :number_of_people="number_of_people"
                 @openModal="openModal"
