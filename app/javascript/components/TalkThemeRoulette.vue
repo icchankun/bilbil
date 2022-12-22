@@ -89,16 +89,16 @@ export default {
   methods: {
     talkThemes() {
       // 選択したカテゴリーのルーレット内容を配列にする。
-      const category = this.categories.find(
+      const selected_category = this.categories.find(
         (category) => category.id == this.category_id
       );
 
       // 選択したカテゴリーのカテゴリー名を取得する。
-      this.category_name = category.name;
+      this.category_name = selected_category.name;
 
       // ルーレット内容の配列から1つランダムに表示させる。
       this.talk_theme =
-        category.talk_themes[Math.floor(Math.random() * category.talk_themes.length)];
+        selected_category.talk_themes[Math.floor(Math.random() * selected_category.talk_themes.length)];
     },
 
     // ルーレットのボタンを切り替える。
