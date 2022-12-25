@@ -28,7 +28,7 @@
   <div class="fs-5">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3">
     <span class="m-4" v-if="this.talk_theme != undefined">
-      {{ talk_theme.content }} ?
+      {{ talk_theme }} ?
     </span>
     <span v-else>トークはありません。</span>
   </div>
@@ -61,15 +61,10 @@ import axios from "axios";
 export default {
   created() {
     // 全カテゴリーのデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
-    axios
-      .get("/api/v1/categories")
-      .then((response) => {
-        this.categories = response.data;
-        this.category_id = this.categories[0].id;
-      })
-      .then(() => {
-        this.talkThemes();
-      });
+    axios.get("/api/v1/categories").then((response) => {
+      this.categories = response.data;
+      this.category_id = this.categories[0].id;
+    });
   },
   data() {
     return {
@@ -92,13 +87,38 @@ export default {
       const selected_category = this.categories.find(
         (category) => category.id == this.category_id
       );
+      const talk_themes = selected_category.talk_themes;
 
       // 選択したカテゴリーのカテゴリー名を取得する。
       this.category_name = selected_category.name;
 
-      // ルーレット内容の配列から1つランダムに表示させる。
-      this.talk_theme =
-        selected_category.talk_themes[Math.floor(Math.random() * selected_category.talk_themes.length)];
+      // 各カテゴリーの人気トークテーマの10番目までを取得する。
+      let up_to_the_tenth = {};
+      for (const index in talk_themes) {
+        if (index < 10) {
+          // 「"トークテーマ": 30」をup_to_the_tenthに格納する。
+          up_to_the_tenth[talk_themes[index].content] = 30;
+        } else {
+          break;
+        }
+      }
+
+      // トークテーマをランダムにresultに代入する。
+      let result =
+        talk_themes[Math.floor(Math.random() * talk_themes.length)].content;
+
+      for (const talk_theme in up_to_the_tenth) {
+        // ランダムに0~100をrandに代入する。
+        const rand = Math.floor(Math.random() * 100);
+        console.log(rand);
+
+        // もしrandの数値がトークテーマに付与された数値以下だったら、そのトークテーマをresultに代入する。
+        if (rand <= up_to_the_tenth[talk_theme]) {
+          result = talk_theme;
+          break;
+        }
+      }
+      this.talk_theme = result;
     },
 
     // ルーレットのボタンを切り替える。
