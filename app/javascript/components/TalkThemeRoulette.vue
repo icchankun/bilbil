@@ -110,7 +110,6 @@ export default {
       for (const talk_theme in up_to_the_tenth) {
         // ランダムに0~100をrandに代入する。
         const rand = Math.floor(Math.random() * 100);
-        console.log(rand);
 
         // もしrandの数値がトークテーマに付与された数値以下だったら、そのトークテーマをresultに代入する。
         if (rand <= up_to_the_tenth[talk_theme]) {
