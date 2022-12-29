@@ -70,9 +70,7 @@
               <!-- /トークテーマが存在する場合 -->
               <!-- トークテーマが存在しない場合 -->
               <li v-else>
-                <div class="fw-bold p-2">
-                  トークテーマはありません。
-                </div>
+                <div class="fw-bold p-2">トークテーマはありません。</div>
               </li>
               <!-- /トークテーマが存在しない場合 -->
             </ol>
@@ -117,12 +115,22 @@ export default {
     //いいねをしたトークテーマのidの配列に変化があった時、トークテーマの並び替えを行う。
     liked_talk_theme_ids: {
       handler() {
+        this.popularTalkThemes;
         this.sortedTalkThemesByLikes;
       },
       deep: true,
     },
   },
   computed: {
+    // トークテーマをいいね数が多い順に並び替える。
+    popularTalkThemes() {
+      this.categories.forEach((category) => {
+        category.talk_themes.sort((a, b) => {
+          return b.likes.length - a.likes.length;
+        });
+      });
+    },
+
     // いいねをしたトークテーマをトークテーマ一覧の上部に表示させる。
     sortedTalkThemesByLikes() {
       const ids = this.liked_talk_theme_ids;
@@ -145,6 +153,7 @@ export default {
     fetchCategories() {
       axios.get("/api/v1/categories").then((response) => {
         this.categories = response.data;
+        this.popularTalkThemes;
         this.sortedTalkThemesByLikes;
       });
     },

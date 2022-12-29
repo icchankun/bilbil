@@ -26,9 +26,9 @@
   <!-- /カテゴリー選択ボタン -->
   <!-- ルーレット表示部分 -->
   <div class="fs-5">{{ this.category_name }}トーク</div>
-  <div class="talk_theme_roulette mb-3 fs-5">
+  <div class="talk_theme_roulette mb-3">
     <span class="m-4" v-if="this.talk_theme != undefined">
-      {{ talk_theme.content }} ?
+      {{ talk_theme }} ?
     </span>
     <span v-else>トークはありません。</span>
   </div>
@@ -61,22 +61,16 @@ import axios from "axios";
 export default {
   created() {
     // 全カテゴリーのデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
-    axios
-      .get("/api/v1/categories")
-      .then((response) => {
-        this.categories = response.data;
-        this.category_id = this.categories[0].id;
-      })
-      .then(() => {
-        this.talkThemes();
-        this.getCategoryName();
-      });
+    axios.get("/api/v1/categories").then((response) => {
+      this.categories = response.data;
+      this.category_id = this.categories[0].id;
+    });
   },
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
       category_id: "", // 選択されたカテゴリーのid。
-      category_name:"", // 選択されたカテゴリーの名前。
+      category_name: "", // 選択されたカテゴリーのカテゴリー名。
       talk_theme: {}, // ルーレットに表示されるトークテーマ。
       is_active: false, // ルーレットボタンの切り替え。
     };
@@ -85,33 +79,50 @@ export default {
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: function () {
       this.talkThemes();
-      this.getCategoryName();
     },
   },
   methods: {
-    // ルーレットの内容の配列を作成し、その配列からランダムで1つデータを表示させる。
     talkThemes() {
-      let talk_themes = [];
-      this.categories.forEach((category) => {
-        if (category.id == this.category_id) {
-          talk_themes = category.talk_themes;
-          this.talk_theme =
-            talk_themes[Math.floor(Math.random() * talk_themes.length)];
-        }
-      });
-    },
+      // 選択したカテゴリーのルーレット内容を配列にする。
+      const selected_category = this.categories.find(
+        (category) => category.id == this.category_id
+      );
+      const talk_themes = selected_category.talk_themes;
 
-    // 選択したカテゴリーのカテゴリー名を取得する。
-    async getCategoryName() {
-      const category = await this.category();
-      this.category_name = category.name;
-    },
-    category() {
-      return new Promise((resolve) => {
-        resolve(
-          this.categories.find((category) => category.id == this.category_id)
-        );
+      // トークテーマをいいね数が多い順に並び替える。
+      talk_themes.sort((a, b) => {
+        return b.likes.length - a.likes.length;
       });
+
+      // 選択したカテゴリーのカテゴリー名を取得する。
+      this.category_name = selected_category.name;
+
+      // 各カテゴリーの人気トークテーマの10番目までを取得する。
+      let up_to_the_tenth = {};
+      for (const index in talk_themes) {
+        if (index < 10) {
+          // 「"トークテーマ": 30」をup_to_the_tenthに格納する。
+          up_to_the_tenth[talk_themes[index].content] = 30;
+        } else {
+          break;
+        }
+      }
+
+      // トークテーマをランダムにresultに代入する。
+      let result =
+        talk_themes[Math.floor(Math.random() * talk_themes.length)].content;
+
+      for (const talk_theme in up_to_the_tenth) {
+        // ランダムに0~100をrandに代入する。
+        const rand = Math.floor(Math.random() * 100);
+
+        // もしrandの数値がトークテーマに付与された数値以下だったら、そのトークテーマをresultに代入する。
+        if (rand <= up_to_the_tenth[talk_theme]) {
+          result = talk_theme;
+          break;
+        }
+      }
+      this.talk_theme = result;
     },
 
     // ルーレットのボタンを切り替える。
@@ -146,6 +157,7 @@ export default {
   border: 1px solid #000;
   border-radius: 5px;
   font-weight: bold;
+  font-size: 1.25rem;
   height: 200px;
 }
 .start_btn {
