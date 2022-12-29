@@ -44,7 +44,7 @@ https://bil-bil.herokuapp.com/
 ## **使用技術** 🛠️
 **フロントエンド** <br/>
 HTML/CSS/Bootstrap5<br/>
-Vue.js 3.2.36
+Vue.js 3.2.36 (JavaScript)
 
 **バックエンド**<br/>
 Ruby 3.1.2<br/>
