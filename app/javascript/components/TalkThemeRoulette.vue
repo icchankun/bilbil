@@ -89,6 +89,11 @@ export default {
       );
       const talk_themes = selected_category.talk_themes;
 
+      // トークテーマをいいね数が多い順に並び替える。
+      talk_themes.sort((a, b) => {
+        return b.likes.length - a.likes.length;
+      });
+
       // 選択したカテゴリーのカテゴリー名を取得する。
       this.category_name = selected_category.name;
 
