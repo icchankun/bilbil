@@ -129,8 +129,8 @@ export default {
 
 <style scoped>
 .category_btn {
-  width: 80px;
-  border-radius: 40px;
+  border-radius: 20px;
+  padding: 0 1rem;
 }
 
 .number_btn {
