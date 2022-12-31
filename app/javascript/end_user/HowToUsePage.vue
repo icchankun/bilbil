@@ -47,16 +47,14 @@
             トーク人数を選択します。
             <div class="fw-normal">※選択したボタンは色が変わります。</div>
           </li>
-          <div class="d-flex flex-wrap justify-content-start mb-3">
-            <div class="me-3" v-for="n in 9" :key="n">
+          <div class="d-flex flex-wrap mb-3">
+            <div class="number_btn-wrapper" v-for="n in 9" :key="n">
               <input
                 type="radio"
                 class="btn-check"
-                :name="n + 1"
                 :id="n + 1"
                 :value="n + 1"
                 v-model="number_of_people"
-                autocomplete="off"
               />
               <label
                 class="btn btn-outline-secondary number_btn"
@@ -131,10 +129,5 @@ export default {
 .category_btn {
   border-radius: 20px;
   padding: 0 1rem;
-}
-
-.number_btn {
-  border-radius: 10px;
-  font-weight: bold;
 }
 </style>

@@ -31,20 +31,18 @@
         <!-- トークサポートルーレット -->
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
-          <div class="fs-5 mb-2">トーク人数を選んでください。</div>
-          <div class="d-flex flex-wrap justify-content-start">
-            <div class="me-3" v-for="n in 9" :key="n">
+          <div class="fs-5 mb-1">トーク人数を選んでください。</div>
+          <div class="d-flex flex-wrap mb-3">
+            <div class="number_btn-wrapper" v-for="n in 9" :key="n">
               <input
                 type="radio"
                 class="btn-check"
-                :name="n + 1"
                 :id="n + 1"
                 :value="n + 1"
                 v-model="number_of_people"
-                autocomplete="off"
               />
               <label
-                class="btn btn-outline-secondary number_btn mb-3"
+                class="btn btn-outline-secondary number_btn"
                 :for="n + 1"
                 >{{ n + 1 }}</label
               >
@@ -137,11 +135,6 @@ export default {
   padding: 5px 10px;
   border: solid 1px #6c757d;
   cursor: pointer;
-}
-
-.number_btn {
-  border-radius: 10px;
-  font-weight: bold;
 }
 
 .roulette {
