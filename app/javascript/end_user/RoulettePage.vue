@@ -31,8 +31,8 @@
         <!-- トークサポートルーレット -->
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
-          <div class="fs-5 mb-1">トーク人数を選んでください。</div>
-          <div class="d-flex flex-wrap mb-3">
+          <div class="mb-1">トーク人数を選んでください。</div>
+          <div class="d-flex flex-wrap mb-4">
             <div class="number_btn-wrapper" v-for="n in 9" :key="n">
               <input
                 type="radio"
@@ -49,6 +49,11 @@
             </div>
           </div>
           <!-- /トーク人数選択ボタン -->
+          <!-- はてなボタン説明 -->
+          <div class="mb-3">
+            はてなボタンを押すと、各ルーレットの使い方を見ることができます。
+          </div>
+          <!-- /はてなボタン説明 -->
           <!-- 番号指定ルーレット -->
           <number-assignment-roulette
             @openModal="openModal"
@@ -74,11 +79,6 @@
           </div>
         </div>
         <!-- /トークサポートルーレット -->
-        <!-- はてなボタン説明 -->
-        <div class="fs-5">
-          はてなボタンを押すと、各ルーレットの説明が開きます。
-        </div>
-        <!-- /はてなボタン説明 -->
       </div>
     </div>
   </main>

@@ -1,5 +1,5 @@
 <template>
-  <div class="fs-5 mb-1">カテゴリーを選んでください。</div>
+  <div class="mb-1">カテゴリーを選んでください。</div>
   <!-- カテゴリー選択ボタン -->
   <div class="d-flex flex-wrap mb-3">
     <div
@@ -24,7 +24,7 @@
   </div>
   <!-- /カテゴリー選択ボタン -->
   <!-- ルーレット表示部分 -->
-  <div class="fs-5 mb-1">{{ this.category_name }}トーク</div>
+  <div class="mb-1">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3">
     <span class="m-4" v-if="this.talk_theme != undefined">
       {{ talk_theme }} ?
