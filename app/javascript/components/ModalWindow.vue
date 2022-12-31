@@ -1,9 +1,9 @@
 <template>
   <div v-if="show_content" id="overlay">
-    <div class="modal_window">
+    <div class="modal_window mx-3">
       <!-- 番号指定ルーレット説明文 -->
       <div v-if="roulette_type == 'number_assignment'">
-        <h3 class="mb-3">番号指定ルーレット</h3>
+        <h3 class="mb-2">番号指定ルーレット</h3>
         <div class="mb-3">
           このルーレットの指示で各参加者に番号を振ります。<br />
           例)「誕生日が早い順」とルーレットに表示された場合は、誕生日が早い順に1,

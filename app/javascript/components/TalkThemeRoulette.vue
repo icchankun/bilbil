@@ -1,9 +1,9 @@
 <template>
-  <div class="fs-5 mb-3">カテゴリーを選んでください。</div>
+  <div class="mb-1">カテゴリーを選んでください。</div>
   <!-- カテゴリー選択ボタン -->
   <div class="d-flex flex-wrap mb-3">
     <div
-      class="me-3"
+      class="me-2"
       v-for="(category, index) in categories"
       :key="category.id"
     >
@@ -14,7 +14,6 @@
         :id="[`category` + index]"
         :value="category.id"
         v-model="category_id"
-        autocomplete="off"
       />
       <label
         class="btn btn-outline-secondary category_btn"
@@ -25,7 +24,7 @@
   </div>
   <!-- /カテゴリー選択ボタン -->
   <!-- ルーレット表示部分 -->
-  <div class="fs-5">{{ this.category_name }}トーク</div>
+  <div class="mb-1">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3">
     <span class="m-4" v-if="this.talk_theme != undefined">
       {{ talk_theme }} ?
@@ -147,8 +146,8 @@ export default {
 
 <style scoped>
 .category_btn {
-  width: 80px;
-  border-radius: 40px;
+  border-radius: 20px;
+  padding: 0 1rem;
 }
 .talk_theme_roulette {
   display: flex;
