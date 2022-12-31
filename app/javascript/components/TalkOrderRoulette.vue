@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2">
-    <span class="fs-5 me-2">トーク順番</span>
+    <span class="me-2">トーク順番</span>
     <span class="modal_btn" @click="clickEvent">?</span>
   </div>
   <div class="row">
@@ -84,7 +84,7 @@ export default {
           // 0.1秒ごとに1つデータを表示させることを止める。
           clearInterval(roulette);
         }
-      }, 100);
+      }, 80);
     },
 
     // このルーレットの説明が書かれたモーダルウィンドウが開く。

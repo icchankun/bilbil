@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3">
     <div class="mb-2">
-      <span class="fs-5 me-2">番号指定</span>
+      <span class="me-2">番号指定</span>
       <span class="modal_btn" @click="clickEvent">?</span>
     </div>
     <div class="row">
