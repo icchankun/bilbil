@@ -10,8 +10,8 @@ class Api::V1::CategoriesController < ApiController
   end
 
   def index
-    # includesでtalk_themesとlikesのデータを予め取得しておく。
-    categories = Category.includes(talk_themes: :likes).all
+    # preloadでtalk_themesとlikesのデータを予め取得しておく。
+    categories = Category.preload(talk_themes: :likes)
     render json: categories, each_serializer: CategorySerializer, include: [talk_themes: :likes]
   end
 
