@@ -10,8 +10,8 @@ class Api::V1::TalkThemesController < ApiController
   end
 
   def index
-    # includesでlikesのデータを予め取得しておく。
-    talk_themes = TalkTheme.includes(:likes).all
+    # preloadでlikesのデータを予め取得しておく。
+    talk_themes = TalkTheme.preload(:likes)
     render json: talk_themes, each_serializer: TalkThemeSerializer
   end
 
