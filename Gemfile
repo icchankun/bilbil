@@ -72,3 +72,4 @@ gem "active_model_serializers"
 gem "net-smtp"
 gem 'net-imap'
 gem 'net-pop'
+gem 'ransack'
