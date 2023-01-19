@@ -27,57 +27,67 @@
           <roulette-page-back-button></roulette-page-back-button>
         </div>
         <!-- /ページ遷移リンク -->
-        <!-- 各カテゴリーのトークテーマ一覧 -->
-        <div class="mb-3">
+        <div class="mb-1">カテゴリーを選んでください。</div>
+        <!-- カテゴリー選択ボタン -->
+        <div class="d-flex flex-wrap mb-4">
           <div
-            class="row dropdown"
-            v-for="category in categories"
+            class="me-2"
+            v-for="(category, index) in categories"
             :key="category.id"
           >
-            <button
-              type="button"
-              class="btn btn-dark dropdown-toggle"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="false"
+            <input
+              type="radio"
+              class="btn-check"
+              name="category"
+              :id="[`category` + index]"
+              :value="category.id"
+              v-model="category_id"
+            />
+            <label
+              class="btn btn-outline-secondary category_btn"
+              :for="[`category` + index]"
+              >{{ category.name }}</label
             >
-              <div class="d-inline-block col-11 text-start">
-                {{ category.name }}
-              </div>
-            </button>
-            <ol class="dropdown-menu p-0">
-              <!-- トークテーマが存在する場合 -->
-              <li
-                v-if="category.talk_themes.length != 0"
-                v-for="talk_theme in category.talk_themes"
-                :key="talk_theme.id"
-                class="dropdown-item"
-              >
-                <div class="row d-inline-flex flex-wrap">
-                  <div class="col-9 fw-bold text-wrap">
-                    {{ talk_theme.content }} ?
-                  </div>
-                  <div class="col-3">
-                    <talk-theme-like-button
-                      :talk_theme_id="talk_theme.id"
-                      :likes="talk_theme.likes"
-                      :liked_talk_theme_ids="this.liked_talk_theme_ids"
-                      @addLikedTalkTheme="addLikedTalkTheme"
-                      @removeLikedTalkTheme="removeLikedTalkTheme"
-                    ></talk-theme-like-button>
-                  </div>
-                </div>
-              </li>
-              <!-- /トークテーマが存在する場合 -->
-              <!-- トークテーマが存在しない場合 -->
-              <li v-else>
-                <div class="fw-bold p-2">トークテーマはありません。</div>
-              </li>
-              <!-- /トークテーマが存在しない場合 -->
-            </ol>
           </div>
         </div>
-        <!-- /各カテゴリーのトークテーマ一覧 -->
+        <!-- /カテゴリー選択ボタン -->
+        <!-- 各カテゴリーのトークテーマ一覧 -->
+        <div>
+          <div class="row bg-dark text-white fw-bold list_headline">
+            <div class="col-8">トークテーマ</div>
+            <div class="col-3 ms-1">いいね</div>
+          </div>
+          <ol class="list">
+            <!-- トークテーマが存在する場合 -->
+            <div
+              v-if="talk_themes.length != 0"
+              v-for="talk_theme in talk_themes"
+              :key="talk_theme.id"
+              class="row mb-1"
+            >
+              <div class="col-8">
+                <li>
+                  <span class="fw-bold">{{ talk_theme.content }} ?</span>
+                </li>
+              </div>
+              <div class="col-4">
+                <talk-theme-like-button
+                  :talk_theme_id="talk_theme.id"
+                  :likes="talk_theme.likes"
+                  :liked_talk_theme_ids="this.liked_talk_theme_ids"
+                  @addLikedTalkTheme="addLikedTalkTheme"
+                  @removeLikedTalkTheme="removeLikedTalkTheme"
+                ></talk-theme-like-button>
+              </div>
+            </div>
+            <!-- /トークテーマが存在する場合 -->
+            <!-- トークテーマが存在しない場合 -->
+            <div v-else class="fw-bold text-center py-2 pe-2">トークテーマはありません。</div>
+            <!-- /トークテーマが存在しない場合 -->
+          </ol>
+        </div>
       </div>
+      <!-- /各カテゴリーのトークテーマ一覧 -->
     </div>
   </main>
   <end-user-footer>
@@ -108,6 +118,8 @@ export default {
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
+      talk_themes: [],
+      category_id: "", // 選択されたカテゴリーのid。
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
     };
   },
@@ -119,6 +131,11 @@ export default {
         this.sortedTalkThemesByLikes;
       },
       deep: true,
+    },
+
+    // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
+    category_id: function () {
+      this.talkThemes();
     },
   },
   computed: {
@@ -153,9 +170,18 @@ export default {
     fetchCategories() {
       axios.get("/api/v1/categories").then((response) => {
         this.categories = response.data;
+        this.category_id = this.categories[0].id;
         this.popularTalkThemes;
         this.sortedTalkThemesByLikes;
       });
+    },
+
+    talkThemes() {
+      // 選択したカテゴリーのルーレット内容を配列にする。
+      const selected_category = this.categories.find(
+        (category) => category.id == this.category_id
+      );
+      this.talk_themes = selected_category.talk_themes;
     },
 
     // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
@@ -179,24 +205,17 @@ export default {
 };
 </script>
 
-<style scoped>
-.bg-dark {
-  border-bottom: 1px solid #fff;
+<style lang="scss" scoped>
+.category_btn {
+  border-radius: 20px;
+  padding: 0 1rem;
 }
-.dropdown-toggle {
-  border-radius: 0;
-  border-bottom: 1px solid #fff;
-}
-.dropdown-menu {
-  position: static !important;
-  transform: translate(0, 0) !important;
-  border-radius: 0;
-}
-.dropdown-item {
-  display: list-item;
-  list-style: decimal inside;
-}
-.d-inline-flex {
-  width: 95%;
+
+.list {
+  padding-left: 20px;
+  &_headline {
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
 }
 </style>

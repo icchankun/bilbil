@@ -3,13 +3,13 @@
     <!-- いいねをした時に表示されるいいねボタン -->
     <div v-if="isLiked" @click="deleteLike">
       <i class="fas fa-heart create-heart me-2"></i>
-      <span>{{ count }}</span>
+      <span class="fs-5 like_count">{{ count }}</span>
     </div>
 
     <!-- いいねをしていない時に表示されるいいねボタン -->
     <div v-else @click="createLike">
       <i class="far fa-heart destroy-heart me-2"></i>
-      <span>{{ count }}</span>
+      <span class="fs-5 like_count">{{ count }}</span>
     </div>
   </dd>
 </template>
@@ -100,5 +100,9 @@ export default {
 
 .destroy-heart {
   color: #707070;
+}
+
+.like_count {
+  vertical-align: top;
 }
 </style>

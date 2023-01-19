@@ -88,6 +88,12 @@ export default {
       );
       const talk_themes = selected_category.talk_themes;
 
+      // talk_themesのlengthが0であれば、dataのtalk_themeにundefinedを代入し、このメソッドを終了する。
+      if (talk_themes.length == 0) {
+        this.talk_theme = undefined
+        return;
+      }
+
       // トークテーマをいいね数が多い順に並び替える。
       talk_themes.sort((a, b) => {
         return b.likes.length - a.likes.length;
