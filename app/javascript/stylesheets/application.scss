@@ -1,2 +1,76 @@
+/***************************
+  ライブラリ読み込み
+***************************/
 @import "~bootstrap/scss/bootstrap.scss";
 @import "@fortawesome/fontawesome-free/scss/fontawesome";
+
+/***************************
+  全体
+***************************/
+body {
+  font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
+}
+
+/***************************
+  メイン
+***************************/
+#vue-app,
+.signin_body {
+  min-height: 100vh;
+  position: relative;
+}
+
+.admin {
+  padding-bottom: 50px;
+}
+
+.end_user {
+  padding-bottom: 300px;
+}
+
+/* トーク人数選択ボタン */
+.number_btn-wrapper {
+  margin-right: .5rem;
+}
+
+.number_btn {
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 0 1.2rem;
+}
+
+/***************************
+  フッター
+***************************/
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/***************************
+  メディアクエリ 768px以下
+***************************/
+@media (max-width: 768px) {
+  .end_user {
+    padding-bottom: 500px;
+  }
+
+  .number_btn-wrapper:nth-child(-n+5) {
+    margin-bottom: 1rem;
+  }
+}
+
+/***************************
+  メディアクエリ 1200px以下
+***************************/
+@media (max-width: 1200px) {
+  .number_btn-wrapper:nth-child(-n+5) {
+    margin-bottom: .5rem;
+  }
+}
