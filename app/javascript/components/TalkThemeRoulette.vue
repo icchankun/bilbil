@@ -151,10 +151,6 @@ export default {
 </script>
 
 <style scoped>
-.category_btn {
-  border-radius: 20px;
-  padding: 0 1rem;
-}
 .talk_theme_roulette {
   display: flex;
   justify-content: center;
