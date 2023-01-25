@@ -31,7 +31,7 @@
         <!-- カテゴリー選択ボタン -->
         <div class="d-flex flex-wrap mb-4">
           <div
-            class="me-2"
+            class="me-2 mb-1"
             v-for="(category, index) in categories"
             :key="category.id"
           >
@@ -52,43 +52,43 @@
         </div>
         <!-- /カテゴリー選択ボタン -->
         <!-- 各カテゴリーのトークテーマ一覧 -->
-        <div>
-          <div class="row bg-dark text-white fw-bold list_headline">
-            <div class="col-8">トークテーマ</div>
-            <div class="col-3 ms-1">いいね</div>
-          </div>
-          <ol class="list">
-            <!-- トークテーマが存在する場合 -->
-            <div
-              v-if="talk_themes.length != 0"
-              v-for="talk_theme in talk_themes"
-              :key="talk_theme.id"
-              class="row mb-1"
-            >
-              <div class="col-8">
-                <li>
-                  <span class="fw-bold">{{ talk_theme.content }} ?</span>
-                </li>
-              </div>
-              <div class="col-4">
-                <talk-theme-like-button
-                  :talk_theme_id="talk_theme.id"
-                  :likes="talk_theme.likes"
-                  :liked_talk_theme_ids="this.liked_talk_theme_ids"
-                  @addLikedTalkTheme="addLikedTalkTheme"
-                  @removeLikedTalkTheme="removeLikedTalkTheme"
-                ></talk-theme-like-button>
-              </div>
-            </div>
-            <!-- /トークテーマが存在する場合 -->
-            <!-- トークテーマが存在しない場合 -->
-            <div v-else class="fw-bold text-center py-2 pe-2">トークテーマはありません。</div>
-            <!-- /トークテーマが存在しない場合 -->
-          </ol>
+        <div class="row bg-dark text-white fw-bold list_headline">
+          <div class="col-8">トークテーマ</div>
+          <div class="col-3 ms-2">いいね</div>
         </div>
+        <ol class="list">
+          <!-- トークテーマが存在する場合 -->
+          <div
+            v-if="talk_themes.length != 0"
+            v-for="talk_theme in talk_themes"
+            :key="talk_theme.id"
+            class="row mb-1"
+          >
+            <div class="col-8">
+              <li>
+                <span class="fw-bold">{{ talk_theme.content }} ?</span>
+              </li>
+            </div>
+            <div class="col-4">
+              <talk-theme-like-button
+                :talk_theme_id="talk_theme.id"
+                :likes="talk_theme.likes"
+                :liked_talk_theme_ids="this.liked_talk_theme_ids"
+                @addLikedTalkTheme="addLikedTalkTheme"
+                @removeLikedTalkTheme="removeLikedTalkTheme"
+              ></talk-theme-like-button>
+            </div>
+          </div>
+          <!-- /トークテーマが存在する場合 -->
+          <!-- トークテーマが存在しない場合 -->
+          <div v-else class="fw-bold text-center py-2 pe-2">
+            トークテーマはありません。
+          </div>
+          <!-- /トークテーマが存在しない場合 -->
+        </ol>
       </div>
-      <!-- /各カテゴリーのトークテーマ一覧 -->
     </div>
+    <!-- /各カテゴリーのトークテーマ一覧 -->
   </main>
   <end-user-footer>
     いいねボタンの横にある数字は、そのトークテーマのいいね数です。
@@ -212,10 +212,14 @@ export default {
 }
 
 .list {
-  padding-left: 20px;
+  padding: 10px 0 0 35px;
+  margin: 0 -12px;
+  border: 1px solid #6c757d;
+  border-top: none;
+
   &_headline {
     padding: 10px 0;
-    margin-bottom: 10px;
+    font-size: 14px;
   }
 }
 </style>
