@@ -17,8 +17,10 @@ body {
 }
 
 /***************************
-  メイン
+  メインコンテンツ
 ***************************/
+
+/* 画面幅設定 */
 #vue-app,
 .signin_body {
   min-height: 100vh;
@@ -48,6 +50,19 @@ body {
   border-radius: 20px;
   font-weight: bold;
   padding: 0 1.2rem;
+}
+
+/* トークテーマ一覧 */
+.list {
+  padding: 10px 0 0 35px;
+  margin: 0 -12px;
+  border: 1px solid #6c757d;
+  border-top: none;
+
+  &_headline {
+    padding: 10px 0;
+    font-size: 14px;
+  }
 }
 
 /***************************
