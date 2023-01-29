@@ -86,9 +86,9 @@
           </div>
           <!-- /トークテーマが存在しない場合 -->
         </ol>
+        <!-- /各カテゴリーのトークテーマ一覧 -->
       </div>
     </div>
-    <!-- /各カテゴリーのトークテーマ一覧 -->
   </main>
   <end-user-footer>
     いいねボタンの横にある数字は、そのトークテーマのいいね数です。
@@ -205,21 +205,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.category_btn {
-  border-radius: 20px;
-  padding: 0 1rem;
-}
-
-.list {
-  padding: 10px 0 0 35px;
-  margin: 0 -12px;
-  border: 1px solid #6c757d;
-  border-top: none;
-
-  &_headline {
-    padding: 10px 0;
-    font-size: 14px;
-  }
-}
+<style scoped>
 </style>
