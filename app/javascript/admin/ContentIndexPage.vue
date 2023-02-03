@@ -17,76 +17,68 @@
           </div>
         </div>
         <!-- /ページ遷移リンク -->
-        <!-- 各カテゴリーのトークテーマ一覧 -->
-        <div
-          class="row dropdown"
-          v-for="category in categories"
-          :key="category.id"
-        >
-          <dl
-            class="col-sm-11 col-10 d-flex flex-wrap bg-dark text-white p-2 m-0"
+        <!-- カテゴリー選択ボタン -->
+        <div class="mb-1">カテゴリーを選んでください。</div>
+        <div class="d-flex flex-wrap mb-4">
+          <div
+            class="me-2 mb-1"
+            v-for="(category, index) in categories"
+            :key="category.id"
           >
-            <dt class="w-25 me-3">{{ category.name }}</dt>
-            <dd class="me-auto">
-              <router-link
-                class="btn btn-success me-2"
-                :to="{
-                  name: 'CategoryEditPage',
-                  params: { id: category.id },
-                }"
-                >編集</router-link
-              >
-              <a class="btn btn-danger" @click="deleteCategory(category.id)"
-                >削除</a
-              >
-            </dd>
-            <dd class="me-1">
-              トークテーマ数: {{ category.talk_themes.length }}
-            </dd>
-          </dl>
-          <button
-            type="button"
-            class="btn btn-dark dropdown-toggle col-sm-1 col-2"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="false"
-          ></button>
-          <ol class="dropdown-menu">
-            <li
-              class="dropdown-item"
-              v-for="talk_theme in category.talk_themes"
-              :key="talk_theme.id"
-              v-if="category.talk_themes.length != 0"
+            <input
+              type="radio"
+              class="btn-check"
+              name="category"
+              :id="[`category` + index]"
+              :value="category.id"
+              v-model="category_id"
+            />
+            <label
+              class="btn btn-outline-secondary category_btn"
+              :for="[`category` + index]"
+              >{{ category.name }}</label
             >
-              <div class="row d-inline-flex flex-wrap m-0">
-                <div class="col-12 col-sm-6 mb-2 text-wrap">
-                  {{ talk_theme.content }} ?
-                </div>
-                <div class="col-12 col-sm-6">
-                  <router-link
-                    class="btn btn-success me-2"
-                    :to="{
-                      name: 'TalkThemeEditPage',
-                      params: { id: talk_theme.id },
-                    }"
-                    >編集</router-link
-                  >
-                  <a
-                    class="btn btn-danger me-2"
-                    @click="deleteTalkTheme(talk_theme.id)"
-                    >削除</a
-                  >
-                  <span> いいね数: {{ talk_theme.likes.length }} </span>
-                </div>
-              </div>
-            </li>
-            <li class="d-block px-1 py-2" v-else>
-              <dl class="m-0">
-                <dt>トークテーマはありません。</dt>
-              </dl>
-            </li>
-          </ol>
+          </div>
         </div>
+        <!-- /カテゴリー選択ボタン -->
         <!-- 各カテゴリーのトークテーマ一覧 -->
+        <div class="row bg-dark text-white fw-bold list_headline">
+          <div>トークテーマ</div>
+        </div>
+        <ol class="list">
+          <!-- トークテーマが存在する場合 -->
+          <div
+            v-if="talk_themes.length != 0"
+            v-for="(talk_theme, index) in talk_themes"
+            :key="talk_theme.id"
+            class="row mb-2"
+          >
+            <div class="col-12 col-sm-6">
+              <li>
+                <router-link
+                  :to="{
+                    name: 'TalkThemeEditPage',
+                    params: { id: talk_theme.id },
+                  }"
+                  ><span class="fw-bold">{{ talk_theme.content }} ?</span></router-link
+                >
+              </li>
+            </div>
+            <div class="col-12 col-sm-6">
+              <a
+                class="btn btn-danger btn-sm me-2"
+                @click="deleteTalkTheme(talk_theme.id)"
+                >{{ index + 1 }}を削除</a
+              >
+              <span> いいね数: {{ talk_theme.likes.length }} </span>
+            </div>
+          </div>
+          <!-- /トークテーマが存在する場合 -->
+          <!-- トークテーマが存在しない場合 -->
+          <div v-else class="talk_themes-field">トークテーマはありません。</div>
+          <!-- /トークテーマが存在しない場合 -->
+        </ol>
+        <!-- /各カテゴリーのトークテーマ一覧 -->
       </div>
     </div>
   </main>
@@ -108,19 +100,22 @@ export default {
     return {
       categories: [], // 全カテゴリーのデータの配列。
       talk_themes: [], // 全トークテーマのデータの配列。
+      category_id: "", // 選択されたカテゴリーのid。
     };
+  },
+  watch: {
+    // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
+    category_id: function () {
+      this.talkThemes();
+    },
   },
   created() {
     // 全カテゴリーのデータを取得し、いいね数が多い順にトークテーマを並び替える。
     axios.get("/api/v1/categories").then((response) => {
       this.categories = response.data;
+      this.category_id = this.categories[0].id;
       this.sortedTalkThemesByLikes;
     });
-
-    // 全トークテーマのデータの配列。
-    axios
-      .get("/api/v1/talk_themes")
-      .then((response) => (this.talk_themes = response.data));
   },
   computed: {
     // トークテーマをいいね数が多い順に並び替える。
@@ -171,36 +166,30 @@ export default {
       return filterDate[0].content;
     },
 
-    // 全カテゴリーのデータを取得する。
+    // 最新の全カテゴリーのデータを取得する。
     updateContents() {
-      axios
-        .get("/api/v1/categories")
-        .then((response) => (this.categories = response.data));
+      axios.get("/api/v1/categories").then((response) => {
+        this.categories = response.data;
+        this.talkThemes();
+      });
+    },
+
+    // 選択したカテゴリーのルーレット内容を配列にする。
+    talkThemes() {
+      const selected_category = this.categories.find(
+        (category) => category.id == this.category_id
+      );
+      this.talk_themes = selected_category.talk_themes;
     },
   },
 };
 </script>
 
 <style scoped>
-.bg-dark {
-  border-bottom: 1px solid #fff;
-}
-.dropdown-toggle {
-  border-radius: 0;
-  border-bottom: 1px solid #fff;
-}
-
-.dropdown-menu {
-  position: static !important;
-  transform: translate(0, 0) !important;
-  border-radius: 0;
-}
-.dropdown-item {
-  display: list-item;
-  list-style: decimal inside;
-}
-
-.d-inline-flex {
-  width: 95%;
+.talk_themes-field {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  padding: 0 35px 0 0;
 }
 </style>
