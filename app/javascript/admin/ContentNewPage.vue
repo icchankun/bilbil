@@ -5,7 +5,10 @@
       <div class="col-lg-6 mx-auto">
         <!-- トークテーマ新規作成フォーム -->
         <headline>THEHE</headline>
-        <div class="alert alert-success" v-if="Boolean(created_talk_theme.content)">
+        <div
+          class="alert alert-success"
+          v-if="Boolean(created_talk_theme.content)"
+        >
           <dl class="d-flex flex-wrap justify-content-between m-0">
             <dt class="d-inline-block">
               <div>トークテーマ: {{ created_talk_theme.content }}</div>
@@ -91,9 +94,9 @@ export default {
         category_id: "",
         errors: "",
       },
-      
+
       created_talk_theme: {}, // 新規登録したトークテーマのデータ。
-      
+
       // 入力したカテゴリーのデータと新規登録の際に出たエラー内容。
       category: {
         name: "",
@@ -146,8 +149,8 @@ export default {
     },
 
     // カテゴリーを新規登録する。
-    createCategory() {
-      axios
+    async createCategory() {
+      await axios
         .post("/api/v1/categories", { name: this.category.name })
         .then((response) => {
           this.created_category = response.data;
@@ -170,6 +173,11 @@ export default {
             this.category.errors = error.response.data.errors;
           }
         });
+
+      // 全カテゴリーを取得する。
+      axios.get("/api/v1/categories").then((response) => {
+        this.categories = response.data;
+      });
     },
 
     // 新規登録したトークテーマのカテゴリー名を取得する。

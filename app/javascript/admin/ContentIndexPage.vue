@@ -43,7 +43,23 @@
         <!-- /カテゴリー選択ボタン -->
         <!-- 各カテゴリーのトークテーマ一覧 -->
         <div class="row bg-dark text-white fw-bold list_headline">
-          <div>トークテーマ</div>
+          <div class="col-12 col-sm-6">
+            <router-link
+              :to="{
+                name: 'CategoryEditPage',
+                params: { id: category_id },
+              }"
+              >{{ category_name }}</router-link
+            >
+            トークテーマ
+          </div>
+          <div v-if="talk_themes.length == 0" class="col-12 col-sm-6">
+            <a
+              class="btn btn-danger btn-sm"
+              @click="deleteCategory(category_id)"
+              >カテゴリーを削除</a
+            >
+          </div>
         </div>
         <ol class="list">
           <!-- トークテーマが存在する場合 -->
@@ -60,7 +76,9 @@
                     name: 'TalkThemeEditPage',
                     params: { id: talk_theme.id },
                   }"
-                  ><span class="fw-bold">{{ talk_theme.content }} ?</span></router-link
+                  ><span class="fw-bold"
+                    >{{ talk_theme.content }}?</span
+                  ></router-link
                 >
               </li>
             </div>
@@ -100,7 +118,8 @@ export default {
     return {
       categories: [], // 全カテゴリーのデータの配列。
       talk_themes: [], // 全トークテーマのデータの配列。
-      category_id: "", // 選択されたカテゴリーのid。
+      category_id: 0, // 選択されたカテゴリーのid。
+      category_name: "", // 選択されたカテゴリーのカテゴリー名
     };
   },
   watch: {
@@ -131,10 +150,11 @@ export default {
     // 特定のカテゴリーを削除する。
     deleteCategory(delete_id) {
       if (
-        confirm(`「${this.categoryName(delete_id)}」を削除してよろしいですか?`)
+        confirm(`「${this.categoryName(delete_id)}」カテゴリーを削除してもよろしいですか?`)
       )
         axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
           this.updateContents();
+          this.category_id = this.categories[0].id;
         });
     },
 
@@ -142,7 +162,7 @@ export default {
     deleteTalkTheme(delete_id) {
       if (
         confirm(
-          `「${this.talkThemeContent(delete_id)}」を削除してよろしいですか?`
+          `「${this.talkThemeContent(delete_id)}?」を削除してもよろしいですか?`
         )
       )
         axios.delete(`/api/v1/talk_themes/${delete_id}`).then(() => {
@@ -179,6 +199,7 @@ export default {
       const selected_category = this.categories.find(
         (category) => category.id == this.category_id
       );
+      this.category_name = selected_category.name;
       this.talk_themes = selected_category.talk_themes;
     },
   },
