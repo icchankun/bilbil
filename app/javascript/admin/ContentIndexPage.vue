@@ -53,12 +53,14 @@
             >
             トークテーマ
           </div>
-          <div v-if="talk_themes.length == 0" class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 text-sm-end">
             <a
+              v-if="talk_themes.length == 0"
               class="btn btn-danger btn-sm"
               @click="deleteCategory(category_id)"
               >カテゴリーを削除</a
             >
+            <span v-else>トークテーマ数: {{ talk_themes.length }}</span>
           </div>
         </div>
         <ol class="list">
@@ -117,7 +119,7 @@ export default {
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
-      talk_themes: [], // 全トークテーマのデータの配列。
+      talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       category_id: 0, // 選択されたカテゴリーのid。
       category_name: "", // 選択されたカテゴリーのカテゴリー名
     };
@@ -150,7 +152,11 @@ export default {
     // 特定のカテゴリーを削除する。
     deleteCategory(delete_id) {
       if (
-        confirm(`「${this.categoryName(delete_id)}」カテゴリーを削除してもよろしいですか?`)
+        confirm(
+          `「${this.categoryName(
+            delete_id
+          )}」カテゴリーを削除してもよろしいですか?`
+        )
       )
         axios.delete(`/api/v1/categories/${delete_id}`).then(() => {
           this.updateContents();

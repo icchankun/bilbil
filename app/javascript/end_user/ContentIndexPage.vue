@@ -53,8 +53,8 @@
         <!-- /カテゴリー選択ボタン -->
         <!-- 各カテゴリーのトークテーマ一覧 -->
         <div class="row bg-dark text-white fw-bold list_headline">
-          <div class="col-8">トークテーマ</div>
-          <div class="col-3 ms-2">いいね</div>
+          <div class="col-12 col-sm-6">{{ category_name }}トークテーマ</div>
+          <div v-if="talk_themes.length != 0" class="col-12 col-sm-6 text-sm-end">トークテーマ数: {{ talk_themes.length }}</div>
         </div>
         <ol class="list">
           <!-- トークテーマが存在する場合 -->
@@ -118,8 +118,9 @@ export default {
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
-      talk_themes: [],
+      talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       category_id: "", // 選択されたカテゴリーのid。
+      category_name: "", // 選択されたカテゴリーのカテゴリー名。
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
     };
   },
@@ -182,6 +183,7 @@ export default {
         (category) => category.id == this.category_id
       );
       this.talk_themes = selected_category.talk_themes;
+      this.category_name = selected_category.name;
     },
 
     // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
