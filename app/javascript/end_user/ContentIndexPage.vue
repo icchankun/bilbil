@@ -29,7 +29,7 @@
         <!-- /ページ遷移リンク -->
         <div class="mb-1">カテゴリーを選んでください。</div>
         <!-- カテゴリー選択ボタン -->
-        <div class="d-flex flex-wrap mb-4">
+        <div class="d-flex flex-wrap mb-3">
           <div
             class="me-2 mb-1"
             v-for="(category, index) in categories"
@@ -53,10 +53,33 @@
         <!-- /カテゴリー選択ボタン -->
         <!-- トークテーマ検索フォーム-->
         <div class="mb-3">
-          <input type="text" v-model="search_query" />
-          <div @click="filteredTalkThemes($event)" class="is_filtered">検索</div>
-          <div @click="filteredTalkThemes($event)" class="is_not_filtered">
-            トークテーマ一覧を表示
+          <div class="mb-3">
+            <label for="talkThemeSearchForm" class="form-label"
+              >トークテーマ検索</label
+            >
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="talkThemeSearchForm"
+                placeholder="例）歌手 曲"
+                v-model="search_query"
+              />
+              <button
+                @click="filteredTalkThemes($event)"
+                class="btn btn-primary"
+                id="is_filtered"
+              >
+                <i class="fas fa-search"></i> 検索
+              </button>
+            </div>
+          </div>
+          <div
+            @click="filteredTalkThemes($event)"
+            class="btn btn-secondary"
+            id=" is_not_filtered"
+          >
+            トークテーマを全て表示
           </div>
         </div>
         <!-- /トークテーマ検索フォーム-->
@@ -144,7 +167,7 @@ export default {
     //いいねをしたトークテーマのidの配列に変化があった時、トークテーマの並び替えを行う。
     liked_talk_theme_ids: {
       handler() {
-        this.sortTalkThemes
+        this.sortTalkThemes;
       },
       deep: true,
     },
@@ -157,8 +180,8 @@ export default {
   },
   computed: {
     sortTalkThemes() {
-      this.sortTalkThemesByPopularity
-      this.sortLikedTalkThemes
+      this.sortTalkThemesByPopularity;
+      this.sortLikedTalkThemes;
     },
 
     // トークテーマをいいね数が多い順に並び替える。
@@ -236,7 +259,7 @@ export default {
     async filteredTalkThemes(e) {
       await this.separateTalkThemesByCategory();
 
-      if (e.target.className == "is_filtered") {
+      if (e.target.id == "is_filtered") {
         this.filtered_talk_themes = this.talk_themes.filter((talk_theme) => {
           return this.search_query
             .split(/\s+/)
