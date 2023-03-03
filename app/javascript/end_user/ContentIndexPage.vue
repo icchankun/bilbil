@@ -52,42 +52,17 @@
         </div>
         <!-- /カテゴリー選択ボタン -->
         <!-- トークテーマ検索フォーム-->
-        <div class="mb-3">
-          <div class="mb-3">
-            <label for="talkThemeSearchForm" class="form-label"
-              >トークテーマ検索</label
-            >
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                id="talkThemeSearchForm"
-                placeholder="例）歌手 曲"
-                v-model="search_query"
-              />
-              <button
-                @click="filteredTalkThemes($event)"
-                class="btn btn-primary"
-                id="is_filtered"
-              >
-                <i class="fas fa-search"></i> 検索
-              </button>
-            </div>
-          </div>
-          <div
-            @click="filteredTalkThemes($event)"
-            class="btn btn-secondary"
-            id=" is_not_filtered"
-          >
-            トークテーマを全て表示
-          </div>
-        </div>
+        <talk-theme-search-form
+          :talk_themes="talk_themes"
+          @separateTalkThemesByCategory="separateTalkThemesByCategory"
+          @sortTalkThemes="sortTalkThemes" @getFilteredTalkThemes="getFilteredTalkThemes"
+        ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
         <!-- 各カテゴリーのトークテーマ一覧 -->
         <div class="row bg-dark text-white fw-bold list_headline">
           <div class="col-12 col-sm-6">{{ category_name }}トークテーマ</div>
           <div
-            v-if="talk_themes.length != 0"
+            v-if="filtered_talk_themes.length != 0"
             class="col-12 col-sm-6 text-sm-end"
           >
             トークテーマ数: {{ filtered_talk_themes.length }}
@@ -96,7 +71,7 @@
         <ol class="list">
           <!-- トークテーマが存在する場合 -->
           <div
-            v-if="talk_themes.length != 0"
+            v-if="filtered_talk_themes.length != 0"
             v-for="talk_theme in filtered_talk_themes"
             :key="talk_theme.id"
             class="row mb-1"
@@ -137,6 +112,7 @@
 import axios from "axios";
 
 import Header from "../components/Header.vue";
+import TalkThemeSearchForm from "../components/TalkThemeSearchForm.vue";
 import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
 import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
 import EndUserFooter from "../components/EndUserFooter.vue";
@@ -144,6 +120,7 @@ import EndUserFooter from "../components/EndUserFooter.vue";
 export default {
   components: {
     Header,
+    TalkThemeSearchForm,
     TalkThemeLikeButton,
     RoulettePageBackButton,
     EndUserFooter,
@@ -159,7 +136,6 @@ export default {
       category_name: "", // 選択されたカテゴリーのカテゴリー名。
       talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       filtered_talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
-      search_query: "", // 検索フォームに入力された文字列
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
     };
   },
@@ -255,22 +231,9 @@ export default {
       this.liked_talk_theme_ids = ids;
     },
 
-    // 検索フォームに入力した文字列をもとにトークテーマを検索する。
-    async filteredTalkThemes(e) {
-      await this.separateTalkThemesByCategory();
-
-      if (e.target.id == "is_filtered") {
-        this.filtered_talk_themes = this.talk_themes.filter((talk_theme) => {
-          return this.search_query
-            .split(/\s+/)
-            .map((query) => talk_theme.content.indexOf(query) > -1)
-            .some((result) => result === true);
-        });
-      } else {
-        this.filtered_talk_themes = this.talk_themes;
-      }
-
-      this.sortTalkThemes;
+    // 検索したトークテーマのデータをdataプロパティに代入する。
+    getFilteredTalkThemes(value) {
+      this.filtered_talk_themes = value;
     },
   },
 };
