@@ -132,7 +132,7 @@ export default {
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
-      category_id: "", // 選択されたカテゴリーのid。
+      category_id: 0, // 選択されたカテゴリーのid。
       category_name: "", // 選択されたカテゴリーのカテゴリー名。
       talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       filtered_talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
