@@ -55,7 +55,8 @@
         <talk-theme-search-form
           :talk_themes="talk_themes"
           @separateTalkThemesByCategory="separateTalkThemesByCategory"
-          @sortTalkThemes="sortTalkThemes" @getFilteredTalkThemes="getFilteredTalkThemes"
+          @sortTalkThemes="sortTalkThemes"
+          @getFilteredTalkThemes="getFilteredTalkThemes"
         ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
         <!-- 各カテゴリーのトークテーマ一覧 -->
@@ -70,25 +71,34 @@
         </div>
         <ol class="list">
           <!-- トークテーマが存在する場合 -->
-          <div
-            v-if="filtered_talk_themes.length != 0"
-            v-for="talk_theme in filtered_talk_themes"
-            :key="talk_theme.id"
-            class="row mb-1"
-          >
-            <div class="col-8">
-              <li>
-                <span class="fw-bold">{{ talk_theme.content }} ?</span>
-              </li>
+          <div v-if="filtered_talk_themes.length != 0">
+            <div
+              v-for="talk_theme in TalkThemesDividedByPages"
+              :key="talk_theme.id"
+              class="row"
+            >
+              <div class="col-8">
+                <li>
+                  <span class="fw-bold">{{ talk_theme.content }} ?</span>
+                </li>
+              </div>
+              <div class="col-4">
+                <talk-theme-like-button
+                  :talk_theme_id="talk_theme.id"
+                  :likes="talk_theme.likes"
+                  :liked_talk_theme_ids="this.liked_talk_theme_ids"
+                  @addLikedTalkTheme="addLikedTalkTheme"
+                  @removeLikedTalkTheme="removeLikedTalkTheme"
+                ></talk-theme-like-button>
+              </div>
             </div>
-            <div class="col-4">
-              <talk-theme-like-button
-                :talk_theme_id="talk_theme.id"
-                :likes="talk_theme.likes"
-                :liked_talk_theme_ids="this.liked_talk_theme_ids"
-                @addLikedTalkTheme="addLikedTalkTheme"
-                @removeLikedTalkTheme="removeLikedTalkTheme"
-              ></talk-theme-like-button>
+            <div class="mt-3">
+              <v-pagination
+                v-model="current_page"
+                :pages="getPageCount"
+                :range-size="1"
+                active-color="#DCEDFF"
+              />
             </div>
           </div>
           <!-- /トークテーマが存在する場合 -->
@@ -112,17 +122,19 @@
 import axios from "axios";
 
 import Header from "../components/Header.vue";
+import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
 import TalkThemeSearchForm from "../components/TalkThemeSearchForm.vue";
 import TalkThemeLikeButton from "../components/TalkThemeLikeButton.vue";
-import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
+import VPagination from "@hennge/vue3-pagination";
 import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
   components: {
     Header,
+    RoulettePageBackButton,
     TalkThemeSearchForm,
     TalkThemeLikeButton,
-    RoulettePageBackButton,
+    VPagination,
     EndUserFooter,
   },
   created() {
@@ -137,6 +149,8 @@ export default {
       talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       filtered_talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
+      current_page: 1,
+      par_page: 5,
     };
   },
   watch: {
@@ -180,6 +194,16 @@ export default {
           return 0;
         }
       });
+    },
+
+    TalkThemesDividedByPages() {
+      let current = this.current_page * this.par_page;
+      let start = current - this.par_page;
+      return this.filtered_talk_themes.slice(start, current);
+    },
+    
+    getPageCount() {
+      return Math.ceil(this.filtered_talk_themes.length / this.par_page);
     },
   },
   methods: {
@@ -239,5 +263,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
