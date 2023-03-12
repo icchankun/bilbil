@@ -53,9 +53,10 @@
         <!-- /カテゴリー選択ボタン -->
         <!-- トークテーマ検索フォーム-->
         <talk-theme-search-form
-          :talk_themes="talk_themes"
+          :category_id="category_id"
+          v-model="talk_themes"
+          :liked_talk_theme_ids="liked_talk_theme_ids"
           @separateTalkThemesByCategory="separateTalkThemesByCategory"
-          @sortTalkThemes="sortTalkThemes"
           @getFilteredTalkThemes="getFilteredTalkThemes"
         ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
@@ -154,54 +155,22 @@ export default {
     };
   },
   watch: {
-    //いいねをしたトークテーマのidの配列に変化があった時、トークテーマの並び替えを行う。
-    liked_talk_theme_ids: {
-      handler() {
-        this.sortTalkThemes;
-      },
-      deep: true,
-    },
-
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: async function () {
-      await this.separateTalkThemesByCategory();
-      this.sortTalkThemes;
+      this.separateTalkThemesByCategory();
+      this.current_page = 1;
+    },
+    current_page: function () {
+      this.UpdateTalkThemesLikes();
     },
   },
   computed: {
-    sortTalkThemes() {
-      this.sortTalkThemesByPopularity;
-      this.sortLikedTalkThemes;
-    },
-
-    // トークテーマをいいね数が多い順に並び替える。
-    sortTalkThemesByPopularity() {
-      this.filtered_talk_themes.sort((a, b) => {
-        return b.likes.length - a.likes.length;
-      });
-    },
-
-    // いいねをしたトークテーマをトークテーマ一覧の上部に表示させる。
-    sortLikedTalkThemes() {
-      const ids = this.liked_talk_theme_ids;
-
-      this.filtered_talk_themes.sort((a, b) => {
-        if (ids.includes(a.id)) {
-          return -1;
-        } else if (ids.includes(b.id)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-    },
-
     TalkThemesDividedByPages() {
       let current = this.current_page * this.par_page;
       let start = current - this.par_page;
       return this.filtered_talk_themes.slice(start, current);
     },
-    
+
     getPageCount() {
       return Math.ceil(this.filtered_talk_themes.length / this.par_page);
     },
@@ -209,9 +178,8 @@ export default {
   methods: {
     // 全カテゴリーのデータを取得する。
     async fetchCategories() {
-      await axios.get("/api/v1/categories").then((response) => {
-        this.categories = response.data;
-      });
+      const response = await axios.get("/api/v1/categories");
+      this.categories = response.data;
     },
 
     async categoryDefault() {
@@ -222,8 +190,24 @@ export default {
     },
 
     async separateTalkThemesByCategory() {
-      this.fetchCategories();
+      await this.fetchCategories();
+      await this.changeCategory();
+      this.filtered_talk_themes = this.talk_themes;
+    },
 
+    async UpdateTalkThemesLikes() {
+      await this.fetchCategories();
+      await this.changeCategory();
+
+      const filtered_talk_themes_ids = this.filtered_talk_themes.map(
+        (talk_theme) => talk_theme.id
+      );
+      this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
+        filtered_talk_themes_ids.includes(talk_theme.id)
+      );
+    },
+
+    async changeCategory() {
       // 選択したカテゴリーのデータを変数に代入する。
       const selected_category = this.categories.find(
         (category) => category.id == this.category_id
@@ -232,9 +216,6 @@ export default {
       // 選択したカテゴリーのカテゴリー名とトークテーマをdataプロパティに代入する。
       this.category_name = selected_category.name;
       this.talk_themes = selected_category.talk_themes;
-
-      // 選択したカテゴリーのトークテーマを別のdataプロパティに再代入する。
-      this.filtered_talk_themes = this.talk_themes;
     },
 
     // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
@@ -258,6 +239,7 @@ export default {
     // 検索したトークテーマのデータをdataプロパティに代入する。
     getFilteredTalkThemes(value) {
       this.filtered_talk_themes = value;
+      this.current_page = 1;
     },
   },
 };

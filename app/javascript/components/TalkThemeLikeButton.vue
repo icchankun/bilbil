@@ -36,7 +36,7 @@ export default {
   ],
   data() {
     return {
-      likes_count: "", // このトークテーマのいいね数。
+      likes_count: 0, // このトークテーマのいいね数。
     };
   },
   created() {
