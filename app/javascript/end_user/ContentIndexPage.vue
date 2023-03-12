@@ -70,18 +70,16 @@
             トークテーマ数: {{ filtered_talk_themes.length }}
           </div>
         </div>
-        <ol class="list">
+        <div class="list">
           <!-- トークテーマが存在する場合 -->
           <div v-if="filtered_talk_themes.length != 0">
             <div
-              v-for="talk_theme in TalkThemesDividedByPages"
+              v-for="(talk_theme, index) in TalkThemesDividedByPages"
               :key="talk_theme.id"
               class="row"
             >
               <div class="col-8">
-                <li>
-                  <span class="fw-bold">{{ talk_theme.content }} ?</span>
-                </li>
+                <div class="talk_theme fw-bold">{{ TalkThemeNumber + index }}. {{ talk_theme.content }} ?</div>
               </div>
               <div class="col-4">
                 <talk-theme-like-button
@@ -108,7 +106,7 @@
             トークテーマはありません。
           </div>
           <!-- /トークテーマが存在しない場合 -->
-        </ol>
+        </div>
         <!-- /各カテゴリーのトークテーマ一覧 -->
       </div>
     </div>
@@ -169,6 +167,10 @@ export default {
       let current = this.current_page * this.par_page;
       let start = current - this.par_page;
       return this.filtered_talk_themes.slice(start, current);
+    },
+
+    TalkThemeNumber() {
+      return (this.current_page - 1) * this.par_page + 1
     },
 
     getPageCount() {
