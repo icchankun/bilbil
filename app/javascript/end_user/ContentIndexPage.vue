@@ -57,7 +57,7 @@
           v-model="talk_themes"
           :liked_talk_theme_ids="liked_talk_theme_ids"
           @separateTalkThemesByCategory="separateTalkThemesByCategory"
-          @getFilteredTalkThemes="getFilteredTalkThemes"
+          @getValue="getValue"
         ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
         <!-- 各カテゴリーのトークテーマ一覧 -->
@@ -79,7 +79,9 @@
               class="row"
             >
               <div class="col-8">
-                <div class="talk_theme fw-bold">{{ TalkThemeNumber + index }}. {{ talk_theme.content }} ?</div>
+                <div class="talk_theme fw-bold">
+                  {{ TalkThemeNumber + index }}. {{ talk_theme.content }} ?
+                </div>
               </div>
               <div class="col-4">
                 <talk-theme-like-button
@@ -150,12 +152,20 @@ export default {
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
       current_page: 1,
       par_page: 5,
+      display_format: "",
     };
   },
   watch: {
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: async function () {
-      this.separateTalkThemesByCategory();
+      await this.separateTalkThemesByCategory();
+
+      if (this.display_format == "is_liked") {
+        this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
+          this.liked_talk_theme_ids.includes(talk_theme.id)
+        );
+      }
+
       this.current_page = 1;
     },
     current_page: function () {
@@ -170,7 +180,7 @@ export default {
     },
 
     TalkThemeNumber() {
-      return (this.current_page - 1) * this.par_page + 1
+      return (this.current_page - 1) * this.par_page + 1;
     },
 
     getPageCount() {
@@ -239,8 +249,9 @@ export default {
     },
 
     // 検索したトークテーマのデータをdataプロパティに代入する。
-    getFilteredTalkThemes(value) {
-      this.filtered_talk_themes = value;
+    getValue(display_format, filtered_talk_themes) {
+      this.display_format = display_format;
+      this.filtered_talk_themes = filtered_talk_themes;
       this.current_page = 1;
     },
   },
