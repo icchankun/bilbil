@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.4",
+    "@hennge/vue3-pagination": "^1.0.17",
     "@popperjs/core": "^2.11.6",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",

@@ -2,14 +2,14 @@
   <dd>
     <!-- いいねをした時に表示されるいいねボタン -->
     <div v-if="isLiked" @click="deleteLike">
-      <i class="fas fa-heart create-heart me-2"></i>
-      <span>{{ count }}</span>
+      <i class="fas fa-heart create_heart me-2"></i>
+      <span class="fs-5 likes_count">{{ likes_count }}</span>
     </div>
 
     <!-- いいねをしていない時に表示されるいいねボタン -->
     <div v-else @click="createLike">
-      <i class="far fa-heart destroy-heart me-2"></i>
-      <span>{{ count }}</span>
+      <i class="far fa-heart destroy_heart me-2"></i>
+      <span class="fs-5 likes_count">{{ likes_count }}</span>
     </div>
   </dd>
 </template>
@@ -36,7 +36,7 @@ export default {
   ],
   data() {
     return {
-      likes_count: "", // このトークテーマのいいね数。
+      likes_count: 0, // このトークテーマのいいね数。
     };
   },
   created() {
@@ -44,11 +44,6 @@ export default {
     this.likes_count = this.likes.length;
   },
   computed: {
-    // このトークテーマのいいね数を表示。
-    count() {
-      return this.likes_count;
-    },
-
     // このトークテーマのいいねの有無を判断。
     isLiked() {
       return this.liked_talk_theme_ids.includes(this.talk_theme_id);
@@ -94,11 +89,15 @@ export default {
 .fa-heart {
   font-size: 1.7rem;
 }
-.create-heart {
+.create_heart {
   color: #de3f4e;
 }
 
-.destroy-heart {
+.destroy_heart {
   color: #707070;
+}
+
+.likes_count {
+  vertical-align: top;
 }
 </style>

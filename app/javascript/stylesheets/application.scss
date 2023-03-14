@@ -1,2 +1,107 @@
+/***************************
+  ライブラリ読み込み
+***************************/
 @import "~bootstrap/scss/bootstrap.scss";
 @import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+
+/***************************
+  全体
+***************************/
+body {
+  font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
+}
+
+/***************************
+  メインコンテンツ
+***************************/
+
+/* 画面幅設定 */
+#vue-app,
+.signin_body {
+  min-height: 100vh;
+  position: relative;
+}
+
+.admin {
+  padding-bottom: 50px;
+}
+
+.end_user {
+  padding-bottom: 300px;
+}
+
+/* カテゴリー選択ボタン */
+.category_btn {
+  border-radius: 20px;
+  padding: 0 1rem;
+}
+
+/* トーク人数選択ボタン */
+.number_btn-wrapper {
+  margin-right: .5rem;
+}
+
+.number_btn {
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 0 1.2rem;
+}
+
+/* トークテーマ一覧 */
+.list {
+  padding: 1em 0;
+  margin: 0 -12px;
+  border: 1px solid #6c757d;
+  border-top: none;
+
+  &_headline {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+}
+
+.talk_theme {
+  text-indent: -1.3em;
+  padding-left: 3em;
+}
+
+.Pagination {
+  justify-content: center;
+}
+
+/***************************
+  フッター
+***************************/
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/***************************
+  メディアクエリ 768px以下
+***************************/
+@media (max-width: 768px) {
+  .end_user {
+    padding-bottom: 500px;
+  }
+
+  .number_btn-wrapper:nth-child(-n+5) {
+    margin-bottom: 1rem;
+  }
+}
+
+/***************************
+  メディアクエリ 1200px以下
+***************************/
+@media (max-width: 1200px) {
+  .number_btn-wrapper:nth-child(-n+5) {
+    margin-bottom: .5rem;
+  }
+}
