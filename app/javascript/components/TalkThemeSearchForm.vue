@@ -22,7 +22,11 @@
         <label for="display_format" class="form-label"
           >トークテーマの表示</label
         >
-        <select class="form-select" id="display_format" v-model="display_format">
+        <select
+          class="form-select"
+          id="display_format"
+          v-model="display_format"
+        >
           <option value="all">全てのトークテーマ</option>
           <option value="is_liked">いいねしたトークテーマのみ</option>
         </select>
@@ -109,6 +113,10 @@ export default {
         }
       );
 
+      this.filtered_talk_themes.sort((a, b) => {
+        return b.likes.length - a.likes.length;
+      });
+
       this.$emit("getValue", this.display_format, this.filtered_talk_themes);
     },
 
@@ -124,14 +132,6 @@ export default {
 
       // 選択したカテゴリーのトークテーマをdataプロパティに代入する。
       this.talk_themes = selected_category.talk_themes;
-
-      // 表示されていたトークテーマの更新データを代入する。
-      const filtered_talk_themes_ids = this.filtered_talk_themes.map(
-        (talk_theme) => talk_theme.id
-      );
-      this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
-        filtered_talk_themes_ids.includes(talk_theme.id)
-      );
     },
   },
 };

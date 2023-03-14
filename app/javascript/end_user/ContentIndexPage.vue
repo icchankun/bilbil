@@ -6,14 +6,10 @@
         <!-- ページ説明文 -->
         <div class="mb-3">
           <div class="mb-2">
-            このアプリで出題されるトークテーマを各カテゴリーごと
-            にまとめています。
+            ルーレットで出題されるトークテーマを各カテゴリーごとにまとめており、それらのトークテーマには、いいねをすることができます。
           </div>
           <div class="mb-2">
-            また、トークテーマにいいねをすることができます。
-          </div>
-          <div>
-            いいねをしたトークテーマは各カテゴリーのトークテーマ一覧の上部に表示されます。
+            トークテーマはいいね数が多い順に並ぶようになっています。
           </div>
         </div>
         <!-- /ページ説明文 -->
@@ -56,7 +52,6 @@
           :category_id="category_id"
           v-model="talk_themes"
           :liked_talk_theme_ids="liked_talk_theme_ids"
-          @separateTalkThemesByCategory="separateTalkThemesByCategory"
           @getValue="getValue"
         ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
@@ -150,15 +145,15 @@ export default {
       talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       filtered_talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
-      current_page: 1,
-      par_page: 5,
-      display_format: "",
+      current_page: 1, // トークテーマ一覧の現在ページ。
+      par_page: 5, // 1ページにつき、表示されるトークテーマの数。
+      display_format: "", // トークテーマの表示形式。
     };
   },
   watch: {
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: async function () {
-      await this.separateTalkThemesByCategory();
+      await this.setTalkThemesByCategory();
 
       if (this.display_format == "is_liked") {
         this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
@@ -166,23 +161,33 @@ export default {
         );
       }
 
+      this.sortTalkThemesByPopularity();
+
+      // カテゴリーが変更した際に、トークテーマ一覧のページを1にする。
       this.current_page = 1;
     },
-    current_page: function () {
-      this.UpdateTalkThemesLikes();
+    current_page: async function () {
+      await this.UpdateTalkThemesLikes();
+      this.sortTalkThemesByPopularity();
     },
+    display_format: function() {
+      this.sortTalkThemesByPopularity();
+    }
   },
   computed: {
+    // ページネーションに合わせて、トークテーマを変更する。
     TalkThemesDividedByPages() {
       let current = this.current_page * this.par_page;
       let start = current - this.par_page;
       return this.filtered_talk_themes.slice(start, current);
     },
 
+    // トークテーマの番号を算出し、返す。
     TalkThemeNumber() {
       return (this.current_page - 1) * this.par_page + 1;
     },
 
+    // トークテーマのページ数を算出し、返す。
     getPageCount() {
       return Math.ceil(this.filtered_talk_themes.length / this.par_page);
     },
@@ -201,24 +206,6 @@ export default {
       this.category_id = this.categories[0].id;
     },
 
-    async separateTalkThemesByCategory() {
-      await this.fetchCategories();
-      await this.changeCategory();
-      this.filtered_talk_themes = this.talk_themes;
-    },
-
-    async UpdateTalkThemesLikes() {
-      await this.fetchCategories();
-      await this.changeCategory();
-
-      const filtered_talk_themes_ids = this.filtered_talk_themes.map(
-        (talk_theme) => talk_theme.id
-      );
-      this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
-        filtered_talk_themes_ids.includes(talk_theme.id)
-      );
-    },
-
     async changeCategory() {
       // 選択したカテゴリーのデータを変数に代入する。
       const selected_category = this.categories.find(
@@ -230,6 +217,47 @@ export default {
       this.talk_themes = selected_category.talk_themes;
     },
 
+    // 各カテゴリーごとにトークテーマを分ける。
+    async setTalkThemesByCategory() {
+      await this.fetchCategories();
+      await this.changeCategory();
+
+      // 取得したトークテーマを全てfiltered_talk_themesに代入する。
+      this.filtered_talk_themes = this.talk_themes;
+    },
+
+    // 各トークテーマのいいね数を更新する。
+    async UpdateTalkThemesLikes() {
+      await this.fetchCategories();
+      await this.changeCategory();
+
+      // 取得したトークテーマのうち、filtered_talk_themesに代入されていたものを、filtered_talk_themesに再代入する。
+      const filtered_talk_themes_ids = this.filtered_talk_themes.map(
+        (talk_theme) => talk_theme.id
+      );
+      this.filtered_talk_themes = this.talk_themes.filter((talk_theme) =>
+        filtered_talk_themes_ids.includes(talk_theme.id)
+      );
+    },
+
+    // トークテーマをいいね数が多い順に並び替える。
+    sortTalkThemesByPopularity() {
+      this.filtered_talk_themes.sort((a, b) => {
+        return b.likes.length - a.likes.length;
+      });
+    },
+    
+    // いいねをしたトークテーマのidの配列に、新たにいいねをしたトークテーマのidを追加する。
+    addLikedTalkTheme(talk_theme_id) {
+      this.liked_talk_theme_ids.push(talk_theme_id);
+    },
+    
+    // いいねをしたトークテーマのidの配列から、いいねを解除したトークテーマのidを削除する。
+    removeLikedTalkTheme(talk_theme_id) {
+      const ids = this.liked_talk_theme_ids.filter((id) => id != talk_theme_id);
+      this.liked_talk_theme_ids = ids;
+    },
+    
     // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
     fetchLikedTalkThemeIds() {
       axios.get("/api/v1/like/ip").then((response) => {
@@ -237,18 +265,7 @@ export default {
       });
     },
 
-    // いいねをしたトークテーマのidの配列に、新たにいいねをしたトークテーマのidを追加する。
-    addLikedTalkTheme(talk_theme_id) {
-      this.liked_talk_theme_ids.push(talk_theme_id);
-    },
-
-    // いいねをしたトークテーマのidの配列から、いいねを解除したトークテーマのidを削除する。
-    removeLikedTalkTheme(talk_theme_id) {
-      const ids = this.liked_talk_theme_ids.filter((id) => id != talk_theme_id);
-      this.liked_talk_theme_ids = ids;
-    },
-
-    // 検索したトークテーマのデータをdataプロパティに代入する。
+    // トークテーマの表示形式、検索したトークテーマのデータをdataプロパティに代入する。
     getValue(display_format, filtered_talk_themes) {
       this.display_format = display_format;
       this.filtered_talk_themes = filtered_talk_themes;
