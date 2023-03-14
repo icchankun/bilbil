@@ -43,9 +43,9 @@
         <!-- /カテゴリー選択ボタン -->
         <!-- トークテーマ検索フォーム-->
         <talk-theme-search-form
-          :talk_themes="talk_themes"
-          @separateTalkThemesByCategory="separateTalkThemesByCategory"
-          @getFilteredTalkThemes="getFilteredTalkThemes"
+          :category_id="category_id"
+          v-model="talk_themes"
+          @getValue="getValue"
         ></talk-theme-search-form>
         <!-- /トークテーマ検索フォーム-->
         <!-- 各カテゴリーのトークテーマ一覧 -->
@@ -62,51 +62,63 @@
           </div>
           <div class="col-12 col-sm-6 text-sm-end">
             <a
-              v-if="filtered_talk_themes.length == 0"
+              v-if="talk_themes.length == 0"
               class="btn btn-danger btn-sm"
               @click="deleteCategory()"
               >カテゴリーを削除</a
             >
-            <span v-else
+            <span v-else-if="filtered_talk_themes.length != 0"
               >トークテーマ数: {{ filtered_talk_themes.length }}</span
             >
           </div>
         </div>
-        <ol class="list">
+        <div class="list">
           <!-- トークテーマが存在する場合 -->
-          <div
-            v-if="filtered_talk_themes.length != 0"
-            v-for="(talk_theme, index) in filtered_talk_themes"
-            :key="talk_theme.id"
-            class="row mb-2"
-          >
-            <div class="col-12 col-sm-6">
-              <li>
-                <router-link
-                  :to="{
-                    name: 'TalkThemeEditPage',
-                    params: { id: talk_theme.id },
-                  }"
-                  ><span class="fw-bold"
-                    >{{ talk_theme.content }}?</span
-                  ></router-link
+          <div v-if="filtered_talk_themes.length != 0">
+            <div
+              v-for="(talk_theme, index) in TalkThemesDividedByPages"
+              :key="talk_theme.id"
+              class="row mb-2"
+            >
+              <div class="col-12 col-sm-6">
+                <div class="talk_theme">
+                  <router-link
+                    :to="{
+                      name: 'TalkThemeEditPage',
+                      params: { id: talk_theme.id },
+                    }"
+                    ><span class="fw-bold"
+                      >{{ TalkThemeNumber + index }}.
+                      {{ talk_theme.content }}?</span
+                    ></router-link
+                  >
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <a
+                  class="btn btn-danger btn-sm me-2"
+                  @click="deleteTalkTheme(talk_theme.id)"
+                  >{{ TalkThemeNumber + index }}を削除</a
                 >
-              </li>
+                <span> いいね数: {{ talk_theme.likes.length }} </span>
+              </div>
             </div>
-            <div class="col-12 col-sm-6">
-              <a
-                class="btn btn-danger btn-sm me-2"
-                @click="deleteTalkTheme(talk_theme.id)"
-                >{{ index + 1 }}を削除</a
-              >
-              <span> いいね数: {{ talk_theme.likes.length }} </span>
+            <div class="mt-3">
+              <v-pagination
+                v-model="current_page"
+                :pages="getPageCount"
+                :range-size="1"
+                active-color="#DCEDFF"
+              />
             </div>
           </div>
           <!-- /トークテーマが存在する場合 -->
           <!-- トークテーマが存在しない場合 -->
-          <div v-else class="talk_themes-field">トークテーマはありません。</div>
+          <div v-else class="fw-bold text-center py-2 pe-2">
+            トークテーマはありません。
+          </div>
           <!-- /トークテーマが存在しない場合 -->
-        </ol>
+        </div>
         <!-- /各カテゴリーのトークテーマ一覧 -->
       </div>
     </div>
@@ -119,12 +131,14 @@ import axios from "axios";
 
 import Header from "../components/Header.vue";
 import TalkThemeSearchForm from "../components/TalkThemeSearchForm.vue";
+import VPagination from "@hennge/vue3-pagination";
 import AdminFooter from "../components/AdminFooter.vue";
 
 export default {
   components: {
     Header,
     TalkThemeSearchForm,
+    VPagination,
     AdminFooter,
   },
   created() {
@@ -137,13 +151,16 @@ export default {
       category_name: "", // 選択されたカテゴリーのカテゴリー名
       talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
       filtered_talk_themes: [], // 選択したカテゴリーのトークテーマの配列。
+      current_page: 1, // トークテーマ一覧の現在ページ。
+      par_page: 10, // 1ページにつき、表示されるトークテーマの数。
     };
   },
   watch: {
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: async function () {
-      await this.separateTalkThemesByCategory();
+      await this.setTalkThemesByCategory();
       this.sortTalkThemesByPopularity;
+      this.current_page = 1;
     },
   },
   computed: {
@@ -153,13 +170,29 @@ export default {
         return b.likes.length - a.likes.length;
       });
     },
+
+    // ページネーションに合わせて、トークテーマを変更する。
+    TalkThemesDividedByPages() {
+      let current = this.current_page * this.par_page;
+      let start = current - this.par_page;
+      return this.filtered_talk_themes.slice(start, current);
+    },
+
+    // トークテーマの番号を算出し、返す。
+    TalkThemeNumber() {
+      return (this.current_page - 1) * this.par_page + 1;
+    },
+
+    // トークテーマのページ数を算出し、返す。
+    getPageCount() {
+      return Math.ceil(this.filtered_talk_themes.length / this.par_page);
+    },
   },
   methods: {
     // 全カテゴリーのデータを取得する。
     async fetchCategories() {
-      await axios.get("/api/v1/categories").then((response) => {
-        this.categories = response.data;
-      });
+      const response = await axios.get("/api/v1/categories");
+      this.categories = response.data;
     },
 
     async categoryDefault() {
@@ -204,7 +237,7 @@ export default {
     },
 
     // 選択したカテゴリーのルーレット内容を配列にする。
-    async separateTalkThemesByCategory() {
+    async setTalkThemesByCategory() {
       this.fetchCategories();
 
       const selected_category = this.categories.find(
@@ -220,18 +253,12 @@ export default {
     },
 
     // 検索したトークテーマのデータをdataプロパティに代入する。
-    getFilteredTalkThemes(value) {
-      this.filtered_talk_themes = value;
+    getValue(display_format, filtered_talk_themes) {
+      this.filtered_talk_themes = filtered_talk_themes;
+      this.current_page = 1;
     },
   },
 };
 </script>
 
-<style scoped>
-.talk_themes-field {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  padding: 0 35px 0 0;
-}
-</style>
+<style scoped></style>

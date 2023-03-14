@@ -2,7 +2,7 @@
   <div>
     <div class="mb-3">
       <label for="talkThemeSearchForm" class="form-label"
-        >トークテーマ検索</label
+        >トークテーマの検索</label
       >
       <div class="input-group">
         <input
@@ -17,7 +17,7 @@
         </button>
       </div>
     </div>
-    <div class="mb-3">
+    <div v-if="this.$route.path != '/admin'" class="mb-3">
       <div class="display_format-wrapper">
         <label for="display_format" class="form-label"
           >トークテーマの表示</label
