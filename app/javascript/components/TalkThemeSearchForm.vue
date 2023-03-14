@@ -17,13 +17,17 @@
         </button>
       </div>
     </div>
-    <div>
-      <select v-model="display_format">
-        <option value="all">全てのトークテーマを表示</option>
-        <option value="is_liked">いいねしたトークテーマを表示</option>
-      </select>
+    <div class="mb-3">
+      <div class="display_format-wrapper">
+        <label for="display_format" class="form-label"
+          >トークテーマの表示</label
+        >
+        <select class="form-select" id="display_format" v-model="display_format">
+          <option value="all">全てのトークテーマ</option>
+          <option value="is_liked">いいねしたトークテーマのみ</option>
+        </select>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -67,7 +71,7 @@ export default {
       this.$emit("getValue", this.display_format, this.filtered_talk_themes);
     },
 
-    category_id: function() {
+    category_id: function () {
       this.search_query = "";
     },
   },
@@ -96,12 +100,14 @@ export default {
           this.filtered_talk_themes = this.talk_themes;
       }
 
-      this.filtered_talk_themes = this.filtered_talk_themes.filter((talk_theme) => {
-        return this.search_query
-          .split(/\s+/)
-          .map((query) => talk_theme.content.indexOf(query) > -1)
-          .some((result) => result === true);
-      });
+      this.filtered_talk_themes = this.filtered_talk_themes.filter(
+        (talk_theme) => {
+          return this.search_query
+            .split(/\s+/)
+            .map((query) => talk_theme.content.indexOf(query) > -1)
+            .some((result) => result === true);
+        }
+      );
 
       this.$emit("getValue", this.display_format, this.filtered_talk_themes);
     },
@@ -131,4 +137,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (min-width: 576px) {
+  .display_format-wrapper {
+    width: 50%;
+  }
+}
+</style>
