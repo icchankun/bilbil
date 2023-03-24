@@ -162,11 +162,9 @@ export default {
   height: 200px;
 }
 .start_btn {
-  background-color: #0070f3;
   border-radius: 10px;
 }
 .stop_btn {
-  background-color: #ff5858;
   border-radius: 10px;
 }
 </style>
