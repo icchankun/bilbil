@@ -23,6 +23,19 @@
     </div>
   </div>
   <!-- /カテゴリー選択ボタン -->
+  <!-- ルーレット内容変更ボタン -->
+  <div class="mb-3">
+    <div class="mb-1">いいねしたトークテーマのみをルーレットで表示する。</div>
+    <div class="form-switch">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        role="switch"
+        v-model="checked"
+      />
+    </div>
+  </div>
+  <!-- /ルーレット内容変更ボタン -->
   <!-- ルーレット表示部分 -->
   <div class="mb-1">{{ this.category_name }}トーク</div>
   <div class="talk_theme_roulette mb-3">
@@ -59,75 +72,114 @@ import axios from "axios";
 
 export default {
   created() {
-    // 全カテゴリーのデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
-    axios.get("/api/v1/categories").then((response) => {
-      this.categories = response.data;
-      this.category_id = this.categories[0].id;
-    });
+    this.categoryDefault();
+    this.fetchLikedTalkThemes();
   },
   data() {
     return {
       categories: [], // 全カテゴリーのデータの配列。
-      category_id: "", // 選択されたカテゴリーのid。
+      category_id: 0, // 選択されたカテゴリーのid。
       category_name: "", // 選択されたカテゴリーのカテゴリー名。
-      talk_theme: {}, // ルーレットに表示されるトークテーマ。
+      talk_theme: "", // ルーレットに表示されるトークテーマ。
+      talk_themes: [], // 選択されたカテゴリーのトークテーマ。
+      liked_talk_theme_ids: [], // いいねをしたトークテーマのidの配列。
+      liked_talk_themes: [], // いいねをしたトークテーマの配列。
       is_active: false, // ルーレットボタンの切り替え。
+      checked: false, // ルーレットで表示されるトークテーマをいいねしたものだけにするか全てのものにするかの切り替え。
     };
   },
   watch: {
     // 選択したカテゴリーが変わるごとに、ルーレットの内容と取得するカテゴリー名を変更する。
     category_id: function () {
-      this.talkThemes();
+      this.is_active = false;
+      this.setTalkThemes();
+      this.setLikedTalkThemes();
+      this.displayTalkTheme();
+    },
+    checked: function () {
+      this.displayTalkTheme();
     },
   },
   methods: {
-    talkThemes() {
+    async categoryDefault() {
+      const response = await axios.get("/api/v1/categories");
+      this.categories = response.data;
+
+      // 選択されたカテゴリーの初期値をカテゴリーデータの先頭にする。
+      this.category_id = this.categories[0].id;
+    },
+
+    setTalkThemes() {
       // 選択したカテゴリーのルーレット内容を配列にする。
       const selected_category = this.categories.find(
         (category) => category.id == this.category_id
       );
-      const talk_themes = selected_category.talk_themes;
 
-      // talk_themesのlengthが0であれば、dataのtalk_themeにundefinedを代入し、このメソッドを終了する。
-      if (talk_themes.length == 0) {
-        this.talk_theme = undefined
-        return;
-      }
+      // 選択したカテゴリーのカテゴリー名、トークテーマを取得する。
+      this.category_name = selected_category.name;
+      this.talk_themes = selected_category.talk_themes;
 
       // トークテーマをいいね数が多い順に並び替える。
-      talk_themes.sort((a, b) => {
+      this.talk_themes.sort((a, b) => {
         return b.likes.length - a.likes.length;
       });
+    },
 
-      // 選択したカテゴリーのカテゴリー名を取得する。
-      this.category_name = selected_category.name;
+    displayTalkTheme() {
+      switch (this.checked) {
+        case true:
+          // liked_talk_themesのlengthが0であれば、dataのliked_talk_themeにundefinedを代入し、このメソッドを終了する。
+          if (this.liked_talk_themes.length == 0) {
+            this.talk_theme = undefined;
+            return;
+          }
 
-      // 各カテゴリーの人気トークテーマの10番目までを取得する。
-      let up_to_the_tenth = {};
-      for (const index in talk_themes) {
-        if (index < 10) {
-          // 「"トークテーマ": 30」をup_to_the_tenthに格納する。
-          up_to_the_tenth[talk_themes[index].content] = 30;
-        } else {
+          // dataのtalk_themeにランダムでいいねされたトークテーマのデータを代入する。
+          this.talk_theme =
+            this.liked_talk_themes[
+              Math.floor(Math.random() * this.liked_talk_themes.length)
+            ].content;
           break;
-        }
+        default:
+          // talk_themesのlengthが0であれば、dataのtalk_themeにundefinedを代入し、このメソッドを終了する。
+          if (this.talk_themes.length == 0) {
+            this.talk_theme = undefined;
+            return;
+          }
+
+          // 各カテゴリーの人気トークテーマの10番目までを取得する。
+          const up_to_the_tenth = {};
+          const RATIO = 30;
+
+          for (const index in this.talk_themes) {
+            if (index < 10) {
+              // 「"トークテーマ": 30」をup_to_the_tenthに格納する。
+              up_to_the_tenth[this.talk_themes[index].content] = RATIO;
+            } else {
+              break;
+            }
+          }
+
+          // resultにランダムでトークテーマを代入する。
+          let result =
+            this.talk_themes[
+              Math.floor(Math.random() * this.talk_themes.length)
+            ].content;
+
+          for (const talk_theme in up_to_the_tenth) {
+            // ランダムに0~100をrandに代入する。
+            const rand = Math.floor(Math.random() * 100);
+
+            // もしrandの数値がトークテーマに付与された数値以下だったら、そのトークテーマをresultに代入する。
+            if (rand <= RATIO) {
+              result = talk_theme;
+              break;
+            }
+          }
+
+          // dataのtalk_themeにresultを代入する。
+          this.talk_theme = result;
       }
-
-      // トークテーマをランダムにresultに代入する。
-      let result =
-        talk_themes[Math.floor(Math.random() * talk_themes.length)].content;
-
-      for (const talk_theme in up_to_the_tenth) {
-        // ランダムに0~100をrandに代入する。
-        const rand = Math.floor(Math.random() * 100);
-
-        // もしrandの数値がトークテーマに付与された数値以下だったら、そのトークテーマをresultに代入する。
-        if (rand <= up_to_the_tenth[talk_theme]) {
-          result = talk_theme;
-          break;
-        }
-      }
-      this.talk_theme = result;
     },
 
     // ルーレットのボタンを切り替える。
@@ -139,12 +191,27 @@ export default {
     roulette() {
       let roulette = setInterval(() => {
         if (this.is_active) {
-          this.talkThemes();
+          this.displayTalkTheme();
         } else {
           // 0.1秒ごとに1つデータを表示させることを止める。
           clearInterval(roulette);
         }
       }, 100);
+    },
+
+    // 接続しているipアドレスをipカラムに保存しているいいねレコードのトークテーマidカラムの値を配列にし、取得する。
+    fetchLikedTalkThemes() {
+      axios.get("/api/v1/like/ip").then((response) => {
+        this.liked_talk_theme_ids = response.data;
+        this.setLikedTalkThemes();
+      });
+    },
+
+    // いいねされたトークテーマのidの配列をもとにいいねされたトークテーマの配列を取得する。。
+    setLikedTalkThemes() {
+      this.liked_talk_themes = this.talk_themes.filter((talk_theme) =>
+        this.liked_talk_theme_ids.includes(talk_theme.id)
+      );
     },
   },
 };
@@ -162,11 +229,14 @@ export default {
   height: 200px;
 }
 .start_btn {
-  background-color: #0070f3;
   border-radius: 10px;
 }
 .stop_btn {
-  background-color: #ff5858;
   border-radius: 10px;
+}
+
+.form-check-input {
+  height: 1.5em;
+  width: 3em;
 }
 </style>
