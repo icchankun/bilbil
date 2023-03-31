@@ -31,6 +31,19 @@
         <!-- トークサポートルーレット -->
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
+          <form @submit.prevent="addName">
+            <label>Name:</label>
+            <input type="text" v-model="new_name" />
+            <br />
+            <button type="submit">Add Name</button>
+          </form>
+
+          <ul>
+            <li v-for="(participant, index) in participants">
+              {{ participant.name }}
+              <button @click="deleteName(index)">Delete</button>
+            </li>
+          </ul>
           <div class="mb-1">トーク人数を選んでください。</div>
           <div class="d-flex flex-wrap mb-4">
             <div class="number_btn-wrapper" v-for="n in 9" :key="n">
@@ -114,6 +127,8 @@ export default {
       number_of_people: 2, // 選択されているトーク人数（デフォルトは2人）。
       show_content: false, // モーダルの表示の有無。
       roulette_type: "", // ルーレットの種類。
+      new_name: "", // フォームに入力された名前。
+      participants: JSON.parse(localStorage.getItem("participants")) || [], // トーク参加者の名前の配列。
     };
   },
   methods: {
@@ -122,9 +137,28 @@ export default {
       this.show_content = true;
       this.roulette_type = roulette_type;
     },
+
     // モーダルウィンドウを閉じる。
     closeModal() {
       this.show_content = false;
+    },
+
+    addName() {
+      // 新しい名前を追加する。
+      this.participants.push({ name: this.new_name });
+
+      // フォームを空にする。
+      this.new_name = "";
+
+      // ローカルストレージにデータを保存する
+      localStorage.setItem("participants", JSON.stringify(this.participants));
+    },
+    deleteName(index) {
+      // 名前を削除する
+      this.participants.splice(index, 1);
+
+      // ローカルストレージにデータを保存する
+      localStorage.setItem("participants", JSON.stringify(this.participants));
     },
   },
 };
