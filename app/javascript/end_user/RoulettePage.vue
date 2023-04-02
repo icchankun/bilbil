@@ -27,16 +27,28 @@
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
           <form @submit.prevent="addName">
-            <label>Name:</label>
-            <input type="text" v-model="new_name" />
-            <br />
-            <button type="submit">Add Name</button>
+            <div class="mb-3">
+              トーク参加者の名前を下のフォームから2人以上追加することで、トークの司会者・話し手/順番を決定する機能を使えるようになります。
+            </div>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="例）太郎"
+                v-model="new_name"
+              />
+              <br />
+              <button type="submit" class="btn btn-primary">追加</button>
+            </div>
           </form>
-
-          <ul>
-            <li v-for="(participant, index) in participants">
-              {{ participant.name }}
-              <button @click="deleteName(index)">Delete</button>
+          <ul class="p-0 m-0">
+            <li
+              v-for="(participant, index) in participants"
+              class="participant_name"
+            >
+              <div>{{ index + 1 }}.</div>
+              <div>{{ participant.name }}</div>
+              <div class="p-2 delete_btn" @click="deleteName(index)"><i class="fas fa-times"></i></div>
             </li>
           </ul>
         </div>
@@ -91,7 +103,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .roulette {
   border: 1px solid #000;
   padding: 0.5rem;
@@ -114,6 +126,22 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.participant_name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5em 0 1em;
+  margin-bottom: 1em;
+  background-color: #C7C2C2;
+  border-radius: 0.375rem;
+  .delete_btn {
+    cursor: pointer;
+  }
+  .fa-times {
+    font-size: 2rem;
+  }
 }
 
 /***************************
