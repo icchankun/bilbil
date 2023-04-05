@@ -54,11 +54,11 @@
         active();
       "
     >
-      <div class="start_btn p-3" v-if="this.is_active">
+      <div class="stop_btn p-3" v-if="this.is_active">
         <i class="fas fa-stop-circle me-2"></i>
         <span>ストップ</span>
       </div>
-      <div class="stop_btn p-3" v-else>
+      <div class="start_btn p-3" v-else>
         <i class="fas fa-sync-alt me-2"></i>
         <span>スタート</span>
       </div>
@@ -227,12 +227,6 @@ export default {
   font-weight: bold;
   font-size: 1.25rem;
   height: 200px;
-}
-.start_btn {
-  border-radius: 10px;
-}
-.stop_btn {
-  border-radius: 10px;
 }
 
 .form-check-input {

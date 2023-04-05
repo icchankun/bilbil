@@ -27,7 +27,7 @@
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
           <form @submit.prevent="addName">
-            <div class="mb-3">
+            <div class="mb-1">
               トーク参加者の名前を下のフォームから2人以上追加することで、トークの司会者・話し手/順番を決定する機能を使えるようになります。
             </div>
             <div class="input-group mb-3">
@@ -41,16 +41,8 @@
               <button type="submit" class="btn btn-primary">追加</button>
             </div>
           </form>
-          <ul class="p-0 m-0">
-            <li
-              v-for="(participant, index) in participants"
-              class="participant_name"
-            >
-              <div>{{ index + 1 }}.</div>
-              <div>{{ participant.name }}</div>
-              <div class="p-2 delete_btn" @click="deleteName(index)"><i class="fas fa-times"></i></div>
-            </li>
-          </ul>
+          <one-person-display :participants="participants"></one-person-display>
+          <talk-order-shuffle v-model="participants"></talk-order-shuffle>
         </div>
         <!-- /トークサポート -->
       </div>
@@ -66,6 +58,8 @@
 import Header from "../components/Header.vue";
 import HeadLine from "../components/Headline.vue";
 import TalkThemeRoulette from "../components/TalkThemeRoulette.vue";
+import TalkOrderShuffle from "../components/TalkOrderShuffle.vue";
+import OnePersonDisplay from "../components/OnePersonDisplay.vue";
 import EndUserFooter from "../components/EndUserFooter.vue";
 
 export default {
@@ -73,6 +67,8 @@ export default {
     Header,
     HeadLine,
     TalkThemeRoulette,
+    TalkOrderShuffle,
+    OnePersonDisplay,
     EndUserFooter,
   },
   data() {
@@ -92,13 +88,6 @@ export default {
       // ローカルストレージにデータを保存する
       localStorage.setItem("participants", JSON.stringify(this.participants));
     },
-    deleteName(index) {
-      // 名前を削除する
-      this.participants.splice(index, 1);
-
-      // ローカルストレージにデータを保存する
-      localStorage.setItem("participants", JSON.stringify(this.participants));
-    },
   },
 };
 </script>
@@ -112,36 +101,21 @@ export default {
   text-align: center;
 }
 
-.start_btn {
-  background-color: #0070f3;
+.start_btn,
+.stop_btn {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
   cursor: pointer;
+}
+
+.start_btn {
+  background-color: #ff5858;
 }
 
 .stop_btn {
-  background-color: #ff5858;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.participant_name {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0.5em 0 1em;
-  margin-bottom: 1em;
-  background-color: #C7C2C2;
-  border-radius: 0.375rem;
-  .delete_btn {
-    cursor: pointer;
-  }
-  .fa-times {
-    font-size: 2rem;
-  }
+  background-color: #0070f3;
 }
 
 /***************************
