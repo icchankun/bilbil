@@ -26,19 +26,28 @@
         <!-- トークサポート -->
         <div class="mb-5">
           <head-line>TALK SUPPORT</head-line>
-          <form @submit.prevent="addName">
-            <div class="mb-1">
+          <form @submit.prevent="addName" novalidate>
+            <div class="mb-3">
               トーク参加者の名前を下のフォームから2人以上追加することで、トークの司会者・話し手/順番を決定する機能を使えるようになります。
             </div>
-            <div class="input-group mb-3">
+            <label for="participantNameInput" class="form-label mb-1"
+              >トーク参加者名前入力フォーム</label
+            >
+            <div class="input-group has-validation mb-3">
               <input
                 type="text"
                 class="form-control"
+                id="participantNameInput"
                 placeholder="例）太郎"
                 v-model="new_name"
+                @blur="removeClass()"
+                required
               />
               <br />
               <button type="submit" class="btn btn-primary">追加</button>
+              <div v-if="error_message" class="invalid-feedback">
+                {{ error_message }}
+              </div>
             </div>
           </form>
           <one-person-display :participants="participants"></one-person-display>
@@ -75,18 +84,45 @@ export default {
     return {
       new_name: "", // フォームに入力された名前。
       participants: JSON.parse(localStorage.getItem("participants")) || [], // トーク参加者の名前の配列。
+      error_message: "", // エラーメッセージ
     };
   },
   methods: {
     addName() {
+      // トーク参加者名前入力フォームを取得。
+      const input = document.getElementById("participantNameInput");
+
+      if (!this.new_name) {
+        // フォームが空だった場合の処理。
+        this.error_message = "フォームに名前を入力してください。";
+        input.classList.add("is-invalid");
+        return;
+      } else if (this.new_name.length > 10) {
+        // フォームに入力された文字が10文字より多かった場合の処理。
+        this.error_message = "名前を10文字以下にしてください。";
+        input.classList.add("is-invalid");
+        return;
+      }
+
+      // クラス属性からis-invalidを削除し、is-validを付与する。
+      input.classList.remove("is-invalid");
+      input.classList.add("is-valid");
+
       // 新しい名前を追加する。
       this.participants.push({ name: this.new_name });
 
-      // フォームを空にする。
-      this.new_name = "";
+      // フォームの中身とエラーメッセージを空にする。
+      this.new_name = this.error_message = "";
 
       // ローカルストレージにデータを保存する
       localStorage.setItem("participants", JSON.stringify(this.participants));
+    },
+
+    // トーク参加者名前入力フォームのクラス属性からis-valid, is-invalidを削除する。
+    removeClass() {
+      const input = document.getElementById("participantNameInput");
+      input.classList.remove("is-invalid");
+      input.classList.remove("is-valid");
     },
   },
 };
