@@ -6,74 +6,32 @@
         <!-- トークテーマルーレットの使用方法説明 -->
         <head-line>TALK THEME</head-line>
         <ol class="fw-bold mb-5">
-          <li class="mb-1">
+          <li class="mb-3">
             お好きなトークテーマのカテゴリーを選択します。
-            <div class="fw-normal">※選択したボタンは色が変わります。</div>
-          </li>
-          <!-- カテゴリー選択ボタン -->
-          <div class="d-flex flex-wrap mb-3">
-            <div
-              class="me-2"
-              v-for="(category, index) in categories"
-              :key="category.id"
-            >
-              <input
-                type="radio"
-                class="btn-check"
-                name="category"
-                :id="[`category` + index]"
-                :value="category.id"
-                v-model="category_id"
-                autocomplete="off"
-              />
-              <label
-                class="btn btn-outline-secondary category_btn"
-                :for="[`category` + index]"
-                >{{ category.name }}</label
-              >
+            <div class="fw-normal mb-2">
+              ※選択したカテゴリーボタンの色はグレーに変化します。
             </div>
-          </div>
-          <!-- /カテゴリー選択ボタン -->
+            また、｢いいねしたトークテーマのみをルーレットに表示する｣のボタンを入りにすると、トークテーマ一覧でいいねしたトークテーマのみがルーレットに表示されるようになります。
+            <div class="fw-normal">
+              ※ボタンを入りにすると色は青に変化します。
+            </div>
+          </li>
           <li>
-            ルーレットの下に配置したボタンでルーレットをスタート・ストップさせ、
-            トークテーマを決定し、会話を始めます。
+            トークテーマルーレット下のスタート・ストップボタンによって、トークテーマを決定します。
           </li>
         </ol>
         <!-- /トークテーマルーレットの使用方法説明 -->
-        <!-- トークサポートルーレットの使用方法説明 -->
+        <!-- トークサポートの使用方法説明 -->
         <head-line>TALK SUPPORT</head-line>
         <ol class="fw-bold mb-5">
           <li class="mb-3">
-            トーク人数を選択します。
-            <div class="fw-normal">※選択したボタンは色が変わります。</div>
-          </li>
-          <div class="d-flex flex-wrap mb-3">
-            <div class="number_btn-wrapper" v-for="n in 9" :key="n">
-              <input
-                type="radio"
-                class="btn-check"
-                :id="n + 1"
-                :value="n + 1"
-                v-model="number_of_people"
-              />
-              <label
-                class="btn btn-outline-secondary number_btn"
-                :for="n + 1"
-                >{{ n + 1 }}</label
-              >
-            </div>
-          </div>
-          <!-- /トーク人数選択ボタン -->
-          <li class="mb-3">
-            番号指定/トーク順番/司会者・話し手指定ルーレットは右に配置したボタンでルーレットをスタート・ストップさせます。
+            トーク参加者の名前をフォームから2人以上追加することで、トーク司会者・話し手/順番を決定する機能を使えるようになります。
           </li>
           <li>
-            トーク順番ルーレットの指示と番号指定ルーレットで決めた番号をもとにトークの順番を決めます。<br />
-            <br />
-            また、司会者・話し手指定ルーレットにより、司会者や話し手を番号指定ルーレットで決めた番号をもとに指定することができます。
+            トーク司会者・話し手はスタート・ストップボタンによって、トーク順番はシャッフル・ストップボタンによって、それぞれ決定することができます。
           </li>
         </ol>
-        <!-- /トークサポートルーレットの使用方法説明 -->
+        <!-- /トークサポートの使用方法説明 -->
       </div>
       <!-- ページ遷移リンク -->
       <div>
@@ -88,14 +46,11 @@
     </div>
   </main>
   <end-user-footer>
-    トークテーマルーレットだけでも利用できますが、トークサポートルーレットも
-    合わせて利用していただくことをおすすめします。
+    トークテーマルーレットだけでも利用できますが、トークサポートも合わせて利用していただくことをおすすめします。
   </end-user-footer>
 </template>
 
 <script>
-import axios from "axios";
-
 import Header from "../components/Header.vue";
 import HeadLine from "../components/Headline.vue";
 import RoulettePageBackButton from "../components/RoulettePageBackButton.vue";
@@ -108,22 +63,7 @@ export default {
     RoulettePageBackButton,
     EndUserFooter,
   },
-  created() {
-    // 全カテゴリーのJSONデータを取得し、dataのcategory_idにindexが0のカテゴリーのidを代入する。
-    axios.get("/api/v1/categories").then((response) => {
-      this.categories = response.data;
-      this.category_id = this.categories[0].id;
-    });
-  },
-  data() {
-    return {
-      categories: [], // 全カテゴリーのデータの配列。
-      category_id: "", // 選択されているカテゴリーのid。
-      number_of_people: 2, // 選択されているトーク人数（デフォルトは2人）。
-    };
-  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

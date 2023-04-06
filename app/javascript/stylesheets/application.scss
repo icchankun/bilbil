@@ -42,17 +42,6 @@ body {
   padding: 0 1rem;
 }
 
-/* トーク人数選択ボタン */
-.number_btn-wrapper {
-  margin-right: .5rem;
-}
-
-.number_btn {
-  border-radius: 20px;
-  font-weight: bold;
-  padding: 0 1.2rem;
-}
-
 /* トークテーマ一覧 */
 .list {
   padding: 1em 0;
@@ -90,18 +79,5 @@ body {
 @media (max-width: 768px) {
   .end_user {
     padding-bottom: 500px;
-  }
-
-  .number_btn-wrapper:nth-child(-n+5) {
-    margin-bottom: 1rem;
-  }
-}
-
-/***************************
-  メディアクエリ 1200px以下
-***************************/
-@media (max-width: 1200px) {
-  .number_btn-wrapper:nth-child(-n+5) {
-    margin-bottom: .5rem;
   }
 }
